@@ -151,5 +151,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-.gitignore
 .idea/
+
+
+# Compilation binaries
+
+*.o
+main
