@@ -5,22 +5,22 @@
 #include <vector>
 
 #include "GPS.h"
-#include "item.h"
+#include "Item.h"
 
 
-class client {
+class Client {
 
 	int id;
 	std::string name;
 	unsigned int age;
 	std::string address;
 	GPS gps;
-	std::vector<item> basket;
+	std::vector<Item> basket;
 
 public:
 
-	client();
-	client(int id, std::string name, unsigned int age, std::string address, double latitude, double longitude);
+	Client();
+	Client(int id, std::string name, unsigned int age, std::string address, double latitude, double longitude);
 };
 
 

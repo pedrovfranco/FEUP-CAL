@@ -3,13 +3,15 @@
 
 #include <set>
 
-#include "supermarket.h"
+#include "Supermarket.h"
 #include "GPS.h"
 
-class delivery {
+
+
+class Delivery {
 
 	supermarket origin;
-	std::set<client> clients;
+	set<client> clients;
 
 };
 

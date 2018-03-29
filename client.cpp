@@ -1,11 +1,11 @@
-#include "client.h"
+#include "Client.h"
 
 using namespace std;
 
-client::client()
+Client::Client()
 {}
 
-client::client(int id, std::string name, unsigned int age, std::string address, double latitude, double longitude)
+Client::Client(int id, std::string name, unsigned int age, std::string address, double latitude, double longitude)
 {
 	this->id = id;
 	this->name = name;

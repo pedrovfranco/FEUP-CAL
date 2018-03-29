@@ -9,7 +9,7 @@
 /**
  * @brief      Class for managing time dates
  */
-class data
+class Data
 {
 	unsigned int dia, mes, ano;
 
@@ -18,7 +18,7 @@ public:
 	/**
 	 * @brief      Contructor of the data object.
 	 */
-	data();
+	Data();
 
 	/**
 	 * @brief      Contructor of the data object with specification of the date.
@@ -27,12 +27,8 @@ public:
 	 * @param[in]  mes   The month
 	 * @param[in]  ano   The year
 	 */
-	data(unsigned int dia, unsigned int mes, unsigned int ano);
-	
-	/**
-	 * @brief      Destroys the date object.
-	 */
-	~data();
+	Data(unsigned int dia, unsigned int mes, unsigned int ano);
+
 
 	/**
 	 * @brief      Gets the day of the date.
@@ -90,7 +86,7 @@ public:
 	 *
 	 * @return     True if they are equal and False otherwise
 	 */
-	bool operator==(const data& data1) const;
+	bool operator==(const Data& data1) const;
 	
 	/**
 	 * @brief      The less operator for objects of class data
@@ -99,7 +95,7 @@ public:
 	 *
 	 * @return     True if the first date is older than the second and false otherwise
 	 */
-	bool operator<(const data& data1) const;
+	bool operator<(const Data& data1) const;
 
 	
 
@@ -113,7 +109,7 @@ public:
  *
  * @return     The os stream with the object added
  */
-std::ostream& operator<<(std::ostream& os, const data& data1);
+std::ostream& operator<<(std::ostream& os, const Data& data1);
 
 
 

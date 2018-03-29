@@ -1,30 +1,26 @@
-#include "data.h"
+#include "Data.h"
 
 using namespace std;
 
-data::data()
+Data::Data()
 {}
 
-data::data(unsigned int dia, unsigned int mes, unsigned int ano) : dia(dia), mes(mes), ano(ano)
-{}
-
-data::~data()
+Data::Data(unsigned int dia, unsigned int mes, unsigned int ano) : dia(dia), mes(mes), ano(ano)
 {}
 
 
-unsigned int data::getDia() const {
+unsigned int Data::getDia() const {
 	return this->dia;
 }
-
-unsigned int data::getMes() const {
+unsigned int Data::getMes() const {
 	return this->mes;
 }
 
-unsigned int data::getAno() const {
+unsigned int Data::getAno() const {
 	return this->ano;
 }
 
-std::string data::getInfo() const {
+std::string Data::getInfo() const {
 	string info;
 
 	info = to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
@@ -32,24 +28,24 @@ std::string data::getInfo() const {
 	return info; 
 }
 
-void data::setDia(unsigned int dia) {
+void Data::setDia(unsigned int dia) {
 	this->dia = dia;
 }
 
-void data::setMes(unsigned int mes) {
+void Data::setMes(unsigned int mes) {
 	this->mes = mes;
 }
 
-void data::setAno(unsigned int ano) {
+void Data::setAno(unsigned int ano) {
 	this->ano = ano;
 }
 
 
-bool data::operator==(const data& data1) const {
+bool Data::operator==(const Data& data1) const {
 	return (this->dia  == data1.getDia() && this->mes == data1.getMes() && this->ano == data1.getAno());
 }
 
-bool data::operator<(const data& data1) const {
+bool Data::operator<(const Data& data1) const {
 	if (this->ano != data1.getAno())
 		return (this->ano < data1.getAno());
 
@@ -61,6 +57,6 @@ bool data::operator<(const data& data1) const {
 }
 
 
-std::ostream& operator<<(std::ostream& os, const data& data1) {
+std::ostream& operator<<(std::ostream& os, const Data& data1) {
 	return (os << data1.getInfo());
 }

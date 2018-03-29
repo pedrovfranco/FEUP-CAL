@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "client.h"
-#include "supermarket.h"
+#include "Supermarket.h"
 
 using namespace std;
 
