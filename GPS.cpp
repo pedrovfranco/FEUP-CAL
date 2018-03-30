@@ -19,7 +19,7 @@ GPS::GPS(){
  * @param[in]  latitude   The latitude
  * @param[in]  longitude  The longitude
  */
-GPS::GPS(int id, double latitude, double longitude): id(id), latitude(latitude), longitude(longitude)
+GPS::GPS(double latitude, double longitude): latitude(latitude), longitude(longitude)
 {
 	if (latitude > 90 || latitude < -90 || longitude > 180 || longitude < -180)
 		throw WrongCoordinates(*this);
@@ -57,9 +57,6 @@ double GPS::distance(GPS gps2) {
 	return c*6371000;
 }
 
-long long GPS::getId() const {
-	return id;
-}
 
 /**
  * @brief      Gets the latitude.
@@ -88,8 +85,16 @@ double GPS::getLongitude() const {
  */
 bool GPS::operator==(const GPS & gps2) const {
 
-	return (this->id == gps2.id);
+	return (this->latitude == gps2.latitude && this->longitude == gps2.longitude);
 }
+
+bool GPS::operator<(const GPS & gps2) const {
+	if (this->latitude != gps2.latitude)
+		return (this->latitude < gps2.latitude);
+
+	return (this->longitude < gps2.longitude);
+}
+
 
 /**
  * @brief      Streams a GPS type variable
@@ -101,5 +106,5 @@ bool GPS::operator==(const GPS & gps2) const {
  */
 ostream & operator<< (ostream & os,const GPS & input) {
 
-	return (os << input.getId() << ", " << input.getLatitude() << ", " << input.getLongitude());
+	return (os << input.getLatitude() << ", " << input.getLongitude());
 }

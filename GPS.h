@@ -10,7 +10,6 @@
  */
 class GPS {
 
-	int id;
 	double latitude;
 	double longitude;
 public:
@@ -26,7 +25,7 @@ public:
 	 * @param[in]  latitude   The latitude
 	 * @param[in]  longitude  The longitude
 	 */
-	GPS(long long id, double latitude, double longitude);
+	GPS(double latitude, double longitude);
 
 	/**
 	 * @brief      Calculates the distance between two sets of GPS coordinates
@@ -37,7 +36,6 @@ public:
 	 */
 	double distance(GPS gps2);
 
-	long long getId() const;
 	
 	/**
 	 * @brief      Gets the latitude coordinate of the GPS.
@@ -70,7 +68,8 @@ public:
 	 * @return     True if they are equal and False otherwise
 	 */
 	bool operator==(const GPS & gps2) const;
-	
+
+	bool operator<(const GPS & gps2) const;
 
 };
 
