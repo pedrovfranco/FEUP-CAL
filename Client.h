@@ -14,7 +14,7 @@ class Client {
 	std::string name;
 	unsigned int age;
 	std::string address;
-	GPS gps;
+	GPS* gps;
 	std::vector<Item> basket;
 
 public:

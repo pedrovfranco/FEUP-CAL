@@ -1,15 +1,14 @@
 #include <iostream>
-
-#include "client.h"
-#include "Supermarket.h"
+#include "DeliveryNetwork.h"
 
 using namespace std;
 
 int main()
 {
-    
-	cout << "Ola\n";
 
+	DeliveryNetwork ola;
+	ola.loadGraph("maps/a.txt", "maps/b.txt", "maps/c.txt");
+   
 
     return 0;
 }

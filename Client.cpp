@@ -11,5 +11,4 @@ Client::Client(int id, std::string name, unsigned int age, std::string address, 
 	this->name = name;
 	this->age = age;
 	this->address = address;
-	this->gps = GPS(latitude, longitude);
 }

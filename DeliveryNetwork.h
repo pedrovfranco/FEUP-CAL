@@ -7,9 +7,16 @@
 
 #include "Graph.h"
 
+#include "GPS.h"
+#include <string>
 
 class DeliveryNetwork {
-    Graph <unsigned int> graph;
+	Graph <GPS> graph;
+
+
+public:
+	bool loadGraph(std::string aname, std::string bname, std::string cname);
+
 };
 
 

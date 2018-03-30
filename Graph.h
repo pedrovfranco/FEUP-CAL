@@ -6,6 +6,9 @@
 
 #include <vector>
 #include <queue>
+#include <cstddef>
+#include <iostream>
+
 using namespace std;
 
 template <class T> class Edge;
@@ -35,8 +38,10 @@ template <class T>
 class Edge {
     Vertex<T> * dest;      // destination vertex
     double weight;         // edge weight
+    string name;
 public:
     Edge(Vertex<T> *d, double w);
+    Edge(Vertex<T> *d, double w, string name);
     friend class Graph<T>;
     friend class Vertex<T>;
 };
@@ -46,19 +51,20 @@ class Graph {
     vector<Vertex<T> *> vertexSet;    // vertex set
 
     void dfsVisit(Vertex<T> *v,  vector<T> & res) const;
-    Vertex<T> *findVertex(const T &in) const;
     bool dfsIsDAG(Vertex<T> *v) const;
 public:
     int getNumVertex() const;
     bool addVertex(const T &in);
     bool removeVertex(const T &in);
     bool addEdge(const T &sourc, const T &dest, double w);
+    bool addDoubleEdge(const T &sourc, const T &dest, double w);
     bool removeEdge(const T &sourc, const T &dest);
     vector<T> dfs() const;
     vector<T> bfs(const T &source) const;
     vector<T> topsort() const;
     int maxNewChildren(const T &source, T &inf) const;
     bool isDAG() const;
+    Vertex<T> *findVertex(const T &in) const;
 };
 
 /****************** Provided constructors and functions ********************/
@@ -68,6 +74,9 @@ Vertex<T>::Vertex(T in): info(in) {}
 
 template <class T>
 Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
+
+template <class T>
+Edge<T>::Edge(Vertex<T> *d, double w, string name): dest(d), weight(w), name(name) {}
 
 
 template <class T>
@@ -109,6 +118,16 @@ bool Graph<T>::addVertex(const T &in) {
  */
 template <class T>
 bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+    if (v1 == NULL || v2 == NULL)
+        return false;
+    v1->addEdge(v2,w);
+    return true;
+}
+
+template <class T>
+bool Graph<T>::addDoubleEdge(const T &sourc, const T &dest, double w) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == NULL || v2 == NULL)
