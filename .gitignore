@@ -158,4 +158,4 @@ Temporary Items
 
 *.o
 main
-maps/source/*
+input/source/*
