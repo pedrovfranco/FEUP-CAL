@@ -15,3 +15,14 @@ Supermarket::Supermarket(int id, string name, double latitude, double longitude)
 	// this->gps = GPS(latitude, longitude);
 
 }
+
+
+void Supermarket::setGPSId(const Graph &graph)
+{
+	this->GPSid = graph.getClosestGPS(gps).first;
+}
+
+long long Supermarket::getGPSId() const
+{
+	return GPSid;
+}

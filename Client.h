@@ -6,21 +6,26 @@
 
 #include "GPS.h"
 #include "Item.h"
+#include "Graph.h"
 
 
 class Client {
 
 	int id;
 	std::string name;
-	unsigned int age;
 	std::string address;
-	GPS* gps;
+	GPS gps;
+	long long GPSid;
 	std::vector<Item> basket;
 
 public:
 
 	Client();
-	Client(int id, std::string name, unsigned int age, std::string address, double latitude, double longitude);
+	Client(int id, std::string name, double latitude, double longitude);
+
+	void setGPSId(const Graph &graph);
+
+	long long getGPSId() const;
 };
 
 

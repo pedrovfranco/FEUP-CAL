@@ -13,10 +13,15 @@ class Supermarket {
 	int id;
 	string name;
 	GPS gps;
+	long long GPSid;
 	vector<Client> clients; // Container
 
 	Supermarket();
 	Supermarket(int id, std::string name, double latitude, double longitude);
+
+	void setGPSId(const Graph &graph);
+
+	long long getGPSId() const;
 
 };
 
