@@ -128,7 +128,7 @@
 12296516;Rua do Ouro;True
 12296600;Rua de Aleixo da Mota;False
 12296720;Rua das Sobreiras;False
-12296762;Rua de Dom Pedro de Meneses; Rua do Aleixo da Mota;False
+12296762;Rua de Dom Pedro de Meneses;False
 12296787;Rua das Sobreiras;True
 12297710;;False
 12297977;;False

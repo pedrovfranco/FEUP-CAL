@@ -18,83 +18,89 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		return false;
 	}
 
-	string buffer1, buffer2, name;
+	string buffer, name;
 	int begin, end = 0;
-	long long id1, id2;
+	long long id1, id2, id3, id4;
 	double lat, lon;
 	bool bl;
+	streampos lastPos;
 
 
-	while (getline(a, buffer1))
+	while (getline(a, buffer))
 	{
 		begin = 0;
-		end = buffer1.find(";", begin+1);
-
-		id1 = stoi(buffer1.substr(begin, end - begin));
-
-		begin = end+1;
-		end = buffer1.find(";", begin);
-
-		lat = stod(buffer1.substr(begin, end - begin));
-
-		begin = end+1;
-		end = buffer1.find(";", begin);
-
-		lon = stod(buffer1.substr(begin, end - begin));
-
-		graph.addVertex(GPS(id, lat, lon));
-	}
-
-	while (getline(b, buffer1))
-	{
-		begin = 0;
-		end = buffer1.find(";", begin+1);
-
-		id1 = stoi(buffer1.substr(begin, end - begin));
+		end = buffer.find(";", begin+1);
+		id1 = stoll(buffer.substr(begin, end - begin));
 
 		begin = end+1;
 		end = buffer.find(";", begin);
+		lat = stod(buffer.substr(begin, end - begin));
 
+		begin = end+1;
+		end = buffer.find(";", begin);
+		lon = stod(buffer.substr(begin, end - begin));
+
+		graph.addVertex(id1, GPS(lat, lon));
+	}
+
+	while (getline(b, buffer))
+	{
+		begin = 0;
+		end = buffer.find(";", begin+1);
+		id1 = stoll(buffer.substr(begin, end - begin));
+
+		begin = end+1;
+		end = buffer.find(";", begin);
 		name = buffer.substr(begin, end - begin);
 
 		begin = end+1;
 		end = buffer.find(";", begin);
 
-		if (buffer.substr(begin, end - begin) == "True")
+		buffer = buffer.substr(begin, end - begin);
+		
+		if (buffer.back() == '\r')
+			buffer.erase(buffer.end()-1);
+
+		if (buffer == "True")
 			bl = true;
-		else if (buffer.substr(begin, end - begin) == "False")
+		else if (buffer == "False")
 			bl = false;
 		else
 		{
 			cout << "Bool parser error!\n";
 		}
 
-		while (getline(c, buffer2))
+		while (getline(c, buffer))
 		{
 			begin = 0;
 			end = buffer.find(";", begin+1);
 
-			id2 = stoi(buffer.substr(begin, end - begin));
+			id2 = stoll(buffer.substr(begin, end - begin));
 
 			if (id2 != id1)
 			{
-				c.seekg(c.tellg()-buffer2.size());
+				c.seekg(lastPos);
 				break;
 			}
 
-			
+			begin = end+1;
+			end = buffer.find(";", begin+1);
+			id3 = stoll(buffer.substr(begin, end - begin));
 
+			begin = end+1;
+			end = buffer.find(";", begin+1);
+			id4 = stoll(buffer.substr(begin, end - begin));
 			
 
 			if (bl)
-				graph.addDoubleEdge(graph.findVertex(GPS(id, 0, 0)));
+				graph.addDoubleEdge(id3, id4);
+			else
+				graph.addEdge(id3, id4);
+
+			lastPos = c.tellg();
 		}
 	}
 
-	while (getline(c, buffer))
-	{
-		buffer = "";
-	}
 
 	return true;
 }

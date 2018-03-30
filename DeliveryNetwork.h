@@ -11,7 +11,7 @@
 #include <string>
 
 class DeliveryNetwork {
-	Graph <GPS> graph;
+	Graph graph;
 
 
 public:
