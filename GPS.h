@@ -71,6 +71,8 @@ public:
 
 	bool operator<(const GPS & gps2) const;
 
+	GPS operator-(const GPS & gps2) const;
+
 };
 
 /**

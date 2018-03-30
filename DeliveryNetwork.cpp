@@ -40,7 +40,9 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		end = buffer.find(";", begin);
 		lon = stod(buffer.substr(begin, end - begin));
 
-		graph.addVertex(id1, GPS(lat, lon));
+		if (!graph.addVertex(id1, GPS(lat, lon)))
+			cout << "Failed insert!\n";
+		
 	}
 
 	while (getline(b, buffer))
@@ -93,9 +95,11 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 			
 
 			if (bl)
-				graph.addDoubleEdge(id3, id4);
+				if (!graph.addDoubleEdge(id3, id4))
+					cout << "Failed edge!\n";
 			else
-				graph.addEdge(id3, id4);
+				if (!graph.addEdge(id3, id4))
+					cout << "Failed edge!\n";
 
 			lastPos = c.tellg();
 		}
@@ -103,4 +107,9 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 
 	return true;
+}
+
+
+Graph DeliveryNetwork::getGraph() const {
+	return graph;
 }

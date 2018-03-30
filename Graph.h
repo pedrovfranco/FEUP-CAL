@@ -8,7 +8,7 @@
 #include <queue>
 #include <cstddef>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <utility>
 #include "GPS.h"
 
@@ -31,10 +31,10 @@ class Vertex {
 
     void addEdge(Vertex *dest, double w);
     bool removeEdgeTo(Vertex *d);
-    GPS getInfo() const;
 
 public:
     Vertex(GPS in);
+    GPS getInfo() const;
     friend class Graph;
 };
 
@@ -52,7 +52,7 @@ public:
 
 
 class Graph {
-    map<long long, Vertex *> vertexSet;    // vertex set
+    unordered_map<long long, Vertex *> vertexSet;    // vertex set
 
     void dfsVisit(Vertex *v,  vector<GPS> & res) const;
     bool dfsIsDAG(Vertex *v) const;
@@ -69,6 +69,9 @@ public:
     int maxNewChildren(const long long &id, GPS &inf) const;
     bool isDAG() const;
     Vertex *findVertex(const long long &id) const;
+    void listVertices() const;
+    int size() const;
+    pair<long long, Vertex*> getClosestGPS(const GPS &in) const;
 };
 
 

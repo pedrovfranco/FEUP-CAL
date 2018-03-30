@@ -11,12 +11,15 @@
 #include <string>
 
 class DeliveryNetwork {
-	Graph graph;
-
+	
+	
 
 public:
+	Graph graph;
 	bool loadGraph(std::string aname, std::string bname, std::string cname);
 
+
+	Graph getGraph() const;
 };
 
 

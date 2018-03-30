@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#include <cmath>
+
 Vertex::Vertex(GPS in): info(in) {}
 
 
@@ -11,7 +13,7 @@ Edge::Edge(Vertex *d, double w, string name): dest(d), weight(w), name(name) {}
 
 
 int Graph::getNumVertex() const {
-    return vertexSet.size();
+	return vertexSet.size();
 }
 
 /*
@@ -19,7 +21,7 @@ int Graph::getNumVertex() const {
  */
 
 Vertex * Graph::findVertex(const long long &id) const {
-    return vertexSet.find(id)->second;
+	return vertexSet.find(id)->second;
 }
 
 /****************** 1a) addVertex ********************/
@@ -30,7 +32,7 @@ Vertex * Graph::findVertex(const long long &id) const {
  */
 
 bool Graph::addVertex(const long long &id, const GPS &in) {
-    return vertexSet.insert(std::pair<long long, Vertex*>(id, new Vertex(in))).second;
+	return vertexSet.insert(std::pair<long long, Vertex*>(id, new Vertex(in))).second;
 }
 
 /****************** 1b) addEdge ********************/
@@ -43,23 +45,23 @@ bool Graph::addVertex(const long long &id, const GPS &in) {
 
 
 bool Graph::addEdge(const long long &sourcid, const long long &destid) {
-    auto v1 = findVertex(sourcid);
-    auto v2 = findVertex(destid);
-    if (v1 == NULL || v2 == NULL)
-        return false;
-    v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
-    return true;
+	auto v1 = findVertex(sourcid);
+	auto v2 = findVertex(destid);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+	v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
+	return true;
 }
 
 
 bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
-    auto v1 = findVertex(sourcid);
-    auto v2 = findVertex(destid);
-    if (v1 == NULL || v2 == NULL)
-        return false;
-    v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
-    v2->addEdge(v1, v1->getInfo().distance(v2->getInfo()));
-    return true;
+	auto v1 = findVertex(sourcid);
+	auto v2 = findVertex(destid);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+	v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
+	v2->addEdge(v1, v1->getInfo().distance(v2->getInfo()));
+	return true;
 }
 
 
@@ -69,7 +71,7 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
  */
 
 void Vertex::addEdge(Vertex *d, double w) {
-    adj.push_back(Edge(d, w));
+	adj.push_back(Edge(d, w));
 }
 
 
@@ -82,11 +84,11 @@ void Vertex::addEdge(Vertex *d, double w) {
  */
 
 bool Graph::removeEdge(const long long &sourcid, const long long &destid) {
-    auto v1 = findVertex(sourcid);
-    auto v2 = findVertex(destid);
-    if (v1 == NULL || v2 == NULL)
-        return false;
-    return v1->removeEdgeTo(v2);
+	auto v1 = findVertex(sourcid);
+	auto v2 = findVertex(destid);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+	return v1->removeEdgeTo(v2);
 }
 
 /*
@@ -96,18 +98,18 @@ bool Graph::removeEdge(const long long &sourcid, const long long &destid) {
  */
 
 bool Vertex::removeEdgeTo(Vertex *d) {
-    for (auto it = adj.begin(); it != adj.end(); it++)
-        if (it->dest  == d) {
-            adj.erase(it);
-            return true;
-        }
-    return false;
+	for (auto it = adj.begin(); it != adj.end(); it++)
+		if (it->dest  == d) {
+			adj.erase(it);
+			return true;
+		}
+	return false;
 }
 
 
 GPS Vertex::getInfo() const
 {
-    return info;
+	return info;
 }
 
 /****************** 1d) removeVertex ********************/
@@ -119,7 +121,7 @@ GPS Vertex::getInfo() const
  */
 
 bool Graph::removeVertex(const long long &id) {
-    return vertexSet.erase(id);
+	return vertexSet.erase(id);
 }
 
 
@@ -132,13 +134,13 @@ bool Graph::removeVertex(const long long &id) {
  */
 
 vector<GPS> Graph::dfs() const {
-    vector<GPS> res;
-    for (auto v : vertexSet)
-        v.second->visited = false;
-    for (auto v : vertexSet)
-        if (! v.second->visited)
-            dfsVisit(v.second, res);
-    return res;
+	vector<GPS> res;
+	for (auto v : vertexSet)
+		v.second->visited = false;
+	for (auto v : vertexSet)
+		if (! v.second->visited)
+			dfsVisit(v.second, res);
+	return res;
 }
 
 /*
@@ -147,13 +149,13 @@ vector<GPS> Graph::dfs() const {
  */
 
 void Graph::dfsVisit(Vertex *v, vector<GPS> & res) const {
-    v->visited = true;
-    res.push_back(v->info);
-    for (auto & e : v->adj) {
-        auto w = e.dest;
-        if ( ! w->visited)
-            dfsVisit(w, res);
-    }
+	v->visited = true;
+	res.push_back(v->info);
+	for (auto & e : v->adj) {
+		auto w = e.dest;
+		if ( ! w->visited)
+			dfsVisit(w, res);
+	}
 }
 
 /****************** 2b) bfs ********************/
@@ -166,28 +168,28 @@ void Graph::dfsVisit(Vertex *v, vector<GPS> & res) const {
  */
 
 vector<GPS> Graph::bfs(const long long &id) const {
-    vector<GPS> res;
-    auto s = findVertex(id);
-    if (s == NULL)
-        return res;
-    queue<Vertex *> q;
-    for (auto v : vertexSet)
-        v.second->visited = false;
-    q.push(s);
-    s->visited = true;
-    while (!q.empty()) {
-        auto v = q.front();
-        q.pop();
-        res.push_back(v->info);
-        for (auto & e : v->adj) {
-            auto w = e.dest;
-            if ( ! w->visited ) {
-                q.push(w);
-                w->visited = true;
-            }
-        }
-    }
-    return res;
+	vector<GPS> res;
+	auto s = findVertex(id);
+	if (s == NULL)
+		return res;
+	queue<Vertex *> q;
+	for (auto v : vertexSet)
+		v.second->visited = false;
+	q.push(s);
+	s->visited = true;
+	while (!q.empty()) {
+		auto v = q.front();
+		q.pop();
+		res.push_back(v->info);
+		for (auto & e : v->adj) {
+			auto w = e.dest;
+			if ( ! w->visited ) {
+				q.push(w);
+				w->visited = true;
+			}
+		}
+	}
+	return res;
 }
 
 /****************** 2c) toposort ********************/
@@ -200,38 +202,38 @@ vector<GPS> Graph::bfs(const long long &id) const {
  */
 
 vector<GPS> Graph::topsort() const {
-    vector<GPS> res;
+	vector<GPS> res;
 
-    for (auto v : vertexSet)
-        v.second->indegree = 0;
-    for (auto v : vertexSet)
-        for (auto & e : v.second->adj)
-            e.dest->indegree++;
+	for (auto v : vertexSet)
+		v.second->indegree = 0;
+	for (auto v : vertexSet)
+		for (auto & e : v.second->adj)
+			e.dest->indegree++;
 
-    queue<Vertex*> q;
-    for (auto v : vertexSet)
-        if (v.second->indegree == 0)
-            q.push(v.second);
+	queue<Vertex*> q;
+	for (auto v : vertexSet)
+		if (v.second->indegree == 0)
+			q.push(v.second);
 
-    while( !q.empty() ) {
-        Vertex* v = q.front();
-        q.pop();
-        res.push_back(v->info);
-        for(auto & e : v->adj) {
-            auto w = e.dest;
-            w->indegree--;
-            if(w->indegree == 0)
-                q.push(w);
-        }
-    }
+	while( !q.empty() ) {
+		Vertex* v = q.front();
+		q.pop();
+		res.push_back(v->info);
+		for(auto & e : v->adj) {
+			auto w = e.dest;
+			w->indegree--;
+			if(w->indegree == 0)
+				q.push(w);
+		}
+	}
 
-    if ( res.size() != vertexSet.size() ) {
-        cout << "Ordenacao Impossivel!" << endl;
-        res.clear();
-        return res;
-    }
+	if ( res.size() != vertexSet.size() ) {
+		cout << "Ordenacao Impossivel!" << endl;
+		res.clear();
+		return res;
+	}
 
-    return res;
+	return res;
 }
 
 /****************** 3a) maxNewChildren  ********************/
@@ -246,34 +248,34 @@ vector<GPS> Graph::topsort() const {
 
 
 int Graph::maxNewChildren(const long long &id, GPS &inf) const {
-    auto s = findVertex(id);
-    if (s == NULL)
-        return 0;
-    queue<Vertex *> q;
-    int maxChildren = 0;
-    inf = s->info;
-    for (auto v : vertexSet)
-        v.second->visited = false;
-    q.push(s);
-    s->visited = true;
-    while (!q.empty()) {
-        auto v = q.front();
-        q.pop();
-        int nChildren=0;
-        for (auto & e : v->adj) {
-            auto w = e.dest;
-            if ( ! w->visited ) {
-                w->visited = true;
-                q.push(w);
-                nChildren++;
-            }
-        }
-        if (nChildren>maxChildren) {
-            maxChildren = nChildren;
-            inf = v->info;
-        }
-    }
-    return maxChildren;
+	auto s = findVertex(id);
+	if (s == NULL)
+		return 0;
+	queue<Vertex *> q;
+	int maxChildren = 0;
+	inf = s->info;
+	for (auto v : vertexSet)
+		v.second->visited = false;
+	q.push(s);
+	s->visited = true;
+	while (!q.empty()) {
+		auto v = q.front();
+		q.pop();
+		int nChildren=0;
+		for (auto & e : v->adj) {
+			auto w = e.dest;
+			if ( ! w->visited ) {
+				w->visited = true;
+				q.push(w);
+				nChildren++;
+			}
+		}
+		if (nChildren>maxChildren) {
+			maxChildren = nChildren;
+			inf = v->info;
+		}
+	}
+	return maxChildren;
 }
 
 /****************** 3a) isDAG  ********************/
@@ -288,15 +290,15 @@ int Graph::maxNewChildren(const long long &id, GPS &inf) const {
 
 
 bool Graph::isDAG() const {
-    for (auto v : vertexSet) {
-        v.second->visited = false;
-        v.second->processing = false;
-    }
-    for (auto v : vertexSet)
-        if (! v.second->visited)
-            if ( ! dfsIsDAG(v.second) )
-                return false;
-    return true;
+	for (auto v : vertexSet) {
+		v.second->visited = false;
+		v.second->processing = false;
+	}
+	for (auto v : vertexSet)
+		if (! v.second->visited)
+			if ( ! dfsIsDAG(v.second) )
+				return false;
+	return true;
 }
 
 /**
@@ -305,16 +307,103 @@ bool Graph::isDAG() const {
  */
 
 bool Graph::dfsIsDAG(Vertex *v) const {
-    v->visited = true;
-    v->processing = true;
-    for (auto & e : v->adj) {
-        auto w = e.dest;
-        if (w->processing)
-            return false;
-        if (! w->visited)
-            if (! dfsIsDAG(w))
-                return false;
-    }
-    v->processing = false;
-    return true;
+	v->visited = true;
+	v->processing = true;
+	for (auto & e : v->adj) {
+		auto w = e.dest;
+		if (w->processing)
+			return false;
+		if (! w->visited)
+			if (! dfsIsDAG(w))
+				return false;
+	}
+	v->processing = false;
+	return true;
 }
+
+void Graph::listVertices() const {
+
+	for (auto i : vertexSet)
+	{
+		cout << i.second->getInfo() << "\n";
+	}
+}
+
+int Graph::size() const {
+	return vertexSet.size();
+}
+
+
+pair<long long, Vertex*> Graph::getClosestGPS(const GPS &in) const {
+
+	pair<long long, Vertex*> smallest = *vertexSet.begin();
+	double mingpsvalue = abs((in - smallest.second->getInfo()).getLatitude()) + abs((in - smallest.second->getInfo()).getLongitude());
+
+	for (auto i : vertexSet)
+	{
+		if (abs((in - i.second->getInfo()).getLatitude()) + abs((in - i.second->getInfo()).getLongitude()) < mingpsvalue)
+		{
+			mingpsvalue = abs((in - i.second->getInfo()).getLatitude()) + abs((in - i.second->getInfo()).getLongitude());
+			smallest = i;
+		}
+	}
+
+	return smallest;
+}
+
+
+
+// Vertex * Graph::initSingleSource(const long long &id) {
+//     for (auto v : vertexSet) {
+//         v.second->dist = INF;
+//         v.second->path = nullptr;
+//     }
+//     auto s = findVertex(id);
+//     s->dist = 0;
+//     return s;
+// }
+// /**
+// * Analyzes an edge in single-source shortest path algorithm.
+// * Returns true if the target vertex was relaxed (dist, path).
+// * Used by all single-source shortest path algorithms.
+// */
+// bool Graph::relax(Vertex<T> *v, Vertex<T> *w, double weight) {
+//     if (v->dist + weight < w->dist) {
+//         w->dist = v->dist + weight;
+//         w->path = v;
+//         return true;
+//     }
+//     else
+//         return false;
+// }
+// /**
+// * Dijkstra algorithm.
+// */
+// void Graph::dijkstraShortestPath(const long long &id) {
+//     auto s = initSingleSource(id);
+//     MutablePriorityQueue<Vertex> q;
+//     q.insert(s);
+//     while ( ! q.empty() ) {
+//         auto v = q.extractMin();
+//         for (auto e : v->adj) {
+//             auto oldDist = e.dest->dist;
+//             if (relax(v, e.dest, e.weight)) {
+//                 if (oldDist == INF)
+//                     q.insert(e.dest);
+//                 else
+//                     q.decreaseKey(e.dest);
+//             }
+//         }
+//     }
+// }
+
+// vector<T> Graph::getPath(const long long &originid, const long long &destid) const {
+//     vector<T> res;
+//     auto v = findVertex(dest);
+//     if (v == nullptr || v->dist == INF) // missing or disconnected
+//         return res;
+//     for ( ; v != nullptr; v = v->path)
+//         res.push_back(v->info);
+//     reverse(res.begin(), res.end());
+//     return res;
+// }

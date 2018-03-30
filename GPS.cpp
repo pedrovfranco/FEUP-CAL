@@ -89,10 +89,13 @@ bool GPS::operator==(const GPS & gps2) const {
 }
 
 bool GPS::operator<(const GPS & gps2) const {
-	if (this->latitude != gps2.latitude)
-		return (this->latitude < gps2.latitude);
+	
+	return (this->latitude + this->longitude < gps2.latitude + gps2.longitude);
+}
 
-	return (this->longitude < gps2.longitude);
+GPS GPS::operator-(const GPS & gps2) const {
+	
+	return GPS(this->latitude - gps2.latitude, this->longitude - gps2.longitude);
 }
 
 
