@@ -6,16 +6,20 @@
 #define CAL_PROJ_DELIVERYNETWORK_H
 
 #include "Graph.h"
-
 #include "GPS.h"
 #include <string>
+#include <unordered_set>
+#include "Client.h"
+#include "Supermarket.h"
 
 class DeliveryNetwork {
 	
-	
+	Graph graph;
+	std::unordered_set<int, Client> clients;
+	std::unordered_set<int, Supermarket> supermarkets;
 
 public:
-	Graph graph;
+	
 	bool loadGraph(std::string aname, std::string bname, std::string cname);
 
 
