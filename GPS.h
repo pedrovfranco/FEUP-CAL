@@ -34,9 +34,10 @@ public:
 	 *
 	 * @return     The distance between the coordinates
 	 */
-	double distance(GPS gps2);
+	double distance(const GPS gps2) const;
 
-	
+	double distance2(const GPS gps2) const;
+
 	/**
 	 * @brief      Gets the latitude coordinate of the GPS.
 	 *

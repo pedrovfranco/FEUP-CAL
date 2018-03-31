@@ -43,7 +43,7 @@ double GPS::degreesToRadians(const double & input) const {
  *
  * @return     Distance between *this and gps2
  */
-double GPS::distance(GPS gps2) {
+double GPS::distance2(const GPS gps2) const {
 
 	double lat1 = degreesToRadians(latitude);
 	double lon1 = degreesToRadians(longitude);
@@ -57,6 +57,13 @@ double GPS::distance(GPS gps2) {
 	return c*6371000;
 }
 
+double GPS::distance(const GPS gps2) const {
+
+	double dlat = this->latitude - gps2.latitude;
+	double dlon = this->longitude - gps2.longitude;
+
+	return sqrt(dlat*dlat + dlon*dlon);
+}
 
 /**
  * @brief      Gets the latitude.

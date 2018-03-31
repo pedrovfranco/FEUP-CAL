@@ -342,13 +342,13 @@ int Graph::size() const {
 pair<long long, Vertex*> Graph::getClosestGPS(const GPS &in) const {
 
 	pair<long long, Vertex*> smallest = *vertexSet.begin();
-	double mingpsvalue = abs((in - smallest.second->getInfo()).getLatitude()) + abs((in - smallest.second->getInfo()).getLongitude());
+	double mingpsvalue = in.distance(smallest.second->getInfo());
 
 	for (auto i : vertexSet)
 	{
-		if (abs((in - i.second->getInfo()).getLatitude()) + abs((in - i.second->getInfo()).getLongitude()) < mingpsvalue)
+		if (in.distance(i.second->getInfo()) < mingpsvalue)
 		{
-			mingpsvalue = abs((in - i.second->getInfo()).getLatitude()) + abs((in - i.second->getInfo()).getLongitude());
+			mingpsvalue = in.distance(i.second->getInfo());
 			smallest = i;
 		}
 	}
