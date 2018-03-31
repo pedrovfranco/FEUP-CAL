@@ -15,13 +15,12 @@
 class DeliveryNetwork {
 	
 	Graph graph;
-	std::unordered_set<int, Client> clients;
-	std::unordered_set<int, Supermarket> supermarkets;
+	// std::unordered_set<int, Client> clients;
+	// std::unordered_set<int, Supermarket> supermarkets;
 
 public:
 	
 	bool loadGraph(std::string aname, std::string bname, std::string cname);
-
 
 	Graph getGraph() const;
 };

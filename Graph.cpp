@@ -1,15 +1,12 @@
 #include "Graph.h"
 
 #include <cmath>
+#include <cfloat>
 
 Vertex::Vertex(GPS in): info(in) {}
 
 
-Edge::Edge(Vertex *d, double w): dest(d), weight(w) {}
-
-
-Edge::Edge(Vertex *d, double w, string name): dest(d), weight(w), name(name) {}
-
+Edge::Edge(long long id, double w): id(id), weight(w) {}
 
 
 int Graph::getNumVertex() const {
@@ -21,7 +18,12 @@ int Graph::getNumVertex() const {
  */
 
 Vertex * Graph::findVertex(const long long &id) const {
-	return vertexSet.find(id)->second;
+	auto it = vertexSet.find(id);
+
+	if (it != vertexSet.end())
+		return it->second;
+	else
+		return NULL;
 }
 
 /****************** 1a) addVertex ********************/
@@ -49,7 +51,8 @@ bool Graph::addEdge(const long long &sourcid, const long long &destid) {
 	auto v2 = findVertex(destid);
 	if (v1 == NULL || v2 == NULL)
 		return false;
-	v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
+
+	v1->addEdge(destid, v1->getInfo().distance(v2->getInfo()));
 	return true;
 }
 
@@ -59,8 +62,8 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
 	auto v2 = findVertex(destid);
 	if (v1 == NULL || v2 == NULL)
 		return false;
-	v1->addEdge(v2, v1->getInfo().distance(v2->getInfo()));
-	v2->addEdge(v1, v1->getInfo().distance(v2->getInfo()));
+	v1->addEdge(destid, v1->getInfo().distance(v2->getInfo()));
+	v2->addEdge(sourcid, v1->getInfo().distance(v2->getInfo()));
 	return true;
 }
 
@@ -70,8 +73,8 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
  * with a given destination vertex (d) and edge weight (w).
  */
 
-void Vertex::addEdge(Vertex *d, double w) {
-	adj.push_back(Edge(d, w));
+void Vertex::addEdge(long long id, double w) {
+	adj.push_back(Edge(id, w));
 }
 
 
@@ -85,10 +88,9 @@ void Vertex::addEdge(Vertex *d, double w) {
 
 bool Graph::removeEdge(const long long &sourcid, const long long &destid) {
 	auto v1 = findVertex(sourcid);
-	auto v2 = findVertex(destid);
-	if (v1 == NULL || v2 == NULL)
+	if (v1 == NULL)
 		return false;
-	return v1->removeEdgeTo(v2);
+	return v1->removeEdgeTo(destid);
 }
 
 /*
@@ -97,12 +99,15 @@ bool Graph::removeEdge(const long long &sourcid, const long long &destid) {
  * Returns true if successful, and false if such edge does not exist.
  */
 
-bool Vertex::removeEdgeTo(Vertex *d) {
-	for (auto it = adj.begin(); it != adj.end(); it++)
-		if (it->dest  == d) {
-			adj.erase(it);
+bool Vertex::removeEdgeTo(long long id) {
+	for (int i = 0; i < adj.size(); ++i)
+	{
+		if (adj[i].id == id)
+		{
+			adj.erase(adj.begin()+i);
 			return true;
 		}
+	}
 	return false;
 }
 
@@ -152,7 +157,7 @@ void Graph::dfsVisit(Vertex *v, vector<GPS> & res) const {
 	v->visited = true;
 	res.push_back(v->info);
 	for (auto & e : v->adj) {
-		auto w = e.dest;
+		auto w = findVertex(e.id);
 		if ( ! w->visited)
 			dfsVisit(w, res);
 	}
@@ -182,7 +187,7 @@ vector<GPS> Graph::bfs(const long long &id) const {
 		q.pop();
 		res.push_back(v->info);
 		for (auto & e : v->adj) {
-			auto w = e.dest;
+			auto w = findVertex(e.id);
 			if ( ! w->visited ) {
 				q.push(w);
 				w->visited = true;
@@ -208,7 +213,7 @@ vector<GPS> Graph::topsort() const {
 		v.second->indegree = 0;
 	for (auto v : vertexSet)
 		for (auto & e : v.second->adj)
-			e.dest->indegree++;
+			findVertex(e.id)->indegree++;
 
 	queue<Vertex*> q;
 	for (auto v : vertexSet)
@@ -220,7 +225,7 @@ vector<GPS> Graph::topsort() const {
 		q.pop();
 		res.push_back(v->info);
 		for(auto & e : v->adj) {
-			auto w = e.dest;
+			auto w = findVertex(e.id);
 			w->indegree--;
 			if(w->indegree == 0)
 				q.push(w);
@@ -263,7 +268,7 @@ int Graph::maxNewChildren(const long long &id, GPS &inf) const {
 		q.pop();
 		int nChildren=0;
 		for (auto & e : v->adj) {
-			auto w = e.dest;
+			auto w = findVertex(e.id);
 			if ( ! w->visited ) {
 				w->visited = true;
 				q.push(w);
@@ -310,7 +315,7 @@ bool Graph::dfsIsDAG(Vertex *v) const {
 	v->visited = true;
 	v->processing = true;
 	for (auto & e : v->adj) {
-		auto w = e.dest;
+		auto w = findVertex(e.id);
 		if (w->processing)
 			return false;
 		if (! w->visited)
@@ -349,6 +354,44 @@ pair<long long, Vertex*> Graph::getClosestGPS(const GPS &in) const {
 	}
 
 	return smallest;
+}
+
+double Graph::dijkstra(const long long &startid, const long long &endid)
+{
+	unordered_map<long long, double> distance;
+
+	int j = 0, k;
+
+	for (auto i : vertexSet)
+	{
+		i.second->visited = false;
+
+		if (i.first == startid)
+			distance.insert(pair<long long, double>(i.first, 0.0));
+		else
+			distance.insert(pair<long long, double>(i.first, 99999999));
+	}
+
+	for (auto i : vertexSet)
+	{
+		for (j = 0; j < i.second->adj.size(); ++j)
+		{
+			if (!findVertex(i.second->adj[j].id)->visited) // If neighbour is not visited yet
+			{
+				cout << distance[i.first] << ", " << i.second->adj[j].weight << ", " << distance[i.second->adj[j].id] << "\n";
+
+				if (distance[i.first] + i.second->adj[j].weight < distance[i.second->adj[j].id])
+					distance[i.second->adj[j].id] = distance[i.first] + i.second->adj[j].weight;
+			}
+		}
+
+		i.second->visited = true;
+
+		if (vertexSet[endid]->visited == true)
+			return distance[endid];
+	}
+
+	return -1;
 }
 
 

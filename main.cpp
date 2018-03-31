@@ -7,15 +7,16 @@ using namespace std;
 int main()
 {
 
-	DeliveryNetwork ola;
-	ola.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
+	DeliveryNetwork network;
+	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
-	Client client(1, "Jose", 41.174677, -8.600163);
 
-	client.setGPSId(ola.getGraph());
+	GPS start(41.178729, -8.599751);
 
-	cout << ola.getGraph().findVertex(client.getGPSId())->getInfo() << "\n";
-   
+	GPS end(41.177195999999995, -8.599632);
+
+
+	cout << network.getGraph().dijkstra(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first) << "\n";
 
     return 0;
 }

@@ -29,8 +29,8 @@ class Vertex {
     bool processing;       // auxiliary field used by isDAG
     int indegree;          // auxiliary field used by topsort
 
-    void addEdge(Vertex *dest, double w);
-    bool removeEdgeTo(Vertex *d);
+    void addEdge(long long id, double w);
+    bool removeEdgeTo(long long id);
 
 public:
     Vertex(GPS in);
@@ -40,12 +40,10 @@ public:
 
 
 class Edge {
-    Vertex * dest;      // destination vertex
+    long long id;
     double weight;         // edge weight
-    string name;
 public:
-    Edge(Vertex *d, double w);
-    Edge(Vertex *d, double w, string name);
+    Edge(long long id, double w);
     friend class Graph;
     friend class Vertex;
 };
@@ -72,6 +70,7 @@ public:
     void listVertices() const;
     int size() const;
     pair<long long, Vertex*> getClosestGPS(const GPS &in) const;
+    double dijkstra(const long long &startid, const long long &endid);
 };
 
 
