@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <utility>
 #include "GPS.h"
+#include "MutablePriorityQueue.h"
 
 using namespace std;
 
@@ -20,23 +21,33 @@ using namespace std;
 
 
 /****************** Provided structures  ********************/
-
+#define INF std::numeric_limits<double>::max()
 
 class Vertex {
     GPS info;                // contents
     vector<Edge> adj;  // list of outgoing edges
     bool visited;          // auxiliary field used by dfs and bfs
-    bool processing;       // auxiliary field used by isDAG
+    bool processing = false;       // auxiliary field used by isDAG
     int indegree;          // auxiliary field used by topsort
+    double dist = 0;
+    Vertex *path = NULL;
+    int queueIndex = 0;
 
     void addEdge(long long id, double w);
     bool removeEdgeTo(long long id);
 
 public:
     Vertex(GPS in);
+    bool operator<(Vertex & vertex) const;
     GPS getInfo() const;
     friend class Graph;
+    //friend class MutablePriorityQueue;
+    double getDist()const {return dist;}
+    double setDist(double dist){this->dist = dist;}
+    int getQueueIndex(){return queueIndex;}
+    void setQueueIndex(int i){queueIndex=i;}
 };
+
 
 
 class Edge {
@@ -46,6 +57,7 @@ public:
     Edge(long long id, double w);
     friend class Graph;
     friend class Vertex;
+
 };
 
 
@@ -71,7 +83,12 @@ public:
     int size() const;
     pair<long long, Vertex*> getClosestGPS(const GPS &in) const;
     double dijkstra(const long long &startid, const long long &endid);
-};
+    Vertex * initSingleSource(const long long &id);
+    bool relax(Vertex *v, Vertex *w, double weight);
+    void dijkstraShortestPath(const long long &id);
+    vector<GPS> getPath(const long long &originid, const long long &destid) const;
+
+    };
 
 
 #endif /* GRAPH_H_ */

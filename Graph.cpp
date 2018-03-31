@@ -396,57 +396,56 @@ double Graph::dijkstra(const long long &startid, const long long &endid)
 
 
 
-// Vertex * Graph::initSingleSource(const long long &id) {
-//     for (auto v : vertexSet) {
-//         v.second->dist = INF;
-//         v.second->path = nullptr;
-//     }
-//     auto s = findVertex(id);
-//     s->dist = 0;
-//     return s;
-// }
-// /**
+ Vertex * Graph::initSingleSource(const long long &id) {
+    for (auto v : vertexSet) {
+         v.second->dist = INF;
+         v.second->path = nullptr;
+     }
+     auto s = findVertex(id);
+     s->dist = 0;
+     return s;
+}
 // * Analyzes an edge in single-source shortest path algorithm.
 // * Returns true if the target vertex was relaxed (dist, path).
 // * Used by all single-source shortest path algorithms.
 // */
-// bool Graph::relax(Vertex<T> *v, Vertex<T> *w, double weight) {
-//     if (v->dist + weight < w->dist) {
-//         w->dist = v->dist + weight;
-//         w->path = v;
-//         return true;
-//     }
-//     else
-//         return false;
-// }
+ bool Graph::relax(Vertex *v, Vertex *w, double weight) {
+     if (v->getDist() + weight < w->getDist()) {
+         w->setDist(v->getDist() + weight);
+         w->path = v;
+         return true;
+     }
+     else
+         return false;
+ }
 // /**
 // * Dijkstra algorithm.
 // */
-// void Graph::dijkstraShortestPath(const long long &id) {
-//     auto s = initSingleSource(id);
-//     MutablePriorityQueue<Vertex> q;
-//     q.insert(s);
-//     while ( ! q.empty() ) {
-//         auto v = q.extractMin();
-//         for (auto e : v->adj) {
-//             auto oldDist = e.dest->dist;
-//             if (relax(v, e.dest, e.weight)) {
-//                 if (oldDist == INF)
-//                     q.insert(e.dest);
-//                 else
-//                     q.decreaseKey(e.dest);
-//             }
-//         }
-//     }
-// }
+void Graph::dijkstraShortestPath(const long long &id) {
+     auto s = initSingleSource(id);
+     MutablePriorityQueue<Vertex> q;
+     q.insert(s);
+     while ( ! q.empty() ) {
+         auto v = q.extractMin();
+         for (auto e : v->adj) {
+             auto oldDist = this->findVertex(e.id)->dist;
+             if (relax(v, this->findVertex(e.id), e.weight)) {
+                 if (oldDist == INF)
+                     q.insert(this->findVertex(e.id));
+                 else
+                     q.decreaseKey(this->findVertex(e.id));
+             }
+         }
+     }
+ }
 
-// vector<T> Graph::getPath(const long long &originid, const long long &destid) const {
-//     vector<T> res;
-//     auto v = findVertex(dest);
-//     if (v == nullptr || v->dist == INF) // missing or disconnected
-//         return res;
-//     for ( ; v != nullptr; v = v->path)
-//         res.push_back(v->info);
-//     reverse(res.begin(), res.end());
-//     return res;
-// }
+ vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
+     vector<GPS> res;
+     auto v = this->findVertex(destid);
+     if (v == nullptr || v->dist == INF) // missing or disconnected
+         return res;
+     for ( ; v != nullptr; v = v->path)
+         res.push_back(v->info);
+     reverse(res.begin(), res.end());
+     return res;
+ }

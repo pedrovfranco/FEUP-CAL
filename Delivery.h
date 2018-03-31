@@ -11,8 +11,8 @@
 
 class Delivery {
 
-	supermarket origin;
-	set<client> clients;
+	Supermarket origin;
+	set<Client> clients;
 	Data data;
 
 };
