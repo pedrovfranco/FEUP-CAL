@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <utility>
 #include "GPS.h"
+#include <limits>
 #include "MutablePriorityQueue.h"
 
 using namespace std;
@@ -31,17 +32,19 @@ class Vertex {
     int indegree;          // auxiliary field used by topsort
     double dist = 0;
     Vertex *path = NULL;
-    int queueIndex = 0;
+
 
     void addEdge(long long id, double w);
     bool removeEdgeTo(long long id);
 
 public:
+    int queueIndex = 0;
+
     Vertex(GPS in);
     bool operator<(Vertex & vertex) const;
     GPS getInfo() const;
     friend class Graph;
-    //friend class MutablePriorityQueue;
+    friend class MutablePriorityQueue<Vertex>;
     double getDist()const {return dist;}
     double setDist(double dist){this->dist = dist;}
     int getQueueIndex(){return queueIndex;}
@@ -82,11 +85,11 @@ public:
     void listVertices() const;
     int size() const;
     pair<long long, Vertex*> getClosestGPS(const GPS &in) const;
-    double dijkstra(const long long &startid, const long long &endid);
     Vertex * initSingleSource(const long long &id);
     bool relax(Vertex *v, Vertex *w, double weight);
     void dijkstraShortestPath(const long long &id);
     vector<GPS> getPath(const long long &originid, const long long &destid) const;
+    void dijkstra(const long long &id);
 
     };
 

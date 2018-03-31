@@ -12,16 +12,22 @@ int main()
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
 
-	GPS start(41.178729, -8.599751);
+	GPS start(41.174384, -8.599601);
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
 	GPS end(41.177195999999995, -8.599632);
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
-	cout << foo << "\n" << bar << "\n";
+	// cout << foo << "\n" << bar << "\n";
 
+	network.getGraph().dijkstraShortestPath(network.getGraph().getClosestGPS(start).first);
 
-	cout << network.getGraph().dijkstra(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first) << "\n";
+	vector<GPS> temp = network.getGraph().getPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
+
+	for (int i = 0; i < temp.size(); ++i)
+	{
+		cout << temp[i] << "\n";
+	}
 
 	// cin.get();
 

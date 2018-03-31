@@ -15,7 +15,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 	if (!a.is_open() || !b.is_open() || !c.is_open())
 	{
 		cout << "Error opening file!\n";
-		return false;
+		exit(1);
 	}
 
 	string buffer, name;

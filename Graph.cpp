@@ -1,7 +1,7 @@
 #include "Graph.h"
 
 #include <cmath>
-#include <cfloat>
+#include <algorithm>
 
 Vertex::Vertex(GPS in): info(in) {}
 
@@ -77,6 +77,10 @@ void Vertex::addEdge(long long id, double w) {
 	adj.push_back(Edge(id, w));
 }
 
+bool Vertex::operator<(Vertex & vertex) const {
+	return (this->dist < vertex.getDist());
+}
+
 
 /****************** 1c) removeEdge ********************/
 
@@ -116,6 +120,8 @@ GPS Vertex::getInfo() const
 {
 	return info;
 }
+
+
 
 /****************** 1d) removeVertex ********************/
 
@@ -356,96 +362,115 @@ pair<long long, Vertex*> Graph::getClosestGPS(const GPS &in) const {
 	return smallest;
 }
 
-double Graph::dijkstra(const long long &startid, const long long &endid)
-{
-	unordered_map<long long, double> distance;
 
-	int j = 0, k;
-
-	for (auto i : vertexSet)
-	{
-		i.second->visited = false;
-
-		if (i.first == startid)
-			distance.insert(pair<long long, double>(i.first, 0.0));
-		else
-			distance.insert(pair<long long, double>(i.first, 99999999));
+Vertex * Graph::initSingleSource(const long long &id) {
+	for (auto v : vertexSet) {
+		v.second->dist = INF;
+		v.second->path = nullptr;
 	}
-
-	for (auto i : vertexSet)
-	{
-		for (j = 0; j < i.second->adj.size(); ++j)
-		{
-			if (!findVertex(i.second->adj[j].id)->visited) // If neighbour is not visited yet
-			{
-				cout << distance[i.first] << ", " << i.second->adj[j].weight << ", " << distance[i.second->adj[j].id] << "\n";
-
-				if (distance[i.first] + i.second->adj[j].weight < distance[i.second->adj[j].id])
-					distance[i.second->adj[j].id] = distance[i.first] + i.second->adj[j].weight;
-			}
-		}
-
-		i.second->visited = true;
-
-		if (vertexSet[endid]->visited == true)
-			return distance[endid];
-	}
-
-	return -1;
-}
-
-
-
- Vertex * Graph::initSingleSource(const long long &id) {
-    for (auto v : vertexSet) {
-         v.second->dist = INF;
-         v.second->path = nullptr;
-     }
-     auto s = findVertex(id);
-     s->dist = 0;
-     return s;
+	auto s = findVertex(id);
+	s->dist = 0;
+	return s;
 }
 // * Analyzes an edge in single-source shortest path algorithm.
 // * Returns true if the target vertex was relaxed (dist, path).
 // * Used by all single-source shortest path algorithms.
 // */
- bool Graph::relax(Vertex *v, Vertex *w, double weight) {
-     if (v->getDist() + weight < w->getDist()) {
-         w->setDist(v->getDist() + weight);
-         w->path = v;
-         return true;
-     }
-     else
-         return false;
- }
+bool Graph::relax(Vertex *v, Vertex *w, double weight) {
+	if (v->getDist() + weight < w->getDist()) {
+		w->setDist(v->getDist() + weight);
+		w->path = v;
+		return true;
+	}
+	else
+		return false;
+}
 // /**
 // * Dijkstra algorithm.
 // */
-void Graph::dijkstraShortestPath(const long long &id) {
-     auto s = initSingleSource(id);
-     MutablePriorityQueue<Vertex> q;
-     q.insert(s);
-     while ( ! q.empty() ) {
-         auto v = q.extractMin();
-         for (auto e : v->adj) {
-             auto oldDist = this->findVertex(e.id)->dist;
-             if (relax(v, this->findVertex(e.id), e.weight)) {
-                 if (oldDist == INF)
-                     q.insert(this->findVertex(e.id));
-                 else
-                     q.decreaseKey(this->findVertex(e.id));
-             }
-         }
-     }
+ void Graph::dijkstraShortestPath(const long long &id) {
+ 	auto s = initSingleSource(id);
+ 	MutablePriorityQueue<Vertex> q;
+ 	q.insert(s);
+ 	while ( ! q.empty() ) {
+ 		auto v = q.extractMin();
+ 		for (auto e : v->adj) {
+ 			auto oldDist = this->findVertex(e.id)->dist;
+ 			if (relax(v, this->findVertex(e.id), e.weight)) {
+ 				if (oldDist == INF)
+ 					q.insert(this->findVertex(e.id));
+ 				else
+ 					q.decreaseKey(this->findVertex(e.id));
+ 			}
+ 		}
+ 	}
  }
 
- vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
-     vector<GPS> res;
-     auto v = this->findVertex(destid);
-     if (v == nullptr || v->dist == INF) // missing or disconnected
-         return res;
-     for ( ; v != nullptr; v = v->path)
-         res.push_back(v->info);
-     reverse(res.begin(), res.end());
-     return res;
- }
+vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
+ 	vector<GPS> res;
+ 	auto v = this->findVertex(destid);
+ if (v == nullptr || v->dist == INF) // missing or disconnected
+ 	return res;
+ for ( ; v != nullptr; v = v->path)
+ 	res.push_back(v->info);
+ reverse(res.begin(), res.end());
+ return res;
+}
+
+struct compareVertex
+{
+	bool operator() (const Vertex* a, const Vertex* b) const
+	{
+		return (!(a->getDist() < b->getDist()));
+	}
+};
+
+bool comp (const Vertex* a, const Vertex* b)
+{
+	return (!(a->getDist() < b->getDist()));
+}
+
+void Graph::dijkstra(const long long &id)
+{
+	vector<Vertex*> Q;
+	make_heap(Q.begin(), Q.end(), comp);
+
+	Vertex* initialVertex = findVertex(id);
+
+	for (auto i : vertexSet)
+	{
+		if (i.first == id)
+			i.second->dist = 0;
+		else
+			i.second->dist = INF;
+
+		i.second->path = nullptr;
+
+		Q.push_back(i.second);
+		push_heap(Q.begin(), Q.end(), comp);
+	}
+
+	Vertex* currVertex;
+	Vertex* secondVertex;
+
+	while (!Q.empty())
+	{
+		currVertex = Q.front();
+
+		pop_heap(Q.begin(), Q.end(), comp);
+		Q.pop_back();
+
+		for (int i = 0; i < currVertex->adj.size(); ++i)
+		{
+			secondVertex = findVertex(currVertex->adj[i].id);
+
+			if (currVertex->dist + currVertex->adj[i].weight < secondVertex->dist)
+			{
+				secondVertex->dist = currVertex->dist + currVertex->adj[i].weight;
+				sort_heap(Q.begin(), Q.end(), comp);
+			}
+		}
+
+	}
+
+}
