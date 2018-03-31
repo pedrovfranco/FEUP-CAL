@@ -100,7 +100,7 @@ void MutablePriorityQueue<T>::heapifyDown(unsigned i) {
 template <class T>
 void MutablePriorityQueue<T>::set(unsigned i, T * x) {
 	H[i] = x;
-	x.setQueueIndex(i);
+	x->setQueueIndex(i);
 }
 
 #endif /* SRC_MUTABLEPRIORITYQUEUE_H_ */
