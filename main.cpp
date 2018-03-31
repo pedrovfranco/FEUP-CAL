@@ -12,10 +12,10 @@ int main()
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
 
-	GPS start(41.174384, -8.599601);
+	GPS start(41.172273, -8.598294);
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
-	GPS end(41.177195999999995, -8.599632);
+	GPS end(41.177821, -8.599370);
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
 	// cout << foo << "\n" << bar << "\n";
