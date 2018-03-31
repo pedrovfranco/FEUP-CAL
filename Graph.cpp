@@ -388,33 +388,33 @@ bool Graph::relax(Vertex *v, Vertex *w, double weight) {
 // /**
 // * Dijkstra algorithm.
 // */
- void Graph::dijkstraShortestPath(const long long &id) {
- 	auto s = initSingleSource(id);
- 	MutablePriorityQueue<Vertex> q;
- 	q.insert(s);
- 	while ( ! q.empty() ) {
- 		auto v = q.extractMin();
- 		for (auto e : v->adj) {
- 			auto oldDist = this->findVertex(e.id)->dist;
- 			if (relax(v, this->findVertex(e.id), e.weight)) {
- 				if (oldDist == INF)
- 					q.insert(this->findVertex(e.id));
- 				else
- 					q.decreaseKey(this->findVertex(e.id));
- 			}
- 		}
- 	}
- }
+void Graph::dijkstraShortestPath(const long long &id) {
+	auto s = initSingleSource(id);
+	MutablePriorityQueue<Vertex> q;
+	q.insert(s);
+	while ( ! q.empty() ) {
+		auto v = q.extractMin();
+		for (auto e : v->adj) {
+			auto oldDist = this->findVertex(e.id)->dist;
+			if (relax(v, this->findVertex(e.id), e.weight)) {
+				if (oldDist == INF)
+					q.insert(this->findVertex(e.id));
+				else
+					q.decreaseKey(this->findVertex(e.id));
+			}
+		}
+	}
+}
 
 vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
- 	vector<GPS> res;
- 	auto v = this->findVertex(destid);
- if (v == nullptr || v->dist == INF) // missing or disconnected
- 	return res;
- for ( ; v != nullptr; v = v->path)
- 	res.push_back(v->info);
- reverse(res.begin(), res.end());
- return res;
+	vector<GPS> res;
+	auto v = this->findVertex(destid);
+	if (v == nullptr || v->dist == INF) // missing or disconnected
+		return res;
+	for ( ; v != nullptr; v = v->path)
+		res.push_back(v->info);
+	reverse(res.begin(), res.end());
+	return res;
 }
 
 struct compareVertex

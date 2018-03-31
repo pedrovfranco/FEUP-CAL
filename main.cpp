@@ -12,13 +12,13 @@ int main()
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
 
-	GPS start(41.172273, -8.598294);
+	GPS start(41.168614, -8.596682); //Casa em paranhos
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
-	GPS end(41.177821, -8.599370);
+	GPS end(41.166180, -8.597682); // Minipreco
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
-	// cout << foo << "\n" << bar << "\n";
+	cout << foo << "\n" << bar << "\n\n\n";
 
 	network.getGraph().dijkstraShortestPath(network.getGraph().getClosestGPS(start).first);
 
