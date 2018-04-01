@@ -8,15 +8,18 @@
 #include "Graph.h"
 #include "GPS.h"
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 #include "Client.h"
 #include "Supermarket.h"
+#include "graphviewer.h"
 
 class DeliveryNetwork {
 	
 	Graph graph;
-	// std::unordered_set<int, Client> clients;
-	// std::unordered_set<int, Supermarket> supermarkets;
+	GraphViewer *gv;
+
+	std::unordered_map<int, Client> clients;
+	std::unordered_map<int, Supermarket> supermarkets;
 
 public:
 	

@@ -12,10 +12,10 @@ int main()
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
 
-	GPS start(41.168614, -8.596682); //Casa em paranhos
+	GPS start(41.168642, -8.596663); //Casa em paranhos
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
-	GPS end(41.166180, -8.597682); // Minipreco
+	GPS end(41.183300, -8.602240); // Sao Joao
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
 	cout << foo << "\n" << bar << "\n\n\n";
@@ -29,7 +29,7 @@ int main()
 		cout << temp[i] << "\n";
 	}
 
-	// cin.get();
+	cin.get();
 
     return 0;
 }

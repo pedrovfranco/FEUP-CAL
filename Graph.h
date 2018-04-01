@@ -89,7 +89,6 @@ public:
     bool relax(Vertex *v, Vertex *w, double weight);
     void dijkstraShortestPath(const long long &id);
     vector<GPS> getPath(const long long &originid, const long long &destid) const;
-    void dijkstra(const long long &id);
 
     };
 

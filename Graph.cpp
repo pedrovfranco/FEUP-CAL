@@ -408,12 +408,18 @@ void Graph::dijkstraShortestPath(const long long &id) {
 
 vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
 	vector<GPS> res;
+
 	auto v = this->findVertex(destid);
+	auto vi = this->findVertex(originid);
+
 	if (v == nullptr || v->dist == INF) // missing or disconnected
 		return res;
-	for ( ; v != nullptr; v = v->path)
+
+	for ( ; v != nullptr && v != vi; v = v->path)
 		res.push_back(v->info);
+
 	reverse(res.begin(), res.end());
+
 	return res;
 }
 
@@ -428,49 +434,4 @@ struct compareVertex
 bool comp (const Vertex* a, const Vertex* b)
 {
 	return (!(a->getDist() < b->getDist()));
-}
-
-void Graph::dijkstra(const long long &id)
-{
-	vector<Vertex*> Q;
-	make_heap(Q.begin(), Q.end(), comp);
-
-	Vertex* initialVertex = findVertex(id);
-
-	for (auto i : vertexSet)
-	{
-		if (i.first == id)
-			i.second->dist = 0;
-		else
-			i.second->dist = INF;
-
-		i.second->path = nullptr;
-
-		Q.push_back(i.second);
-		push_heap(Q.begin(), Q.end(), comp);
-	}
-
-	Vertex* currVertex;
-	Vertex* secondVertex;
-
-	while (!Q.empty())
-	{
-		currVertex = Q.front();
-
-		pop_heap(Q.begin(), Q.end(), comp);
-		Q.pop_back();
-
-		for (int i = 0; i < currVertex->adj.size(); ++i)
-		{
-			secondVertex = findVertex(currVertex->adj[i].id);
-
-			if (currVertex->dist + currVertex->adj[i].weight < secondVertex->dist)
-			{
-				secondVertex->dist = currVertex->dist + currVertex->adj[i].weight;
-				sort_heap(Q.begin(), Q.end(), comp);
-			}
-		}
-
-	}
-
 }

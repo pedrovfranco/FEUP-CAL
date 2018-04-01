@@ -18,12 +18,20 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		exit(1);
 	}
 
+	GraphViewer *gv = new GraphViewer(600, 600, false);
+	gv->defineEdgeCurved(false);
+	gv->defineVertexSize(1);
+	gv->defineEdgeColor("blue");
+	gv->defineVertexColor("yellow");
+
 	string buffer, name;
 	int begin, end = 0;
 	long long id1, id2, id3, id4;
 	double lat, lon;
 	bool bl;
 	streampos lastPos;
+	string dummy;
+	dummy.push_back(1);
 
 
 	while (getline(a, buffer))
@@ -40,8 +48,11 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		end = buffer.find(";", begin);
 		lon = stod(buffer.substr(begin, end - begin));
 
+
 		if (!graph.addVertex(id1, GPS(lat, lon)))
 			cout << "Failed insert!\n";
+
+
 		
 	}
 
@@ -92,14 +103,18 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 			begin = end+1;
 			end = buffer.find(";", begin+1);
 			id4 = stoll(buffer.substr(begin, end - begin));
-			
 
+			
 			if (bl)
+			{
 				if (!graph.addDoubleEdge(id3, id4))
 					cout << "Failed edge!\n";
+			}
 			else
+			{
 				if (!graph.addEdge(id3, id4))
 					cout << "Failed edge!\n";
+			}
 
 			lastPos = c.tellg();
 		}
