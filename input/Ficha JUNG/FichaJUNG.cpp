@@ -238,6 +238,7 @@ void exercicio4()
 	GraphViewer *gv = new GraphViewer(600, 600, false);
 
 	gv->defineEdgeCurved(false);
+	gv->defineVertexSize(1);
 
 	gv->createWindow(600, 600);
 
@@ -260,13 +261,12 @@ void exercicio4()
 	double X = 0;
 	double Y = 0;
 
-	long long idSub = 0;
 	double Xadd;
 	double Yadd;
 	long long i = 0;
 
 	string dummy;
-	dummy.push_back(1);
+	dummy.push_back(1); // The given program does not accept space nor empty string for albel so I had to be creative...
 
 	while(std::getline(inFile, line))
 	{
@@ -280,27 +280,26 @@ void exercicio4()
 	    std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
 	    linestream >> Y;
 
+	    if (i == 0) 		//Sets the first point as the origin of the map
+	    {					//
+	    	Xadd = -X;		//
+	    	Yadd = -Y;		//
+	    }					//
+	    					//
+	    X += Xadd;			//
+	    Y += Yadd;			//
 
-	    X = (X-41)*30000;
-	    Y = (Y+8.5)*30000;
-
-	    if (i == 0)
-	    {
-	    	Xadd = -X;
-	    	Yadd = -Y;
-	    }
-
-	    X += Xadd;
-	    Y += Yadd;
+	    X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
+	    Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
+	    
+	    swap(X, Y);			//Rotates 90ª counter-clockwise
+	    Y *= -1;
 
 	    // cout << X << ", " << Y << "\n";
-
-	    id -= idSub;
 
 	    gv->addNode(id, X, Y);
 
 	    gv->setVertexLabel(id, dummy);
-	    
 
 	    i++;
 	}
@@ -326,7 +325,6 @@ void exercicio4()
 	    std::stringstream linestream(line);
 	    std::string data;
 
-
 	    linestream >> idAresta;
 
 	    std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
@@ -334,10 +332,9 @@ void exercicio4()
 	    std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
 	    linestream >> idNoDestino;
 
-	    idNoOrigem -= idSub;
-	    idNoDestino -= idSub;
-
 	    gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
+
+	    gv->setEdgeThickness(i, 1);
 
 	    i++;
 	}
