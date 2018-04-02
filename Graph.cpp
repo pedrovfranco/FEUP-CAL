@@ -6,8 +6,15 @@
 Vertex::Vertex(GPS in): info(in) {}
 
 
-Edge::Edge(long long id, double w): id(id), weight(w) {}
+Edge::Edge(int edgeId, long long id, double w): edgeId(edgeId), id(id), weight(w) {}
 
+int Edge::getEdgeId() const {
+	return edgeId;
+}
+
+long long Edge::getId() const {
+	return id;
+}
 
 int Graph::getNumVertex() const {
 	return vertexSet.size();
@@ -46,24 +53,24 @@ bool Graph::addVertex(const long long &id, const GPS &in) {
  */
 
 
-bool Graph::addEdge(const long long &sourcid, const long long &destid) {
+bool Graph::addEdge(const long long &sourcid, const long long &destid, int edgeId) {
 	auto v1 = findVertex(sourcid);
 	auto v2 = findVertex(destid);
 	if (v1 == NULL || v2 == NULL)
 		return false;
 
-	v1->addEdge(destid, v1->getInfo().distance(v2->getInfo()));
+	v1->addEdge(edgeId, destid, v1->getInfo().distance(v2->getInfo()));
 	return true;
 }
 
 
-bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
+bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid, int edgeId) {
 	auto v1 = findVertex(sourcid);
 	auto v2 = findVertex(destid);
 	if (v1 == NULL || v2 == NULL)
 		return false;
-	v1->addEdge(destid, v1->getInfo().distance(v2->getInfo()));
-	v2->addEdge(sourcid, v1->getInfo().distance(v2->getInfo()));
+	v1->addEdge(edgeId, destid, v1->getInfo().distance(v2->getInfo()));
+	v2->addEdge(edgeId, sourcid, v1->getInfo().distance(v2->getInfo()));
 	return true;
 }
 
@@ -73,8 +80,8 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid) {
  * with a given destination vertex (d) and edge weight (w).
  */
 
-void Vertex::addEdge(long long id, double w) {
-	adj.push_back(Edge(id, w));
+void Vertex::addEdge(int edgeId, long long id, double w) {
+	adj.push_back(Edge(edgeId, id, w));
 }
 
 bool Vertex::operator<(Vertex & vertex) const {
@@ -119,6 +126,11 @@ bool Vertex::removeEdgeTo(long long id) {
 GPS Vertex::getInfo() const
 {
 	return info;
+}
+
+vector<Edge> Vertex::getAdj() const
+{
+	return adj;
 }
 
 
@@ -406,8 +418,8 @@ void Graph::dijkstraShortestPath(const long long &id) {
 	}
 }
 
-vector<GPS> Graph::getPath(const long long &originid, const long long &destid) const {
-	vector<GPS> res;
+vector<Vertex*> Graph::getPath(const long long &originid, const long long &destid) const {
+	vector<Vertex*> res;
 
 	auto v = this->findVertex(destid);
 	auto vi = this->findVertex(originid);
@@ -415,8 +427,8 @@ vector<GPS> Graph::getPath(const long long &originid, const long long &destid) c
 	if (v == nullptr || v->dist == INF) // missing or disconnected
 		return res;
 
-	for ( ; v != nullptr && v != vi; v = v->path)
-		res.push_back(v->info);
+	for ( ; v != nullptr ; v = v->path)
+		res.push_back(v);
 
 	reverse(res.begin(), res.end());
 

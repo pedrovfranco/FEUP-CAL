@@ -12,22 +12,24 @@ int main()
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
 
-	GPS start(41.168642, -8.596663); //Casa em paranhos
+	GPS start(41.174254, -8.603765); //Polo Universitario
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
-	GPS end(41.183300, -8.602240); // Sao Joao
+	GPS end(41.177717, -8.598266); // FEUP
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
-	cout << foo << "\n" << bar << "\n\n\n";
+	// cout << foo << "\n" << bar << "\n\n";
 
-	network.getGraph().dijkstraShortestPath(network.getGraph().getClosestGPS(start).first);
+	// network.getGraph().dijkstraShortestPath(network.getGraph().getClosestGPS(start).first);
 
-	vector<GPS> temp = network.getGraph().getPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
+	// vector<Vertex*> temp = network.getGraph().getPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
 
-	for (int i = 0; i < temp.size(); ++i)
-	{
-		cout << temp[i] << "\n";
-	}
+	// for (int i = 0; i < temp.size(); ++i)
+	// {
+	// 	cout << temp[i]->getInfo() << "\n";
+	// }
+
+	network.showPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
 
 	cin.get();
 

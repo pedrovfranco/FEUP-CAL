@@ -34,11 +34,12 @@ class Vertex {
     Vertex *path = NULL;
 
 
-    void addEdge(long long id, double w);
+    void addEdge(int edgeId, long long id, double w);
     bool removeEdgeTo(long long id);
 
 public:
     int queueIndex = 0;
+    
 
     Vertex(GPS in);
     bool operator<(Vertex & vertex) const;
@@ -49,15 +50,19 @@ public:
     double setDist(double dist){this->dist = dist;}
     int getQueueIndex(){return queueIndex;}
     void setQueueIndex(int i){queueIndex=i;}
+    vector<Edge> getAdj() const;
 };
 
 
 
 class Edge {
-    long long id;
+    int edgeId;             // Edge id
+    long long id;           // Vertex id
     double weight;         // edge weight
 public:
-    Edge(long long id, double w);
+    Edge(int edgeId, long long id, double w);
+    int getEdgeId() const;
+    long long getId() const;
     friend class Graph;
     friend class Vertex;
 
@@ -73,8 +78,8 @@ public:
     int getNumVertex() const;
     bool addVertex(const long long &id, const GPS &in);
     bool removeVertex(const long long &id);
-    bool addEdge(const long long &sourcid, const long long &destid);
-    bool addDoubleEdge(const long long &sourcid, const long long &destid);
+    bool addEdge(const long long &sourcid, const long long &destid, int edgeId);
+    bool addDoubleEdge(const long long &sourcid, const long long &destid, int edgeId);
     bool removeEdge(const long long &sourcid, const long long &destid);
     vector<GPS> dfs() const;
     vector<GPS> bfs(const long long &id) const;
@@ -88,7 +93,7 @@ public:
     Vertex * initSingleSource(const long long &id);
     bool relax(Vertex *v, Vertex *w, double weight);
     void dijkstraShortestPath(const long long &id);
-    vector<GPS> getPath(const long long &originid, const long long &destid) const;
+    vector<Vertex*> getPath(const long long &originid, const long long &destid) const;
 
     };
 

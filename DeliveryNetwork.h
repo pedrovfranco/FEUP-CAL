@@ -12,6 +12,8 @@
 #include "Client.h"
 #include "Supermarket.h"
 #include "graphviewer.h"
+#include <utility>
+
 
 class DeliveryNetwork {
 	
@@ -24,6 +26,9 @@ class DeliveryNetwork {
 public:
 	
 	bool loadGraph(std::string aname, std::string bname, std::string cname);
+	bool loadViewer(std::string aname, std::string bname, std::string cname);
+
+	void showPath(const long long &startid, const long long &endid);
 
 	Graph getGraph() const;
 };
