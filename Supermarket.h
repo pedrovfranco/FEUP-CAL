@@ -11,7 +11,6 @@
 class Supermarket {
 
 	int id;
-	string name;
 	GPS gps;
 	long long GPSid;
 	vector<Client> clients; // Container
