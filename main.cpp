@@ -16,10 +16,10 @@ int main()
 
 	vector<long long> path;
 
-	GPS start(41.168625, -8.596722); //Casa
+	GPS start(41.177717, -8.598266); //FEUP
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
-	GPS end(41.177717, -8.598266); // FEUP
+	GPS end(41.169034, -8.596604); //Minha casa
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
 	for (auto i : network.getClients())
@@ -31,10 +31,10 @@ int main()
 
 	// network.showPath(path[0], path[1]);
 
-	// for (int i = 0; i < path.size() -1 ; ++i)
-	// {
-	// 	network.showPath(path[i], path[i+1]);
-	// }
+	for (int i = 0; i < path.size(); ++i)
+	{
+		cout << path[i] << " " << network.getGraph().findVertex(path[i])->getInfo() << "\n";
+	}
 
 	// cout << foo << "\n" << bar << "\n\n";
 

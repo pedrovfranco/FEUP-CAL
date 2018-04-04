@@ -8,6 +8,7 @@
 #include <sstream>
 #include <cfloat>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 
@@ -144,7 +145,6 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 	ifstream inFile;
 
-	//Ler o ficheiro nos.txt
 	inFile.open(aname);
 
 	if (!inFile) {
@@ -430,46 +430,72 @@ void DeliveryNetwork::showPath(vector<long long> v)
 	long long startid = v[0], endid = v[0];
 
 	double smaller = DBL_MAX;
+
+	long long firstid = v[0];
 	int i = 0;
 
-	gv->setVertexSize(startid, 300);
-	gv->setVertexColor(startid, GREEN);
-	gv->setVertexLabel(startid, "Start");
-
-	for (int i = 0; i < v.size(); i++)
+	while (v.size() != 0)
 	{
 		startid = endid;
 
-		graph.dijkstraShortestPath(startid);
-
-		smaller = DBL_MAX;
-
-		for (int j = 0; j < v.size(); ++j) // Find shortest point to startid
+		if (i == 0)
 		{
-			if (v[j] != v[i])
+			gv->setVertexSize(startid, 300);
+			gv->setVertexColor(startid, GREEN);
+			gv->setVertexLabel(startid, "Start");
+		}
+		else
+		{
+			gv->setVertexSize(startid, 100);
+			gv->setVertexColor(startid, RED);
+		}
+
+		
+
+		if (v.size() == 1)
+		{
+			endid = firstid;
+
+			graph.dijkstraShortestPath(startid);
+
+		}
+		else
+		{
+			graph.dijkstraShortestPath(startid);
+
+			smaller = DBL_MAX;
+
+			for (int j = 0; j < v.size(); ++j) // Find shortest point to startid
 			{
-				if (graph.findVertex(v[j])->getDist() < smaller)
+				if (v[j] != startid)
 				{
-					smaller = graph.findVertex(v[j])->getDist();
-					endid = v[j];
+					if (graph.findVertex(v[j])->getDist() < smaller)
+					{
+						smaller = graph.findVertex(v[j])->getDist();
+						endid = v[j];
+					}
 				}
 			}
 		}
-
+		
 		vector<Vertex*> temp = graph.getPath(startid, endid);
 
-		for (int j = 0; i < temp.size() - 1; ++i)
+		for (int j = 0; j < temp.size() - 1; ++j)
 		{
-			for (int j = 0; j < temp[i]->getAdj().size(); ++j)
+			for (int k = 0; k < temp[j]->getAdj().size(); ++k)
 			{
-				if (graph.findVertex(temp[i]->getAdj()[j].getId()) == temp[i+1])
+				if (graph.findVertex(temp[j]->getAdj()[k].getId()) == temp[j+1])
 				{
-					gv->setEdgeThickness(temp[i]->getAdj()[j].getEdgeId(), 40);
-					gv->setEdgeColor(temp[i]->getAdj()[j].getEdgeId(), RED);
+					gv->setEdgeThickness(temp[j]->getAdj()[k].getEdgeId(), 40);
+					gv->setEdgeColor(temp[j]->getAdj()[k].getEdgeId(), RED);
 					
 				}
 			}
 		}
+
+		v.erase(remove(v.begin(), v.end(), startid), v.end());
+
+		i++;
 
 	}
 			
