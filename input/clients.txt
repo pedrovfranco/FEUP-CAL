@@ -1,0 +1,5 @@
+1; Rua das Flores; 123.45; 23.5;
+2; Rua da Retorta; 23.45; -23.5;
+3; Sao Mamede de Infesta ; -12.5; 23.5;
+4; Rua Dr. Roberto Frias; 23.45; -23.5;
+5; Rua Dr. Roberto Frias; 23.45; -23.5;

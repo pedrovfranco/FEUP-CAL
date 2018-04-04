@@ -12,7 +12,6 @@
 class Client {
 
 	int id;
-	std::string name;
 	std::string address;
 	GPS gps;
 	long long GPSid;
@@ -21,7 +20,7 @@ class Client {
 public:
 
 	Client();
-	Client(int id, std::string name, double latitude, double longitude);
+	Client(int id, double latitude, double longitude);
 
 	void setGPSId(const Graph &graph);
 

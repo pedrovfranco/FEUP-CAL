@@ -5,10 +5,9 @@ using namespace std;
 Client::Client()
 {}
 
-Client::Client(int id, std::string name, double latitude, double longitude)
+Client::Client(int id, double latitude, double longitude)
 {
 	this->id = id;
-	this->name = name;
 	this->gps = GPS(latitude, longitude);
 }
 
