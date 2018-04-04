@@ -435,15 +435,24 @@ vector<Vertex*> Graph::getPath(const long long &originid, const long long &desti
 	return res;
 }
 
-struct compareVertex
+long long Graph::findId(const Vertex* in) const
 {
-	bool operator() (const Vertex* a, const Vertex* b) const
-	{
-		return (!(a->getDist() < b->getDist()));
-	}
-};
+	for (auto i : vertexSet)
+		if (i.second == in)
+			return i.first;
 
-bool comp (const Vertex* a, const Vertex* b)
-{
-	return (!(a->getDist() < b->getDist()));
+	return -1;
 }
+
+// struct compareVertex
+// {
+// 	bool operator() (const Vertex* a, const Vertex* b) const
+// 	{
+// 		return (!(a->getDist() < b->getDist()));
+// 	}
+// };
+
+// bool comp (const Vertex* a, const Vertex* b)
+// {
+// 	return (!(a->getDist() < b->getDist()));
+// }

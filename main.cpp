@@ -11,12 +11,25 @@ int main()
 	DeliveryNetwork network;
 	network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
 
+	network.loadClients("input/clients.txt");
+	network.loadSupermarkets("input/supermarkets.txt");
 
-	GPS start(41.174254, -8.603765); //Polo Universitario
+	vector<Vertex*> path;
+
+	GPS start(41.168625, -8.596722); //Casa
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
 
 	GPS end(41.177717, -8.598266); // FEUP
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
+
+	path.push_back(network.getGraph().getClosestGPS(start).second);
+
+	std::unordered_map<int, Supermarket*> supermarkets = network.getSupermarkets();
+
+	for (auto i : supermarkets)
+	{
+		path.push_back(network.i.second->getGPSId())
+	}
 
 	// cout << foo << "\n" << bar << "\n\n";
 

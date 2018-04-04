@@ -13,6 +13,7 @@ class Item {
 public:
 
 	Item();
+	Item(int id, unsigned int amount);
 	Item(int id, std::string name, unsigned int amount);
 
 };

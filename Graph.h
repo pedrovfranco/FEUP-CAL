@@ -58,7 +58,7 @@ public:
 class Edge {
     int edgeId;             // Edge id
     long long id;           // Vertex id
-    double weight;         // edge weight
+    double weight;          // edge weight
 public:
     Edge(int edgeId, long long id, double w);
     int getEdgeId() const;
@@ -94,6 +94,7 @@ public:
     bool relax(Vertex *v, Vertex *w, double weight);
     void dijkstraShortestPath(const long long &id);
     vector<Vertex*> getPath(const long long &originid, const long long &destid) const;
+    long long findId(const Vertex* in) const;
 
     };
 

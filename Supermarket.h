@@ -11,18 +11,23 @@
 class Supermarket {
 
 	int id;
+	std::string address;
 	GPS gps;
-	long long GPSid;
-	vector<Client> clients; // Container
+	long long GPSid = -1;
+	std::vector<Client> clients; // Container
 
+public:
 	Supermarket();
-	Supermarket(int id, std::string name, double latitude, double longitude);
+	Supermarket(int id, double latitude, double longitude);
 
 	void setGPSId(const Graph &graph);
 
+	int getId() const;
+	GPS getGPS() const;
 	long long getGPSId() const;
 
 };
 
+ostream& operator<<(ostream &os, const Supermarket &input);
 
 #endif

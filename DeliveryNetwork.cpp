@@ -290,6 +290,108 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 	gv->rearrange();
 }
 
+bool DeliveryNetwork::loadClients(std::string filename)
+{
+	ifstream input(filename);
+
+	if (!input.is_open())
+	{
+		cout << "Error opening file!\n";
+		return false;
+	}
+
+	int id;
+	double lat, lon;
+	vector<Item> items;
+	int itemid, amount;
+	string buffer;
+
+	try
+	{
+		while (getline(input, buffer)) // id;lat;lon;item1;amount1;item2;amount2;...
+		{
+			stringstream ss(buffer);
+
+			ss >> id;
+			getline(ss, buffer, ';');
+			ss >> lat;
+			getline(ss, buffer, ';');
+			ss >> lon;
+
+			while (1)
+			{
+				if (!getline(ss, buffer, ';'))
+					break;
+				ss >> itemid;
+
+				if (!getline(ss, buffer, ';'))
+					break;
+				ss >> amount;
+
+				items.push_back(Item(itemid, amount));
+			}
+
+			setGPSId(const Graph &graph);
+
+			clients.insert(make_pair(id, new Client(id, lat, lon, items)));
+			clients[id].setGPSId(graph);
+		}
+	}
+	catch (exception &e)
+	{
+		return false;
+	}
+
+
+	input.close();
+
+	return true;
+}
+
+bool DeliveryNetwork::loadSupermarkets(std::string filename)
+{
+	ifstream input(filename);
+
+	if (!input.is_open())
+	{
+		cout << "Error opening file!\n";
+		return false;
+	}
+
+	int id;
+	double lat, lon;
+	string buffer;
+
+	try
+	{
+		while (getline(input, buffer)) // id;lat;lon;item1;amount1;item2;amount2;...
+		{
+			stringstream ss(buffer);
+
+			ss >> id;
+			getline(ss, buffer, ';');
+			ss >> lat;
+			getline(ss, buffer, ';');
+			ss >> lon;
+
+			supermarkets.insert(make_pair(id, new Supermarket(id, lat, lon)));
+			supermarkets[id].setGPSId(graph);
+		}
+	}
+	catch (exception &e)
+	{
+		return false;
+	}
+
+
+	input.close();
+
+	return true;
+}
+
+
+
+
 void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 {
 	loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
@@ -305,7 +407,6 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 	graph.dijkstraShortestPath(startid);
 
 	vector<Vertex*> temp = graph.getPath(startid, endid);
-	vector<int> edgeid;
 
 	for (int i = 0; i < temp.size() - 1; ++i)
 	{
@@ -323,7 +424,79 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 	gv->rearrange();
 }
 
+void DeliveryNetwork::showPath(vector<Vertex*> v)
+{
+	if (v.size() < 2)
+		return;
+
+	loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+
+	long long startid;
+	long long endid = findId(v[0]);
+
+	for (int i = 0; i < v.size(); ++i)
+	{
+		if (i == 0)
+		{
+			gv->setVertexSize(startid, 300);
+			gv->setVertexColor(startid, GREEN);
+			gv->setVertexLabel(startid, "Start");
+		}
+		else
+		{
+			gv->setVertexSize(startid, 100);
+			gv->setVertexColor(startid, BLUE);
+		}
+
+		startid = endid;
+		endid = findId(v[i+1]);
+		graph.dijkstraShortestPath(startid);
+		vector<Vertex*> temp = graph.getPath(startid, endid);
+
+		for (int i = 0; i < temp.size() - 1; ++i)
+		{
+			for (int j = 0; j < temp[i]->getAdj().size(); ++j)
+			{
+				if (graph.findVertex(temp[i]->getAdj()[j].getId()) == temp[i+1])
+				{
+					gv->setEdgeThickness(temp[i]->getAdj()[j].getEdgeId(), 40);
+					gv->setEdgeColor(temp[i]->getAdj()[j].getEdgeId(), RED);
+					
+				}
+			}
+		}
+			
+	}
+
+	gv->rearrange();
+}
+
+void DeliveryNetwork::printClients() const
+{
+	for (auto i : clients)
+	{
+		cout << *(i.second) << "\n";
+	}
+}
+
+void DeliveryNetwork::printSupermarkets() const
+{
+	for (auto i : supermarkets)
+	{
+		cout << *(i.second) << "\n";
+	}
+}
 
 Graph DeliveryNetwork::getGraph() const {
 	return graph;
+}
+
+std::unordered_map<int, Client*> DeliveryNetwork::getClients() const
+{
+	return clients;
+}
+
+std::unordered_map<int, Supermarket*> DeliveryNetwork::getSupermarkets() const
+{
+	return supermarkets;
 }
