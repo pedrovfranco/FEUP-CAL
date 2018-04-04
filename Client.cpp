@@ -23,11 +23,6 @@ void Client::setBasket(std::vector<Item> items)
 	this->basket = items;
 }
 
-void Client::setGPSId(const Graph &graph)
-{
-	this->GPSid = graph.getClosestGPS(gps).first;
-}
-
 void Client::setId(const int &id)
 {
 	this->id = id;
@@ -35,7 +30,12 @@ void Client::setId(const int &id)
 
 void Client::setGPS(GPS input)
 {
-	gps = input;
+	this->gps = input;
+}
+
+void Client::setRef(const Graph &graph)
+{
+	this->ref = graph.getClosestGPS(gps);
 }
 
 int Client::getId() const
@@ -48,10 +48,11 @@ GPS Client::getGPS() const
 	return gps;
 }
 
-long long Client::getGPSId() const
+pair<long long, Vertex*> Client::getRef() const
 {
-	return GPSid;
+	return ref;
 }
+
 
 
 ostream& operator<<(ostream &os, const Client &input)

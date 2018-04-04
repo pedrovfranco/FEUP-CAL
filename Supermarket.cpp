@@ -15,10 +15,11 @@ Supermarket::Supermarket(int id, double latitude, double longitude)
 }
 
 
-void Supermarket::setGPSId(const Graph &graph)
+void Supermarket::setRef(const Graph &graph)
 {
-	this->GPSid = graph.getClosestGPS(gps).first;
+	this->ref = graph.getClosestGPS(gps);
 }
+
 
 int Supermarket::getId() const
 {
@@ -30,9 +31,9 @@ GPS Supermarket::getGPS() const
 	return gps;
 }
 
-long long Supermarket::getGPSId() const
+pair<long long, Vertex*> Supermarket::getRef() const
 {
-	return GPSid;
+	return ref;
 }
 
 ostream& operator<<(ostream &os, const Supermarket &input)

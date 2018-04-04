@@ -32,7 +32,7 @@ public:
 	bool loadSupermarkets(std::string filename);
 
 	void showPath(const long long &startid, const long long &endid);
-	void showPath(std::vector<Vertex*> v);
+	void showPath(std::vector<long long> v);
 	void printClients() const;
 	void printSupermarkets() const;
 

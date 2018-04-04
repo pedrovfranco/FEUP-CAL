@@ -14,7 +14,7 @@ int main()
 	network.loadClients("input/clients.txt");
 	network.loadSupermarkets("input/supermarkets.txt");
 
-	vector<Vertex*> path;
+	vector<long long> path;
 
 	GPS start(41.168625, -8.596722); //Casa
 	GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
@@ -22,14 +22,19 @@ int main()
 	GPS end(41.177717, -8.598266); // FEUP
 	GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
-	path.push_back(network.getGraph().getClosestGPS(start).second);
-
-	std::unordered_map<int, Supermarket*> supermarkets = network.getSupermarkets();
-
-	for (auto i : supermarkets)
+	for (auto i : network.getClients())
 	{
-		path.push_back(network.i.second->getGPSId())
+		path.push_back(i.second->getRef().first);
 	}
+
+	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+
+	// network.showPath(path[0], path[1]);
+
+	// for (int i = 0; i < path.size() -1 ; ++i)
+	// {
+	// 	network.showPath(path[i], path[i+1]);
+	// }
 
 	// cout << foo << "\n" << bar << "\n\n";
 
@@ -42,7 +47,9 @@ int main()
 	// 	cout << temp[i]->getInfo() << "\n";
 	// }
 
-	network.showPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
+	// network.showPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
+
+	network.showPath(path);
 
 	cin.get();
 

@@ -6,6 +6,8 @@
 
 #include <fstream>
 #include <sstream>
+#include <cfloat>
+#include <limits>
 
 using namespace std;
 
@@ -331,10 +333,8 @@ bool DeliveryNetwork::loadClients(std::string filename)
 				items.push_back(Item(itemid, amount));
 			}
 
-			setGPSId(const Graph &graph);
-
 			clients.insert(make_pair(id, new Client(id, lat, lon, items)));
-			clients[id].setGPSId(graph);
+			clients[id]->setRef(graph);
 		}
 	}
 	catch (exception &e)
@@ -375,7 +375,7 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 			ss >> lon;
 
 			supermarkets.insert(make_pair(id, new Supermarket(id, lat, lon)));
-			supermarkets[id].setGPSId(graph);
+			supermarkets[id]->setRef(graph);
 		}
 	}
 	catch (exception &e)
@@ -394,8 +394,6 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 
 void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 {
-	loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
-
 	gv->setVertexSize(startid, 200);
 	gv->setVertexColor(startid, GREEN);
 	gv->setVertexLabel(startid, "Start");
@@ -424,36 +422,43 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 	gv->rearrange();
 }
 
-void DeliveryNetwork::showPath(vector<Vertex*> v)
+void DeliveryNetwork::showPath(vector<long long> v)
 {
 	if (v.size() < 2)
 		return;
 
-	loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+	long long startid = v[0], endid = v[0];
 
-	long long startid;
-	long long endid = findId(v[0]);
+	double smaller = DBL_MAX;
+	int i = 0;
 
-	for (int i = 0; i < v.size(); ++i)
+	gv->setVertexSize(startid, 300);
+	gv->setVertexColor(startid, GREEN);
+	gv->setVertexLabel(startid, "Start");
+
+	for (int i = 0; i < v.size(); i++)
 	{
-		if (i == 0)
+		startid = endid;
+
+		graph.dijkstraShortestPath(startid);
+
+		smaller = DBL_MAX;
+
+		for (int j = 0; j < v.size(); ++j) // Find shortest point to startid
 		{
-			gv->setVertexSize(startid, 300);
-			gv->setVertexColor(startid, GREEN);
-			gv->setVertexLabel(startid, "Start");
-		}
-		else
-		{
-			gv->setVertexSize(startid, 100);
-			gv->setVertexColor(startid, BLUE);
+			if (v[j] != v[i])
+			{
+				if (graph.findVertex(v[j])->getDist() < smaller)
+				{
+					smaller = graph.findVertex(v[j])->getDist();
+					endid = v[j];
+				}
+			}
 		}
 
-		startid = endid;
-		endid = findId(v[i+1]);
-		graph.dijkstraShortestPath(startid);
 		vector<Vertex*> temp = graph.getPath(startid, endid);
 
-		for (int i = 0; i < temp.size() - 1; ++i)
+		for (int j = 0; i < temp.size() - 1; ++i)
 		{
 			for (int j = 0; j < temp[i]->getAdj().size(); ++j)
 			{
@@ -465,9 +470,9 @@ void DeliveryNetwork::showPath(vector<Vertex*> v)
 				}
 			}
 		}
-			
-	}
 
+	}
+			
 	gv->rearrange();
 }
 

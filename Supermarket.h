@@ -3,9 +3,11 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "Client.h"
 #include "GPS.h"
+#include "Graph.h"
 
 
 class Supermarket {
@@ -13,18 +15,18 @@ class Supermarket {
 	int id;
 	std::string address;
 	GPS gps;
-	long long GPSid = -1;
+	std::pair<long long, Vertex*> ref; // reference
 	std::vector<Client> clients; // Container
 
 public:
 	Supermarket();
 	Supermarket(int id, double latitude, double longitude);
 
-	void setGPSId(const Graph &graph);
+	void setRef(const Graph &graph);
 
 	int getId() const;
 	GPS getGPS() const;
-	long long getGPSId() const;
+	std::pair<long long, Vertex*> getRef() const;
 
 };
 

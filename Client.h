@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "GPS.h"
 #include "Item.h"
@@ -27,12 +28,12 @@ public:
 
 	
 	void setId(const int &id);
-	void setRef(GPS input);
+	void setGPS(GPS input);
 	void setRef(const Graph &graph);
 
 	int getId() const;
 	GPS getGPS() const;
-	long long getGPSId() const;
+	std::pair<long long, Vertex*> getRef() const;
 
 };
 
