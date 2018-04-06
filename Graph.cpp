@@ -444,15 +444,32 @@ long long Graph::findId(const Vertex* in) const
 	return -1;
 }
 
-// struct compareVertex
-// {
-// 	bool operator() (const Vertex* a, const Vertex* b) const
-// 	{
-// 		return (!(a->getDist() < b->getDist()));
-// 	}
-// };
+struct longlongHash
+{
+	std::size_t operator()(const pair<long long, long long>& k) const
+	{
+	  return ((hash<long long>()(k.first) ^ (hash<long long>()(k.second) << 1)) >> 1);
+	}
 
-// bool comp (const Vertex* a, const Vertex* b)
-// {
-// 	return (!(a->getDist() < b->getDist()));
-// }
+	bool operator()(const pair<long long, long long>& a, const pair<long long, long long>& b) const
+	{
+	  return (a.first == b.first && a.second == b.second);
+	}
+};
+
+// TO DO
+void Graph::floydWarshall()
+{
+	unordered_map<pair<long long, long long>, vector<pair<pair<long long, long long>, double>>, longlongHash> dist;
+
+	// for (auto i : vertexSet)
+	// {
+	// 	for (auto j : vertexSet)
+	// 	{
+	// 		if (i.first == j.first) // Same vetex
+	// 			dist.insert(make_pair(make_pair(0, 1), 0.0));
+	// 	}
+	// }
+
+
+}
