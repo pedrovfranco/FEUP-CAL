@@ -159,3 +159,4 @@ Temporary Items
 *.o
 main
 input/source/*
+CMakeLists\.txt
