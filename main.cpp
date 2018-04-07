@@ -29,10 +29,10 @@ int main()
 	// GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
 
 	// path.push_back(network.getGraph().getClosestGPS(start).first);
-	// path.push_back(network.getGraph().getClosestGPS(shop).first);
+	// // path.push_back(network.getGraph().getClosestGPS(shop).first);
 	// path.push_back(network.getGraph().getClosestGPS(end).first);
 
-	// network.showPath(path);
+	// network.showPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
 
 
 	Menu menu;
