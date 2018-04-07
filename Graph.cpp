@@ -455,6 +455,7 @@ struct longlongHash
 	{
 	  return (a.first == b.first && a.second == b.second);
 	}
+
 };
 
 // TO DO
@@ -462,14 +463,6 @@ void Graph::floydWarshall()
 {
 	unordered_map<pair<long long, long long>, vector<pair<pair<long long, long long>, double>>, longlongHash> dist;
 
-	// for (auto i : vertexSet)
-	// {
-	// 	for (auto j : vertexSet)
-	// 	{
-	// 		if (i.first == j.first) // Same vetex
-	// 			dist.insert(make_pair(make_pair(0, 1), 0.0));
-	// 	}
-	// }
-
+	// dist.insert(make_pair(make_pair(1,2), 1.0));
 
 }
