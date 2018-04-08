@@ -9,7 +9,7 @@
 #include "GPS.h"
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include "Client.h"
 #include "Supermarket.h"
 #include "graphviewer.h"
@@ -21,8 +21,8 @@ class DeliveryNetwork {
 	Graph graph;
 	GraphViewer *gv;
 
-	std::unordered_map<int, Client*> clients;
-	std::unordered_map<int, Supermarket*> supermarkets;
+	std::map<int, Client*> clients;
+	std::map<int, Supermarket*> supermarkets;
 
 public:
 	
@@ -37,8 +37,8 @@ public:
 	void printSupermarkets() const;
 
 	Graph getGraph() const;
-	std::unordered_map<int, Client*> getClients() const;
-	std::unordered_map<int, Supermarket*> getSupermarkets() const;
+	std::map<int, Client*> getClients() const;
+	std::map<int, Supermarket*> getSupermarkets() const;
 };
 
 

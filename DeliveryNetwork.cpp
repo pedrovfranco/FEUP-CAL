@@ -19,7 +19,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 	if (!a.is_open() || !b.is_open() || !c.is_open())
 	{
 		cout << "Error opening file!\n";
-		exit(1);
+		return false;
 	}
 
 
@@ -149,7 +149,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 	if (!inFile) {
 		cerr << "Unable to open file datafile.txt";
-	    exit(1);   // call system to stop
+	    return false;
 	}
 
 	string   line;
@@ -522,12 +522,12 @@ Graph DeliveryNetwork::getGraph() const {
 	return graph;
 }
 
-std::unordered_map<int, Client*> DeliveryNetwork::getClients() const
+std::map<int, Client*> DeliveryNetwork::getClients() const
 {
 	return clients;
 }
 
-std::unordered_map<int, Supermarket*> DeliveryNetwork::getSupermarkets() const
+std::map<int, Supermarket*> DeliveryNetwork::getSupermarkets() const
 {
 	return supermarkets;
 }

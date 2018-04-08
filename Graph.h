@@ -95,6 +95,7 @@ public:
     void dijkstraShortestPath(const long long &id);
     vector<Vertex*> getPath(const long long &originid, const long long &destid) const;
     long long findId(const Vertex* in) const;
+    void floydWarshall();
 
     };
 
