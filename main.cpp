@@ -39,7 +39,7 @@ int main()
 
 	menu.Begin();
 
-	cin.get();
+	// cin.get();
 
     return 0;
 }

@@ -288,22 +288,106 @@ void Menu::ShowPath()
 	printBanner();
 
 	vector<long long> ids;
+	Supermarket* supermarket = NULL;
+	Client* client = NULL;
 
-	cout << "Clients:\n\n";
+	cout << "Supermarkets:\n\n";
 
-	network.printClients();
+	network.printSupermarkets();
+
+	while (true)
+	{
+		cout << "\nChoose a supermarket id: ";
+
+		getline(cin, tempstr);
+		utilities::trimString(tempstr);
+
+		if (utilities::isNumeric(tempstr) && tempstr != "")
+		{
+			supermarket = network.getSupermarkets()[stoi(tempstr)];
+		}
+		else
+		{
+			cout << "Id must be a number!\n";
+			continue;
+		}
+
+		if (supermarket != NULL)
+		{
+			ids.push_back(supermarket->getRef().first);
+			break;
+		}
+		else
+		{
+			cout << "Supermarket not found!\n";
+		}
+	}
 
 	map<int, Client*> clients = network.getClients();
 
-	for (auto i : clients)
+	tempstr = ".";
+
+	cout << "\n\n";
+
+	map<int, Client*>::iterator i;
+
+	while (clients.size() != 0)
 	{
-		ids.push_back(network.getGraph().getClosestGPS(i.second->getGPS()).first);
+		for (i = clients.begin(); i != clients.end(); i++)
+			cout << *(i->second) << "\n";
+
+		cout << "\nChoose a client (Press Enter to finish): ";
+		
+		getline(cin, tempstr);
+		utilities::trimString(tempstr);
+
+		if (tempstr == "")
+		{
+			if (ids.size() == 1)
+			{
+				cout << "Must have at least one client!\n\n";
+				continue;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		if (utilities::isNumeric(tempstr))
+		{	
+			if (clients.find(stoi(tempstr))!= clients.end())
+				client = clients.find(stoi(tempstr))->second;
+			else
+				client = NULL;
+		}
+		else
+		{
+			cout << "Id must be a number!\n";
+			continue;
+		}
+
+		if (client != NULL)
+		{
+			ids.push_back(client->getRef().first);
+			clients.erase(stoi(tempstr));
+			cout << "Client added!\n\n";
+		}
+		else
+		{
+			cout << "Client not found!\n\n";
+		}
 	}
+	
 
 	network.loadViewer(afilename, bfilename, cfilename);
 
 	network.showPath(ids);
 
+	cin.get();
+
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
+
+	MainMenu();
 }

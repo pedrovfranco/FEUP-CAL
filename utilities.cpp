@@ -1,5 +1,7 @@
 #include "utilities.h"
 
+#include <iostream>
+
 using namespace std;
 
 template <class T>
@@ -49,4 +51,12 @@ bool utilities::isNumeric(string input)
 	}
 
 	return true;
+}
+
+
+template<class T>
+void utilities::printContainer(const T &input)
+{
+	for (auto i : input)
+		cout << i << "\n";
 }
