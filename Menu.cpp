@@ -329,12 +329,10 @@ void Menu::ShowPath()
 
 	cout << "\n\n";
 
-	map<int, Client*>::iterator i;
-
 	while (clients.size() != 0)
 	{
-		for (i = clients.begin(); i != clients.end(); i++)
-			cout << *(i->second) << "\n";
+		for (auto i : clients)
+			cout << *(i.second) << "\n";
 
 		cout << "\nChoose a client (Press Enter to finish): ";
 		
@@ -384,10 +382,6 @@ void Menu::ShowPath()
 
 	network.showPath(ids);
 
-	cin.get();
-
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
-
-	MainMenu();
 }

@@ -20,8 +20,10 @@ int main()
 
 	// vector<long long> path;
 
-	// GPS start(41.169034, -8.596604); //Minha casa
+	// GPS start(41.168315, -8.601543); //Pingo Doce
 	// GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
+
+	// cout << foo << "\n";
 
 	// GPS shop(41.166630, -8.601420); //Pet Shop Port
 
@@ -32,7 +34,7 @@ int main()
 	// // path.push_back(network.getGraph().getClosestGPS(shop).first);
 	// path.push_back(network.getGraph().getClosestGPS(end).first);
 
-	// network.showPath(network.getGraph().getClosestGPS(start).first, network.getGraph().getClosestGPS(end).first);
+	// network.showPath(path);
 
 
 	Menu menu;
