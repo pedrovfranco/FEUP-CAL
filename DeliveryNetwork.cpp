@@ -518,8 +518,14 @@ void DeliveryNetwork::printSupermarkets() const
 	}
 }
 
-Graph DeliveryNetwork::getGraph() const {
+Graph DeliveryNetwork::getGraph() const
+{
 	return graph;
+}
+
+GraphViewer* DeliveryNetwork::getGV() const
+{
+	return gv;
 }
 
 std::map<int, Client*> DeliveryNetwork::getClients() const
@@ -530,4 +536,10 @@ std::map<int, Client*> DeliveryNetwork::getClients() const
 std::map<int, Supermarket*> DeliveryNetwork::getSupermarkets() const
 {
 	return supermarkets;
+}
+
+
+void DeliveryNetwork::deleteGV()
+{
+	delete gv;
 }

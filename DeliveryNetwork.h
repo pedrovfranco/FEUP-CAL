@@ -19,7 +19,7 @@
 class DeliveryNetwork {
 	
 	Graph graph;
-	GraphViewer *gv;
+	GraphViewer *gv = NULL;
 
 	std::map<int, Client*> clients;
 	std::map<int, Supermarket*> supermarkets;
@@ -37,8 +37,11 @@ public:
 	void printSupermarkets() const;
 
 	Graph getGraph() const;
+	GraphViewer* getGV() const;
 	std::map<int, Client*> getClients() const;
 	std::map<int, Supermarket*> getSupermarkets() const;
+
+	void deleteGV();
 };
 
 

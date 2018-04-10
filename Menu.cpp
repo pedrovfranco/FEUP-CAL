@@ -237,6 +237,7 @@ void Menu::MainMenu()
 			else if (input == "0")
 			{
 				ui_utilities::ClearScreen();
+				system("pkill --signal SIGTERM java");\
 				return;
 			}
 
@@ -377,11 +378,12 @@ void Menu::ShowPath()
 		}
 	}
 	
-
 	network.loadViewer(afilename, bfilename, cfilename);
 
 	network.showPath(ids);
 
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
+
+	network.getGV()->closeWindow();
 }

@@ -16,6 +16,7 @@ class Menu {
 	unsigned int height = 30; /*!< The height of the console interface */
 	std::string afilename, bfilename, cfilename;
 	std::vector<std::string> banner; /*!< The 2-dimentional array of chars of the banner */
+	bool graphvieweropen = false;
 
 public:
 	Menu();
