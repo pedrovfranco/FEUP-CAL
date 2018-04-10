@@ -16,7 +16,8 @@ class Supermarket {
 	std::string address;
 	GPS gps;
 	std::pair<long long, Vertex*> ref; // reference
-	std::vector<Client> clients; // Container
+	//std::vector<Client> clients; // Container
+	std::priority_queue<Client*> clients;
 
 public:
 	Supermarket();
