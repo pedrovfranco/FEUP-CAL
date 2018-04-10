@@ -237,7 +237,6 @@ void Menu::MainMenu()
 			else if (input == "0")
 			{
 				ui_utilities::ClearScreen();
-				system("pkill --signal SIGTERM java");\
 				return;
 			}
 
