@@ -40,6 +40,10 @@ namespace utilities{
 	 * @return     True if numeric, False otherwise.
 	 */
 	bool isNumeric(std::string input);
+
+
+	template<class T>
+	void printContainer(const T &input);
 	
 };
 

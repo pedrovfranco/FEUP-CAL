@@ -15,6 +15,7 @@ class Client {
 	int id;
 	std::string address; // Not used
 	GPS gps;
+	Data data;
 	std::pair<long long, Vertex*> ref; // reference
 	std::vector<Item *> basket;
 
@@ -27,6 +28,7 @@ public:
 	void setBasket(std::vector<Item *> items);
 	vector<Item *> getBasket(){return basket;}
 
+	
 	void setId(const int &id);
 	void setGPS(GPS input);
 
