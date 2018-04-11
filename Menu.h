@@ -39,6 +39,7 @@ public:
 	void printBanner();
 	void printCentered(std::string input);
 	void showDeliveries();
+	void loadGraph();
 };
 
 #endif

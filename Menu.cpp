@@ -229,6 +229,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			cout << "4- Place Order \n";
 			cout << "5- Show deliveries in queue \n";
 			cout << "6- Make delivery \n";
+			cout << "7- Show graph poits \n";
 			cout << "0- Quit \n\n";
 
 
@@ -285,6 +286,15 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 					break;
 				}
 
+				else if (input == "7")
+				{
+
+					loadGraph();
+					pressAnyKey();
+
+					break;
+				}
+
 				else if (input == "0")
 				{
 					ui_utilities::ClearScreen();
@@ -297,6 +307,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			}
 		}
 	}
+
 
 	void Menu::ListSupermarkets()
 	{
@@ -337,98 +348,107 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 	void Menu::ShowPath()
 	{
 		ui_utilities::SetWindow(width, height);
-	ui_utilities::ClearScreen();
-	printBanner();
+		ui_utilities::ClearScreen();
+		printBanner();
 
-	Supermarket* supermarket = NULL;
-	Client* client = NULL;
+		vector<long long> ids;
+		Supermarket* supermarket = NULL;
+		Client* client = NULL;
 
-	cout << "Supermarkets:\n\n";
+		cout << "Supermarkets:\n\n";
 
-	network.printSupermarkets();
+		network.printSupermarkets();
 
-	while (true)
-	{
-		cout << "\nChoose a supermarket id: ";
-
-		getline(cin, tempstr);
-		utilities::trimString(tempstr);
-
-		if (utilities::isNumeric(tempstr) && tempstr != "")
+		while (true)
 		{
-			supermarket = network.getSupermarkets()[stoi(tempstr)];
-		}
-		else
-		{
-			cout << "Id must be a number!\n";
-			continue;
-		}
+			cout << "\nChoose a supermarket id: ";
 
-		if (supermarket != NULL)
-		{
-			ids.push_back(supermarket->getRef().first);
-			break;
-		}
-		else
-		{
-			cout << "Supermarket not found!\n";
-		}
-	}
+			getline(cin, tempstr);
+			utilities::trimString(tempstr);
 
-	map<int, Client*> clients = network.getClients();
-
-	tempstr = ".";
-
-	cout << "\n\n";
-
-	while (clients.size() != 0)
-	{
-		for (auto i : clients)
-			cout << *(i.second) << "\n";
-
-		cout << "\nChoose a client (Press Enter to finish): ";
-
-		getline(cin, tempstr);
-		utilities::trimString(tempstr);
-
-		if (tempstr == "")
-		{
-			if (ids.size() == 1)
+			if (utilities::isNumeric(tempstr) && tempstr != "")
 			{
-				cout << "Must have at least one client!\n\n";
+				supermarket = network.getSupermarkets()[stoi(tempstr)];
+			}
+			else
+			{
+				cout << "Id must be a number!\n";
 				continue;
 			}
+
+			if (supermarket != NULL)
+			{
+				ids.push_back(supermarket->getRef().first);
+				break;
+			}
 			else
 			{
-				break;
+				cout << "Supermarket not found!\n";
 			}
 		}
 
-		if (utilities::isNumeric(tempstr))
+		map<int, Client*> clients = network.getClients();
+
+		tempstr = ".";
+
+		cout << "\n\n";
+
+		while (clients.size() != 0)
 		{
-			if (clients.find(stoi(tempstr))!= clients.end())
-				client = clients.find(stoi(tempstr))->second;
+			for (auto i : clients)
+				cout << *(i.second) << "\n";
+
+			cout << "\nChoose a client (Press Enter to finish): ";
+
+			getline(cin, tempstr);
+			utilities::trimString(tempstr);
+
+			if (tempstr == "")
+			{
+				if (ids.size() == 1)
+				{
+					cout << "Must have at least one client!\n\n";
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (utilities::isNumeric(tempstr))
+			{
+				if (clients.find(stoi(tempstr))!= clients.end())
+					client = clients.find(stoi(tempstr))->second;
+				else
+					client = NULL;
+			}
 			else
-				client = NULL;
-		}
-		else
-		{
-			cout << "Id must be a number!\n";
-			continue;
+			{
+				cout << "Id must be a number!\n";
+				continue;
+			}
+
+			if (client != NULL)
+			{
+				ids.push_back(client->getRef().first);
+				clients.erase(stoi(tempstr));
+				cout << "Client added!\n\n";
+			}
+			else
+			{
+				cout << "Client not found!\n\n";
+			}
 		}
 
-		if (client != NULL)
-		{
-			ids.push_back(client->getRef().first);
-			clients.erase(stoi(tempstr));
-			cout << "Client added!\n\n";
-		}
-		else
-		{
-			cout << "Client not found!\n\n";
-		}
-	}
-loadViewer(afilename, bfilename, cfilename, ids);
+		network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+
+		network.showPath(ids);
+
+		cout << "\nPress any key to continue!\n";
+		getline(cin, tempstr);
+
+		network.getGV()->closeWindow();
 	}
 
 
@@ -439,6 +459,32 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 	}
 	network.loadViewer(a, b, c);
 	network.showPath(ids);
+
+	cout << "\nPress any key to continue!\n";
+	getline(cin, tempstr);
+
+	network.getGV()->closeWindow();
+}
+
+
+void Menu::loadGraph(){
+
+	vector<long long> ids;
+		vector<long long> homes;
+	for(auto i : network.getSupermarkets()){
+		ids.push_back(	i.second->getRef().first);
+	}
+
+	for(auto i : network.getClients()){
+		homes.push_back(	i.second->getRef().first);
+	}
+
+
+	if(ids.size()== 0){
+		return;
+	}
+	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+	network.showGraph(ids,homes);
 
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
