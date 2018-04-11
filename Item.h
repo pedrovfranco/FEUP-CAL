@@ -2,19 +2,23 @@
 #define ITEM_H
 
 #include <string>
+#include <vector>
 using namespace std;
 
 class Item {
 
 	int id;
 	string name;
-	unsigned int amount;
+	int amount;
 
 public:
 
 	Item();
-	Item(int id, unsigned int amount);
-	Item(int id, std::string name, unsigned int amount);
+	Item(int id, int amount);
+	int getId();
+	void incAmmount(){amount++;}
+	void setAmmout(int amount){this->amount = amount;}
+	int getAmmount(){return amount;}
 
 };
 

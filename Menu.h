@@ -14,8 +14,9 @@ class Menu {
 	DeliveryNetwork network;
 	unsigned int width = 100; /*!< The width of the console interface */
 	unsigned int height = 30; /*!< The height of the console interface */
-	std::string afilename, bfilename, cfilename;
+	std::string afilename, bfilename, cfilename, itemfilename;
 	std::vector<std::string> banner; /*!< The 2-dimentional array of chars of the banner */
+	bool graphvieweropen = false;
 
 public:
 	Menu();
@@ -27,11 +28,16 @@ public:
 	void ListSupermarkets();
 	void ListClients();
 	void ShowPath();
+	void placeOrder();
+	void ListItems();
+
+	void pressAnyKey();
 
 	bool loadBanner(std::string filename);
 	void printBanner(unsigned int width);
 	void printBanner();
 	void printCentered(std::string input);
+	void showDeliveries();
 };
 
 #endif

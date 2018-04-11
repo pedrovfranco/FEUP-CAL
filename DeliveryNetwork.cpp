@@ -12,6 +12,55 @@
 
 using namespace std;
 
+void DeliveryNetwork::placeOrder(int clientID, Data date){
+	double max = 0;
+	Supermarket * s;
+	bool b= false;
+
+		Client * c = clientExists(clientID);
+
+	for(const auto &sup : supermarkets){
+		if(sup.second->getGPS().distance(c->getGPS())>max){
+		max = sup.second->getGPS().distance(c->getGPS())>max;
+		s = sup.second;
+	}
+	}
+
+	for(const auto &d: deliveries){
+		if(d->getData()==date){
+			d->addOrder(c,c->getBasket());
+			b = true;
+		}
+	}
+
+	if(!b){
+		deliveries.push_back( new Delivery(s,  date));
+		deliveries.at(deliveries.size()-1)->addOrder(c,c->getBasket());
+	}
+
+}
+
+	Client * DeliveryNetwork::clientExists(int id){
+		Client * cl = NULL;
+		for(auto & c : clients){
+			if(c.second->getId() == id) return c.second;
+		}
+		return cl;
+	}
+
+	Item * DeliveryNetwork::itemExists(int id){
+		Item * it = NULL;
+		for(auto & i : items){
+			if(i->getId() == id) return i;
+		}
+		return it;
+	}
+
+	void DeliveryNetwork::addDelivery(Delivery * d){
+		deliveries.push_back(d);
+	};
+
+
 bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 {
 	ifstream a(aname), b(bname), c(cname);
@@ -65,7 +114,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		end = buffer.find(";", begin);
 
 		buffer = buffer.substr(begin, end - begin);
-		
+
 		if (buffer.back() == '\r')
 			buffer.erase(buffer.end()-1);
 
@@ -100,7 +149,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 			end = buffer.find(";", begin+1);
 			id4 = stoll(buffer.substr(begin, end - begin));
 
-			
+
 			if (bl)
 			{
 				if (!graph.addDoubleEdge(id3, id4, i))
@@ -133,6 +182,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 {
+
 	gv = new GraphViewer(600, 600, false);
 
 	gv->defineEdgeCurved(false);
@@ -188,7 +238,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 	    X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
 	    Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
-	    
+
 	    swap(X, Y);			//Rotates 90ª counter-clockwise
 	    Y *= -1;
 
@@ -235,7 +285,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 		end = buffer.find(";", begin);
 
 		buffer = buffer.substr(begin, end - begin);
-		
+
 		if (buffer.back() == '\r')
 			buffer.erase(buffer.end()-1);
 
@@ -280,7 +330,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 		    {
 		    	gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
 		    }
-		   
+
 		    lastPos = inFile.tellg();
 
 		    i++;
@@ -304,8 +354,8 @@ bool DeliveryNetwork::loadClients(std::string filename)
 
 	int id;
 	double lat, lon;
-	vector<Item> items;
-	int itemid, amount;
+	vector<Item * > items;
+	int itemid,amount;
 	string buffer;
 
 	try
@@ -320,6 +370,8 @@ bool DeliveryNetwork::loadClients(std::string filename)
 			getline(ss, buffer, ';');
 			ss >> lon;
 
+			Client * c = new Client(id, lat, lon, items);
+
 			while (1)
 			{
 				if (!getline(ss, buffer, ';'))
@@ -330,10 +382,10 @@ bool DeliveryNetwork::loadClients(std::string filename)
 					break;
 				ss >> amount;
 
-				items.push_back(Item(itemid, amount));
+				c->addItem(new Item(itemid, amount));
 			}
 
-			clients.insert(make_pair(id, new Client(id, lat, lon, items)));
+			clients.insert(make_pair(id, c));
 			clients[id]->setRef(graph);
 		}
 	}
@@ -414,11 +466,11 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 			{
 				gv->setEdgeThickness(temp[i]->getAdj()[j].getEdgeId(), 40);
 				gv->setEdgeColor(temp[i]->getAdj()[j].getEdgeId(), RED);
-				
+
 			}
 		}
 	}
-	
+
 	gv->rearrange();
 }
 
@@ -450,7 +502,7 @@ void DeliveryNetwork::showPath(vector<long long> v)
 			gv->setVertexColor(startid, RED);
 		}
 
-		
+
 
 		if (v.size() == 1)
 		{
@@ -477,7 +529,7 @@ void DeliveryNetwork::showPath(vector<long long> v)
 				}
 			}
 		}
-		
+
 		vector<Vertex*> temp = graph.getPath(startid, endid);
 
 		for (int j = 0; j < temp.size() - 1; ++j)
@@ -488,7 +540,7 @@ void DeliveryNetwork::showPath(vector<long long> v)
 				{
 					gv->setEdgeThickness(temp[j]->getAdj()[k].getEdgeId(), 40);
 					gv->setEdgeColor(temp[j]->getAdj()[k].getEdgeId(), RED);
-					
+
 				}
 			}
 		}
@@ -498,7 +550,7 @@ void DeliveryNetwork::showPath(vector<long long> v)
 		i++;
 
 	}
-			
+
 	gv->rearrange();
 }
 
@@ -518,8 +570,14 @@ void DeliveryNetwork::printSupermarkets() const
 	}
 }
 
-Graph DeliveryNetwork::getGraph() const {
+Graph DeliveryNetwork::getGraph() const
+{
 	return graph;
+}
+
+GraphViewer* DeliveryNetwork::getGV() const
+{
+	return gv;
 }
 
 std::map<int, Client*> DeliveryNetwork::getClients() const
@@ -530,4 +588,96 @@ std::map<int, Client*> DeliveryNetwork::getClients() const
 std::map<int, Supermarket*> DeliveryNetwork::getSupermarkets() const
 {
 	return supermarkets;
+}
+
+void DeliveryNetwork::deleteGV()
+{
+	delete gv;
+}
+
+bool DeliveryNetwork::loadItems(string filename){
+	{
+		ifstream input(filename);
+
+		if (!input.is_open())
+		{
+			cout << "Error opening file!\n";
+			return false;
+		}
+
+		string id;
+
+		try
+		{
+			while (getline(input, id)) // id;lat;lon;item1;amount1;item2;amount2;...
+			{
+				items.push_back(new Item(stoi(id),1));
+			}
+		}
+		catch (exception &e)
+		{
+			return false;
+		}
+
+
+		input.close();
+
+		return true;
+	}
+}
+
+
+void DeliveryNetwork::printItems(){
+	for(int i = 0; i < items.size();i++){
+		cout << "item " << i+1 << ": ";
+		cout << items.at(i)->getId();
+		cout << "\n";
+	}
+}
+
+void DeliveryNetwork::loadDeliveries(){
+	for(const auto &c : clients){
+	placeOrder(c.second->getId(), Data(2,2,2018));
+	}
+}
+
+void DeliveryNetwork::showDeliveries(){
+	for(int i = 0; i< deliveries.size();i++){
+		cout << "\n Delivery " << deliveries.size() << " | " << deliveries.at(i)->getData() << endl;
+
+		for(const auto c : deliveries.at(i)->getOrders()){
+			cout << "Client ID: " << c->getId() << " | Items ID's: ";
+			for(int j = 0; j < c->getBasket().size(); j++){
+				cout << c->getBasket().at(j)->getId();
+				if(j!= c->getBasket().size()-1) cout << "-";
+			}
+			cout<< "\n";
+		}
+	}
+}
+
+void DeliveryNetwork::popDelivery(){
+	int i = -1;
+	Data data;
+
+	for(auto it : deliveries){
+		if(it->getData()<data)
+		i++;
+	}
+	if(deliveries.size()!=0)
+	deliveries.erase(deliveries.begin()+i);
+}
+
+void DeliveryNetwork::makeDelivery(){
+std::vector<long long> ids;
+Delivery * d = deliveries.at(deliveries.size()-1);
+
+ids.push_back(d->getSupermarket()->getRef().first);
+
+for(const auto& c: d->getOrders()){
+	ids.push_back(d->getSupermarket()->getRef().first);
+
+}
+
+	popDelivery();
 }
