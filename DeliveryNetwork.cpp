@@ -19,13 +19,13 @@ void DeliveryNetwork::placeOrder(int clientID, Data date){
 	Supermarket * s;
 	bool b= false;
 
-		Client * c = clientExists(clientID);
+	Client * c = clientExists(clientID);
 
 	for(const auto &sup : supermarkets){
 		if(sup.second->getGPS().distance(c->getGPS())>max){
-		max = sup.second->getGPS().distance(c->getGPS())>max;
-		s = sup.second;
-	}
+			max = sup.second->getGPS().distance(c->getGPS())>max;
+			s = sup.second;
+		}
 	}
 
 	for(const auto &d: deliveries){
@@ -42,25 +42,25 @@ void DeliveryNetwork::placeOrder(int clientID, Data date){
 
 }
 
-	Client * DeliveryNetwork::clientExists(int id){
-		Client * cl = NULL;
-		for(auto & c : clients){
-			if(c.second->getId() == id) return c.second;
-		}
-		return cl;
+Client * DeliveryNetwork::clientExists(int id){
+	Client * cl = NULL;
+	for(auto & c : clients){
+		if(c.second->getId() == id) return c.second;
 	}
+	return cl;
+}
 
-	Item * DeliveryNetwork::itemExists(int id){
-		Item * it = NULL;
-		for(auto & i : items){
-			if(i->getId() == id) return i;
-		}
-		return it;
+Item * DeliveryNetwork::itemExists(int id){
+	Item * it = NULL;
+	for(auto & i : items){
+		if(i->getId() == id) return i;
 	}
+	return it;
+}
 
-	void DeliveryNetwork::addDelivery(Delivery * d){
-		deliveries.push_back(d);
-	};
+void DeliveryNetwork::addDelivery(Delivery * d){
+	deliveries.push_back(d);
+};
 
 
 bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
@@ -119,12 +119,12 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 		buffer = buffer.substr(begin, end - begin);
 
 		if (buffer.back() == '\r')
-			buffer.erase(buffer.end()-1);
+		buffer.erase(buffer.end()-1);
 
 		if (buffer == "True")
-			bl = true;
+		bl = true;
 		else if (buffer == "False")
-			bl = false;
+		bl = false;
 		else
 		{
 			cout << "Bool parser error!\n";
@@ -202,7 +202,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 	if (!inFile) {
 		cerr << "Unable to open file datafile.txt";
-	    return false;
+		return false;
 	}
 
 	string   line;
@@ -225,33 +225,33 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 		linestream >> id;
 
-	    getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-	    linestream >> X;
-	    getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-	    linestream >> Y;
+		getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+		linestream >> X;
+		getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+		linestream >> Y;
 
-	    if (i == 0) 		//Sets the first point as the origin of the map
-	    {					//
-	    	Xadd = -X;		//
-	    	Yadd = -Y;		//
-	    }					//
-	    					//
-	    X += Xadd;			//
-	    Y += Yadd;			//
+		if (i == 0) 		//Sets the first point as the origin of the map
+		{					//
+			Xadd = -X;		//
+			Yadd = -Y;		//
+		}					//
+		//
+		X += Xadd;			//
+		Y += Yadd;			//
 
-	    X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
-	    Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
+		X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
+		Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
 
-	    swap(X, Y);			//Rotates 90ª counter-clockwise
-	    Y *= -1;
+		swap(X, Y);			//Rotates 90ª counter-clockwise
+		Y *= -1;
 
-	    // cout << X << ", " << Y << "\n";
+		// cout << X << ", " << Y << "\n";
 
-	    gv->addNode(id, X, Y);
+		gv->addNode(id, X, Y);
 
-	    gv->setVertexLabel(id, dummy);
+		gv->setVertexLabel(id, dummy);
 
-	    i++;
+		i++;
 	}
 
 	inFile.close();
@@ -262,7 +262,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 	if (!inFile) {
 		cerr << "Unable to open file datafile.txt";
-	    exit(1);   // call system to stop
+		exit(1);   // call system to stop
 	}
 
 	ifstream b(bname);
@@ -290,12 +290,12 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 		buffer = buffer.substr(begin, end - begin);
 
 		if (buffer.back() == '\r')
-			buffer.erase(buffer.end()-1);
+		buffer.erase(buffer.end()-1);
 
 		if (buffer == "True")
-			bl = true;
+		bl = true;
 		else if (buffer == "False")
-			bl = false;
+		bl = false;
 		else
 		{
 			cout << "Bool parser error!\n";
@@ -320,23 +320,23 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 			linestream >> idAresta;
 
-		    getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-		    linestream >> idNoOrigem;
-		    getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-		    linestream >> idNoDestino;
+			getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+			linestream >> idNoOrigem;
+			getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+			linestream >> idNoDestino;
 
-		    if (bl)
-		    {
-		    	gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
-		    }
-		    else
-		    {
-		    	gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
-		    }
+			if (bl)
+			{
+				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
+			}
+			else
+			{
+				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
+			}
 
-		    lastPos = inFile.tellg();
+			lastPos = inFile.tellg();
 
-		    i++;
+			i++;
 		}
 	}
 
@@ -378,11 +378,11 @@ bool DeliveryNetwork::loadClients(std::string filename)
 			while (1)
 			{
 				if (!getline(ss, buffer, ';'))
-					break;
+				break;
 				ss >> itemid;
 
 				if (!getline(ss, buffer, ';'))
-					break;
+				break;
 				ss >> amount;
 
 				c->addItem(new Item(itemid, amount));
@@ -479,8 +479,10 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 
 void DeliveryNetwork::showPath(vector<long long> v)
 {
+
+
 	if (v.size() < 2)
-		return;
+	return;
 
 	long long startid = v[0], endid = v[0];
 
@@ -497,12 +499,14 @@ void DeliveryNetwork::showPath(vector<long long> v)
 		{
 			gv->setVertexSize(startid, 300);
 			gv->setVertexColor(startid, GREEN);
+			gv->setVertexIcon(startid,"res/cartIcon.png");
 			gv->setVertexLabel(startid, "Start");
 		}
 		else
 		{
-			gv->setVertexSize(startid, 100);
-			gv->setVertexColor(startid, RED);
+			gv->setVertexSize(startid, 200);
+				gv->setVertexColor(startid, RED);
+			gv->setVertexIcon(startid,"res/homeIcon.png");
 		}
 
 
@@ -640,7 +644,7 @@ void DeliveryNetwork::printItems(){
 
 void DeliveryNetwork::loadDeliveries(){
 	for(const auto &c : clients){
-	placeOrder(c.second->getId(), Data(2,2,2018));
+		placeOrder(c.second->getId(), Data(2,2,2018));
 	}
 }
 
@@ -674,15 +678,22 @@ void DeliveryNetwork::popDelivery(){
 vector<long long> DeliveryNetwork::makeDelivery(){
 	string tempstr;
 
-std::vector<long long> ids;
-Delivery * d = deliveries.at(deliveries.size()-1);
+	std::vector<long long> ids;
+	if(deliveries.size() == 0)
+	{	 cout << "No schedule deliveries.";
+return ids;}
+
+	Delivery * d = deliveries.at(deliveries.size()-1);
 
 
-ids.push_back(d->getSupermarket()->getRef().first);
-
-for(const auto& c: d->getOrders()){
 	ids.push_back(d->getSupermarket()->getRef().first);
 
-}
+	for(const auto c: d->getOrders()){
+		if(c!=NULL)
+		ids.push_back(c->getRef().first);
 
+	}
+	cout << "Delivery done!\n";
+	popDelivery();
+	return ids;
 }

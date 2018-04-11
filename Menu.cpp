@@ -9,6 +9,7 @@
 using namespace std;
 
 string tempstr;
+vector <long long> ids;
 
 Menu::Menu() {}
 
@@ -258,7 +259,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 				else if (input == "3")
 				{
 					ShowPath();
-					pressAnyKey();
 					break;
 				}
 
@@ -271,7 +271,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 				else if (input == "5")
 				{
-					showDeliveries();
+					network.showDeliveries();
 					pressAnyKey();
 					break;
 				}
@@ -279,9 +279,9 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 				else if (input == "6")
 				{
-
-					loadViewer("input/a.txt","input/b.txt", "input/c.txt",			network.makeDelivery() );
+					loadViewer("input/a.txt","input/b.txt", "input/c.txt",	network.makeDelivery());
 					pressAnyKey();
+
 					break;
 				}
 
@@ -304,8 +304,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		ui_utilities::ClearScreen();
 		printBanner();
 
-		// string tempstr;
-
 		cout << "Supermarkets:\n\n";
 
 		network.printSupermarkets();
@@ -323,7 +321,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 			utilities::trimString(tempstr);
 
-		// string tempstr;
 
 		cout << "Clients:\n\n";
 
@@ -343,7 +340,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 	ui_utilities::ClearScreen();
 	printBanner();
 
-	vector<long long> ids;
 	Supermarket* supermarket = NULL;
 	Client* client = NULL;
 
@@ -438,8 +434,10 @@ loadViewer(afilename, bfilename, cfilename, ids);
 
 
 void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
+	if(ids.size()== 0){
+		return;
+	}
 	network.loadViewer(a, b, c);
-
 	network.showPath(ids);
 
 	cout << "\nPress any key to continue!\n";
@@ -542,9 +540,3 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 
 		network.printItems();
 	}
-
-
-void Menu::showDeliveries(){
-	network.showDeliveries();
-	pressAnyKey();
-}
