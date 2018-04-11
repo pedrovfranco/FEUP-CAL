@@ -69,38 +69,6 @@ void Client::addItems(vector<int> i){
 	}
 }
 
-	if(ano == c2.getAno())
-	{
-		if(mes < c2.getMes())
-		{
-			return false;
-		}
-
-		if(mes > c2.getMes())
-		{
-			return true;
-		}
-
-		if(mes == c2.getMes())
-		{
-			if(diaN < c2.getDia())
-			{
-				return false;
-			}
-
-			if(dia > c2.getDia())
-			{
-				return true;
-			}
-
-			if(dia == c2.getDia())
-			{
-				return false;
-			}
-		}
-	}
-}
-
 ostream& operator<<(ostream &os, const Client &input)
 {
 	os << input.getId() << ", " << input.getGPS();
