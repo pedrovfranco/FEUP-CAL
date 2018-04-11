@@ -26,6 +26,9 @@ class DeliveryNetwork {
 	std::map<int, Supermarket*> supermarkets;
 	std::vector<Delivery *> deliveries;
 	std::vector<Item *> items;
+	string afilename;
+		string bfilename;
+			string cfilename;
 
 public:
 
@@ -53,10 +56,15 @@ public:
 	std::map<int, Supermarket*> getSupermarkets() const;
 	void loadDeliveries();
 	void showDeliveries();
-	void makeDelivery();
+	vector<long long> makeDelivery();
+	string getAFileName(){return afilename;}
+	string getBFileName(){return bfilename;}
 
+	string getCFileName(){return cfilename;}
 
-
+void setAFileName(string a){this->afilename = a;}
+void setBFileName(string b){this->bfilename = b;}
+void setCFileName(string c){this->cfilename = c;}
 	void deleteGV();
 };
 

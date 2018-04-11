@@ -3,14 +3,14 @@
 //
 
 #include "DeliveryNetwork.h"
-
 #include <fstream>
 #include <sstream>
 #include <cfloat>
 #include <limits>
 #include <algorithm>
 
-
+#include "utilities.h"
+#include "ui_utilities.h"
 
 using namespace std;
 
@@ -65,6 +65,7 @@ void DeliveryNetwork::placeOrder(int clientID, Data date){
 
 bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 {
+
 	ifstream a(aname), b(bname), c(cname);
 
 	if (!a.is_open() || !b.is_open() || !c.is_open())
@@ -645,7 +646,7 @@ void DeliveryNetwork::loadDeliveries(){
 
 void DeliveryNetwork::showDeliveries(){
 	for(int i = 0; i< deliveries.size();i++){
-		cout << "\n Delivery " << deliveries.size() << " | " << deliveries.at(i)->getData() << endl;
+		cout << "\n Delivery " << i+1 << " | " << deliveries.at(i)->getData() << endl;
 
 		for(const auto c : deliveries.at(i)->getOrders()){
 			cout << "Client ID: " << c->getId() << " | Items ID's: ";
@@ -670,9 +671,12 @@ void DeliveryNetwork::popDelivery(){
 	deliveries.erase(deliveries.begin()+i);
 }
 
-void DeliveryNetwork::makeDelivery(){
+vector<long long> DeliveryNetwork::makeDelivery(){
+	string tempstr;
+
 std::vector<long long> ids;
 Delivery * d = deliveries.at(deliveries.size()-1);
+
 
 ids.push_back(d->getSupermarket()->getRef().first);
 
@@ -681,5 +685,4 @@ for(const auto& c: d->getOrders()){
 
 }
 
-	popDelivery();
 }

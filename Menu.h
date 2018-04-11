@@ -30,6 +30,7 @@ public:
 	void ShowPath();
 	void placeOrder();
 	void ListItems();
+	void loadViewer(string a, string b, string c, 	vector<long long> ids);
 
 	void pressAnyKey();
 

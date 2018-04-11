@@ -1,3 +1,5 @@
+
+
 #include "Menu.h"
 
 #include <iostream>
@@ -79,6 +81,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			afilename = "input/a.txt";
 
 			ifstream afile(afilename);
+			network.setAFileName(afilename);
 
 			if (!afile.is_open())
 			{
@@ -92,6 +95,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 			getline(cin, bfilename);
 			utilities::trimString(bfilename);
+			network.setBFileName(bfilename);
 			if (bfilename == "")
 			bfilename = "input/b.txt";
 
@@ -109,6 +113,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 			getline(cin, cfilename);
 			utilities::trimString(cfilename);
+			network.setCFileName(cfilename);
 			if (cfilename == "")
 			cfilename = "input/c.txt";
 
@@ -222,6 +227,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			cout << "3- Show path between places \n";
 			cout << "4- Place Order \n";
 			cout << "5- Show deliveries in queue \n";
+			cout << "6- Make delivery \n";
 			cout << "0- Quit \n\n";
 
 
@@ -270,9 +276,11 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 					break;
 				}
 
+
 				else if (input == "6")
 				{
-					network.makeDelivery();
+
+					loadViewer("input/a.txt","input/b.txt", "input/c.txt",			network.makeDelivery() );
 					pressAnyKey();
 					break;
 				}
@@ -424,8 +432,13 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			cout << "Client not found!\n\n";
 		}
 	}
+loadViewer(afilename, bfilename, cfilename, ids);
+	}
 
-	network.loadViewer(afilename, bfilename, cfilename);
+
+
+void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
+	network.loadViewer(a, b, c);
 
 	network.showPath(ids);
 
@@ -433,15 +446,12 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 	getline(cin, tempstr);
 
 	network.getGV()->closeWindow();
-	}
-
-
-
-
+}
 
 
 	void Menu::placeOrder(){
 		int day = 1;
+			int d, m, y;
 
 		string clientID;
 		string itemID;
@@ -476,7 +486,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		while (itemID!="\n")
 		{
 
-			cout << "\nChoose a client (Press Enter to finish): ";
+			cout << "\nChoose an Item (Press Enter to finish): ";
 
 			getline(cin, itemID);
 			utilities::trimString(itemID);
@@ -510,8 +520,13 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			}
 
 		}
+
+		cout << "\nEnter date (ex.: 1 2 2019): ";
+
+
+		cin >> d >> m >> y;
 		network.clientExists(stoi(clientID))->addItems(ids);
-		network.placeOrder(stoi(clientID), Data(1,2,2018));
+		network.placeOrder(stoi(clientID), Data(d, m, y));
 
 	}
 
