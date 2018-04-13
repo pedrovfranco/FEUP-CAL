@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <ctime>
+#include <chrono>
 
 
 using namespace std;
@@ -352,6 +354,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		cout << "\nChoose a supermarket id: ";
 
 		getline(cin, tempstr);
+		auto start = std::chrono::high_resolution_clock::now();
 		utilities::trimString(tempstr);
 
 		if (utilities::isNumeric(tempstr) && tempstr != "")
@@ -438,7 +441,11 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 		return;
 	}
 	network.loadViewer(a, b, c);
+	int start_s=clock();
 	network.showPath(ids);
+	// the code you wish to time goes here
+int stop_s=clock();
+cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
 
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);

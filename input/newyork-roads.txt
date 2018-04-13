@@ -1,0 +1,96 @@
+20187399;Newmark Street;False
+20188776;Glenford Lane;False
+20189058;Carrol Street;False
+20189912;Lido Court;False
+20192276;Short Court;False
+20192679;Hooper Court;False
+20194231;Thadford Street;False
+20194287;Lorijean Lane;False
+20194893;Lark Lane;False
+20194943;Roebling Place;False
+20195860;Tollgate Drive;False
+20196874;Hooper Street;False
+20197018;Larkfield Road;False
+20197306;East Spur;False
+20197526;Julia Lane;False
+20197631;1st Avenue;False
+20197798;Ronny Street;False
+20200706;Mansfield Lane;False
+20200721;Fenway Drive;False
+20201096;Pumpkin Street;False
+20204738;Findley Drive;False
+20205723;Norma Street;False
+20207410;Given Lane;False
+20208499;Caton Street;False
+20208680;South Spur;False
+20209965;Sandy Street;False
+20210513;Crystal Lane;False
+20211409;Foothill Lane;False
+20213069;Lansing Lane;False
+20213395;Brunswick Drive;False
+20213591;Tiffany Lane;False
+20213817;Romany Way;False
+20213873;Hemlock Avenue;False
+20214880;Sarina Drive;False
+20215505;Adrian Street;False
+20215726;Ilsa Court;False
+20216431;S Mansfield Lane S;False
+20218220;Paula Street;False
+20218221;Paula Street;False
+20218828;Penfield Drive;False
+20219032;Yeoman Drive;False
+20219917;Cherrywood Drive;False
+20221634;Cedar Road;False
+20222749;Effron Avenue;False
+20222822;Ramita Lane;False
+20223654;Nita Street;False
+20223727;Joan Place;False
+20225215;Bea Avenue;False
+20225452;Metcale Lane;False
+20226026;South Ketay Drive;False
+20226073;Cendry Lane;False
+20228258;Harwick Street;False
+20228567;Clarissa Lane;False
+20229537;Beacon Lane;False
+20229846;2nd Street South;False
+20230166;Harley Avenue;False
+20230291;Dean Court;False
+20230474;Burrwood Court;False
+20231581;Abby Drive;False
+20232407;Dougal Lane;False
+20233112;Graystone Drive;False
+20233679;Richlee Drive;False
+20235852;Netcong Place;False
+20239301;Tinton Place;False
+20239877;Meadow Lark Drive;False
+20240055;Siegfried Place;False
+20240461;Lynn Avenue;False
+20241375;1st Street South;False
+20242694;Cedrus Avenue;False
+20244070;Revonna Lane;False
+20244610;Sipala Court;False
+20246582;Magenta Lane;False
+20246679;Lynn Avenue South;False
+20247019;Ketay Street;False
+20249037;Markham Place;False
+20249507;Tree Top Lane;False
+20249772;Ringler Drive;False
+20250137;North Ketay Drive;False
+20250289;Shelby Road;False
+20250640;Corbitt Street;False
+20250742;Remsen Street;False
+20250869;Eastover Drive;False
+20252240;West Ketay Drive;False
+20252418;Forsythe Drive;False
+20252938;Basill Lane;False
+20256376;Tamarack Street;False
+20256512;Brandon;False
+20256834;Manning Drive;False
+20257486;Twig Lane;False
+49325974;Clay Pitts Road;False
+49325975;Clay Pitts Road;False
+163118850;Burr Road;False
+465806891;Larkfield Road;False
+552160740;;False
+552161210;Sophie Court;False
+552161211;Samara Court;False
