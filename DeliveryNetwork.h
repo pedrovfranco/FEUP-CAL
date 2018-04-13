@@ -61,7 +61,7 @@ public:
 	string getBFileName(){return bfilename;}
 
 	string getCFileName(){return cfilename;}
-
+	void showGraph(vector<long long> sups, vector<long long> homes);
 void setAFileName(string a){this->afilename = a;}
 void setBFileName(string b){this->bfilename = b;}
 void setCFileName(string c){this->cfilename = c;}

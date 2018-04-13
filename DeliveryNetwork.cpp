@@ -186,12 +186,12 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 {
 
-	gv = new GraphViewer(600, 600, false);
+	gv = new GraphViewer(900, 900, false);
 
 	gv->defineEdgeCurved(false);
 	gv->defineVertexSize(1);
 
-	gv->createWindow(600, 600);
+	gv->createWindow(900, 900);
 
 	gv->defineEdgeColor("blue");
 	gv->defineVertexColor("yellow");
@@ -446,6 +446,26 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 
 
 
+void DeliveryNetwork::showGraph(vector<long long> sups, vector<long long> homes)
+{ int it = 0;
+
+	for(auto i : sups){
+		it++;
+		gv->setVertexSize(i, 200);
+		gv->setVertexColor(i, GREEN);
+		gv->setVertexLabel(i,std::to_string(it));
+		gv->setVertexIcon(i,"res/cartIcon.png");
+	}
+
+	for(auto i : homes){
+		gv->setVertexSize(i, 200);
+		gv->setVertexColor(i, GREEN);
+
+		gv->setVertexIcon(i,"res/homeIcon.png");
+	}
+
+	gv->rearrange();
+}
 
 void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 {
@@ -468,7 +488,7 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 			if (graph.findVertex(temp[i]->getAdj()[j].getId()) == temp[i+1])
 			{
 				gv->setEdgeThickness(temp[i]->getAdj()[j].getEdgeId(), 40);
-				gv->setEdgeColor(temp[i]->getAdj()[j].getEdgeId(), RED);
+				gv->setEdgeColor(temp[i]->getAdj()[j].getEdgeId(), WHITE);
 
 			}
 		}
@@ -546,7 +566,7 @@ void DeliveryNetwork::showPath(vector<long long> v)
 				if (graph.findVertex(temp[j]->getAdj()[k].getId()) == temp[j+1])
 				{
 					gv->setEdgeThickness(temp[j]->getAdj()[k].getEdgeId(), 40);
-					gv->setEdgeColor(temp[j]->getAdj()[k].getEdgeId(), RED);
+					gv->setEdgeColor(temp[j]->getAdj()[k].getEdgeId(), GRAY);
 
 				}
 			}
@@ -560,6 +580,11 @@ void DeliveryNetwork::showPath(vector<long long> v)
 
 	gv->rearrange();
 }
+
+
+
+
+
 
 void DeliveryNetwork::printClients() const
 {
