@@ -356,6 +356,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		vector<long long> ids;
 		Supermarket* supermarket = NULL;
 		Client* client = NULL;
+		int start_s;
 
 		cout << "Supermarkets:\n\n";
 
@@ -365,14 +366,10 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		{
 			cout << "\nChoose a supermarket id: ";
 
-<<<<<<< HEAD
 		getline(cin, tempstr);
-		auto start = std::chrono::high_resolution_clock::now();
+		start_s=clock();
+		//auto start = std::chrono::high_resolution_clock::now();
 		utilities::trimString(tempstr);
-=======
-			getline(cin, tempstr);
-			utilities::trimString(tempstr);
->>>>>>> 7cefc8b9d1587581e254233b7901c3a66190cc4a
 
 			if (utilities::isNumeric(tempstr) && tempstr != "")
 			{
@@ -451,6 +448,9 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 		network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 
+		int stop_s=clock();
+		cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
+
 		network.showPath(ids);
 
 		cout << "\nPress any key to continue!\n";
@@ -466,11 +466,11 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 		return;
 	}
 	network.loadViewer(a, b, c);
-	int start_s=clock();
+	// int start_s=clock();
 	network.showPath(ids);
 	// the code you wish to time goes here
-int stop_s=clock();
-cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
+// int stop_s=clock();
+// cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
 
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
