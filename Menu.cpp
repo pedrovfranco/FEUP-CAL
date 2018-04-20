@@ -274,6 +274,9 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 				else if (input == "5")
 				{
+					ui_utilities::SetWindow(width, height);
+					ui_utilities::ClearScreen();
+					printBanner();
 					network.showDeliveries();
 					pressAnyKey();
 					break;
