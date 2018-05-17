@@ -6,7 +6,7 @@
 Vertex::Vertex(GPS in): info(in) {}
 
 
-Edge::Edge(int edgeId, long long id, double w): edgeId(edgeId), id(id), weight(w) {}
+Edge::Edge(int edgeId, long long id, double w, string name = "Road"): edgeId(edgeId), id(id), weight(w), roadName(name) {}
 
 int Edge::getEdgeId() const {
 	return edgeId;
@@ -18,6 +18,10 @@ long long Edge::getId() const {
 
 int Graph::getNumVertex() const {
 	return vertexSet.size();
+}
+
+string Edge::getRoadName() const {
+	return roadName;
 }
 
 /*

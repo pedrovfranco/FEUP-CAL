@@ -59,10 +59,12 @@ class Edge {
     int edgeId;             // Edge id
     long long id;           // Vertex id
     double weight;          // edge weight
+    string roadName;
 public:
-    Edge(int edgeId, long long id, double w);
+    Edge(int edgeId, long long id, double w, string name);
     int getEdgeId() const;
     long long getId() const;
+    string getRoadName() const;
     friend class Graph;
     friend class Vertex;
 
