@@ -76,6 +76,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 
 	string buffer;
+	//string nroad;
 	int begin, end = 0, i = 0;
 	long long id1, id2, id3, id4;
 	double lat, lon;
@@ -113,6 +114,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 		begin = end+1;
 		end = buffer.find(";", begin);
+		//nroad = buffer.substr(begin, end - begin);
 		begin = end+1;
 		end = buffer.find(";", begin);
 
@@ -272,6 +274,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 	bool bl;
 	long long idAresta = 0, idNoOrigem = 0, idNoDestino = 0, id1, id2;
 	string buffer;
+	string nroad, lastRoad;
 	i = 0;
 
 
@@ -284,6 +287,16 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 		begin = end+1;
 		end = buffer.find(";", begin);
+		if( buffer.substr(begin, end - begin) == "")
+		{
+			nroad = lastRoad;
+		}
+		else
+		{
+			nroad = buffer.substr(begin, end - begin);
+			lastRoad = nroad;
+		}
+
 		begin = end+1;
 		end = buffer.find(";", begin);
 
@@ -301,6 +314,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			cout << "Bool parser error!\n";
 			return false;
 		}
+
 
 		while(getline(inFile, line))
 		{
@@ -328,10 +342,12 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			if (bl)
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
+				gv->setEdgeLabel(i, nroad);
 			}
 			else
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
+				gv->setEdgeLabel(i, nroad);
 			}
 
 			lastPos = inFile.tellg();
