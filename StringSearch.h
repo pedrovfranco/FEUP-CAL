@@ -9,7 +9,7 @@ using namespace std;
 class StringSearch {
     public:
         static bool kmp(string p, string t);
-        static int editDistance(string p, strig t);
+        static int editDistance(string p, string t);
 
     private:
         static vector<int> prefixFunction(string p);
