@@ -6,7 +6,7 @@
 
 using namespace std;
 
- static void StringSearch::kmp(string p, string t){
+ static bool StringSearch::kmp(string p, string t){
      int n = t.length();
      int m = p.length();
      vector<int> pi = prefixFunction(p);
@@ -20,9 +20,10 @@ using namespace std;
             q++;
         
         if(q == m)
-                q = pi[q]; 
+               return true;
          }
      }
+     return false;
  }
 
  static vector<int> StringSearch::prefixFunction(string p){
@@ -44,13 +45,13 @@ using namespace std;
 
 
     static int editDistance(string p, strig t){
-       int n = text.length();
+       int n = t.length();
 	    vector<int> d(n + 1);
 	    int old, neww;
 
 	    for (int j = 0; j <= n; j++)
 		    d[j] = j;
-	    int m = pattern.length();
+	    int m = p.length();
 
 	    for (int i = 1; i <= m; i++)
 	    {
@@ -59,7 +60,7 @@ using namespace std;
 
 		    for (int j = 1; j <= n; j++)
 		    {
-			    if (pattern[i - 1] == text[j - 1]) neww = old;
+			    if (p[i - 1] == t[j - 1]) neww = old;
 			    else
 			    {
 				    neww = min(old, d[j]);
