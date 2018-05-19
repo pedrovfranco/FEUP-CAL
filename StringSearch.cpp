@@ -66,7 +66,7 @@ vector<int> StringSearch::prefixFunction(string p){ //q = pos, k = cnd
 }
 
 
-int editDistance(string p, string t){
+int StringSearch::editDistance(string p, string t){
 	int n = t.length();
 	vector<int> d(n + 1);
 	int old, neww;
@@ -96,3 +96,9 @@ int editDistance(string p, string t){
 	return d[n];
 }
 
+double StringSearch::getPercentageEditDistance(string p, string t)
+{
+	int size = max(p.length(), t.length());
+
+	return (editDistance(p, t)/(double)size);
+}

@@ -27,8 +27,8 @@ class DeliveryNetwork {
 	std::vector<Delivery *> deliveries;
 	std::vector<Item *> items;
 	string afilename;
-		string bfilename;
-			string cfilename;
+	string bfilename;
+	string cfilename;
 
 public:
 
@@ -44,7 +44,7 @@ public:
 	void printSupermarkets() const;
 
 	Client * clientExists(int id);
-		Item * itemExists(int id);
+	Item * itemExists(int id);
 	void addDelivery(Delivery * d);
 	void placeOrder(int clientID, Data date);
 	void printItems();
@@ -62,9 +62,9 @@ public:
 
 	string getCFileName(){return cfilename;}
 	void showGraph(vector<long long> sups, vector<long long> homes);
-void setAFileName(string a){this->afilename = a;}
-void setBFileName(string b){this->bfilename = b;}
-void setCFileName(string c){this->cfilename = c;}
+	void setAFileName(string a){this->afilename = a;}
+	void setBFileName(string b){this->bfilename = b;}
+	void setCFileName(string c){this->cfilename = c;}
 	void deleteGV();
 };
 

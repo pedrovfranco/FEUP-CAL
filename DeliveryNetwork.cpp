@@ -76,7 +76,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 
 	string buffer;
-	//string nroad;
+	string nroad;
 	int begin, end = 0, i = 0;
 	long long id1, id2, id3, id4;
 	double lat, lon;
@@ -114,7 +114,8 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 		begin = end+1;
 		end = buffer.find(";", begin);
-		//nroad = buffer.substr(begin, end - begin);
+		nroad = buffer.substr(begin, end - begin);
+
 		begin = end+1;
 		end = buffer.find(";", begin);
 
@@ -157,7 +158,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 			if (bl)
 			{
-				if (!graph.addDoubleEdge(id3, id4, i))
+				if (!graph.addDoubleEdge(id3, id4, i, nroad))
 				{
 					cout << "Failed edge!\n";
 					return false;
@@ -165,7 +166,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 			}
 			else
 			{
-				if (!graph.addEdge(id3, id4, i))
+				if (!graph.addEdge(id3, id4, i, nroad))
 				{
 					cout << "Failed edge!\n";
 					return false;
@@ -187,7 +188,6 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 {
-
 	gv = new GraphViewer(900, 900, false);
 
 	gv->defineEdgeCurved(false);
@@ -276,6 +276,7 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 	string buffer;
 	string nroad, lastRoad;
 	i = 0;
+	int firstStreet, lastStreet;
 
 
 
@@ -287,7 +288,8 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 
 		begin = end+1;
 		end = buffer.find(";", begin);
-		if( buffer.substr(begin, end - begin) == "")
+
+		if (buffer.substr(begin, end - begin) == "")
 		{
 			nroad = lastRoad;
 		}
@@ -297,18 +299,20 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			lastRoad = nroad;
 		}
 
+		nroad = buffer.substr(begin, end - begin);
+
 		begin = end+1;
 		end = buffer.find(";", begin);
 
 		buffer = buffer.substr(begin, end - begin);
 
 		if (buffer.back() == '\r')
-		buffer.erase(buffer.end()-1);
+			buffer.erase(buffer.end()-1);
 
 		if (buffer == "True")
-		bl = true;
+			bl = true;
 		else if (buffer == "False")
-		bl = false;
+			bl = false;
 		else
 		{
 			cout << "Bool parser error!\n";
@@ -342,12 +346,12 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			if (bl)
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
-				gv->setEdgeLabel(i, nroad);
+				// gv->setEdgeLabel(i, nroad);
 			}
 			else
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
-				gv->setEdgeLabel(i, nroad);
+				// gv->setEdgeLabel(i, nroad);
 			}
 
 			lastPos = inFile.tellg();
