@@ -6,7 +6,7 @@
 #include <chrono>
 
 #include "StringSearch.h"
-
+#include <iomanip>
 
 using namespace std;
 
@@ -308,6 +308,14 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 					break;
 				}
 
+				else if (input == "9")
+				{
+					searchCrossRoads();
+					pressAnyKey();
+
+					break;
+				}
+
 				else if (input == "0")
 				{
 					ui_utilities::ClearScreen();
@@ -494,22 +502,10 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 
 void Menu::loadGraph(){
 
-	vector<long long> ids;
-		vector<long long> homes;
-	for(auto i : network.getSupermarkets()){
-		ids.push_back(	i.second->getRef().first);
-	}
 
-	for(auto i : network.getClients()){
-		homes.push_back(	i.second->getRef().first);
-	}
-
-
-	if(ids.size()== 0){
-		return;
-	}
 	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
-	network.showGraph(ids,homes);
+	network.showGraph(network.getSupermarketsIDs(),network.getClientsIDs());
+
 
 	cout << "\nPress any key to continue!\n";
 	getline(cin, tempstr);
@@ -610,14 +606,13 @@ void Menu::ListItems(){
 }
 
 
-void Menu::searchRoadByName()
+Edge * Menu::searchRoadByName()
 {
-    vector<long long> ids;
-    vector<long long> homes;
-
 	ui_utilities::SetWindow(width, height);
 	ui_utilities::ClearScreen();
 	printBanner();
+
+	vector<Edge> edges;
 
 	cout << "Enter a road name: ";
 
@@ -626,40 +621,47 @@ void Menu::searchRoadByName()
 
 
 
-    for(auto i : network.getSupermarkets()){
-        ids.push_back(	i.second->getRef().first);
-    }
+    //network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 
-    for(auto i : network.getClients()){
-        homes.push_back(	i.second->getRef().first);
-    }
+	//if(temp.size()!=1)cout << "A perfect match wasn't found! Here are the closest matches:\n";
 
-    network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 
 	int j = 0;
 	for (auto i : temp)
 	{
-		cout << network.getGraph().findEdge(i.first).getRoadName() << ", " << i.second << "\n";
-        network.getGV()->setEdgeLabel(network.getGraph().findEdge(i.first).getEdgeId(), network.getGraph().findEdge(i.first).getRoadName());
+		cout << j+1 << " - "<< network.getGraph().findEdge(i.first).getRoadName() << " | " << fixed << setprecision(3) << (1-i.second) * 100 << "%\n";
+		edges.push_back(network.getGraph().findEdge(i.first));
 
-
-        if(i.second < 0.7) {
-            network.markRoadFound(network.getGraph().findEdge(i.first).getRoadName());
-		}
-
-		if (j == 10)
+		if (j ==5)
 			break;
 
 		j++;
 	}
 
+	int op=-1;
+	cout <<"\nWhich road do you which to search?:\n";
+	while(op<1 || op>j+1) {
+		cout << "Insert a valid option:\n";
+		cin >> op;
 
+	}
 
-    network.showGraph(ids,homes);
+	cin.ignore(1000,'\n');
+	return &edges.at(op-1);
+
+    /*network.showGraph(network.getSupermarketsIDs(),network.getClientsIDs());
     cout << "\nPress any key to continue!\n";
+    cin.ignore(1000,'\n');
     getline(cin, tempstr);
 
     network.getGV()->closeWindow();
+*/
+}
+
+void Menu::searchCrossRoads(){
+	Edge * edge = searchRoadByName();
+
+
 
 }
 

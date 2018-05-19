@@ -67,8 +67,10 @@ public:
 	void setCFileName(string c){this->cfilename = c;}
 	void deleteGV();
     void markRoadFound(string name);
+    vector<long long> getClientsIDs();
+    vector<long long> getSupermarketsIDs();
 
-    };
+};
 
 
 #endif //CAL_PROJ_DELIVERYNETWORK_H

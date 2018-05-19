@@ -53,7 +53,7 @@ public:
 	int getQueueIndex(){return queueIndex;}
 	void setQueueIndex(int i){queueIndex=i;}
 	vector<Edge> getAdj() const;
-	Edge * getEdge(string roadName);
+	Edge getEdge(string roadName);
 	};
 
 

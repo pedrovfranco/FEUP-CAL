@@ -758,3 +758,19 @@ void DeliveryNetwork::markRoadFound(string name){
         }
     }
 }
+
+vector<long long> DeliveryNetwork::getClientsIDs(){
+	vector<long long> homes;
+	for(auto i : getClients()){
+		homes.push_back(	i.second->getRef().first);
+	}
+return homes;
+}
+
+vector<long long> DeliveryNetwork::getSupermarketsIDs(){
+	vector<long long> sup;
+	for(auto i : getSupermarkets()){
+		sup.push_back(	i.second->getRef().first);
+	}
+return sup;
+}
