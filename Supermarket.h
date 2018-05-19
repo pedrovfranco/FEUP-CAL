@@ -13,14 +13,14 @@
 class Supermarket {
 
 	int id;
-	std::string address;
+	string chain;
 	GPS gps;
-	std::pair<long long, Vertex*> ref; // reference
-	std::vector<Client> clients; // Container
+	pair<long long, Vertex*> ref; // reference
 
 public:
 	Supermarket();
 	Supermarket(int id, double latitude, double longitude);
+    Supermarket(int id, double latitude, double longitude, string chain);
 
 	void setRef(const Graph &graph);
 

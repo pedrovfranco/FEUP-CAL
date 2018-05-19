@@ -14,6 +14,13 @@ Supermarket::Supermarket(int id, double latitude, double longitude)
 	this->gps = GPS(latitude, longitude);
 }
 
+Supermarket::Supermarket(int id, double latitude, double longitude, string chain)
+{
+	this->id = id;
+	this->gps = GPS(latitude, longitude);
+	this->chain = chain;
+}
+
 
 void Supermarket::setRef(const Graph &graph)
 {
