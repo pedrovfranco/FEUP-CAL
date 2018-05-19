@@ -38,6 +38,11 @@ GPS Supermarket::getGPS() const
 	return gps;
 }
 
+string Supermarket::getName() const
+{
+	return chain;
+}
+
 pair<long long, Vertex*> Supermarket::getRef() const
 {
 	return ref;
@@ -45,6 +50,6 @@ pair<long long, Vertex*> Supermarket::getRef() const
 
 ostream& operator<<(ostream &os, const Supermarket &input)
 {
-	os << input.getId() << ", " << input.getGPS();
+	os << input.getId() << ", " << input.getName() << ", " << input.getGPS();
 	return os;
 }

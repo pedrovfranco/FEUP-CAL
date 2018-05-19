@@ -76,7 +76,7 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 
 	string buffer;
-	string nroad;
+	string nroad, lastRoad;
 	int begin, end = 0, i = 0;
 	long long id1, id2, id3, id4;
 	double lat, lon;
@@ -114,7 +114,15 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 		begin = end+1;
 		end = buffer.find(";", begin);
-		nroad = buffer.substr(begin, end - begin);
+		if (buffer.substr(begin, end - begin) == "")
+		{
+			nroad = lastRoad;
+		}
+		else
+		{
+			nroad = buffer.substr(begin, end - begin);
+			lastRoad = nroad;
+		}
 
 		begin = end+1;
 		end = buffer.find(";", begin);
@@ -299,8 +307,6 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			lastRoad = nroad;
 		}
 
-		nroad = buffer.substr(begin, end - begin);
-
 		begin = end+1;
 		end = buffer.find(";", begin);
 
@@ -435,7 +441,7 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 
 	int id;
 	double lat, lon;
-	string buffer;
+	string buffer, name;
 
 	try
 	{
@@ -449,7 +455,11 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 			getline(ss, buffer, ';');
 			ss >> lon;
 
-			supermarkets.insert(make_pair(id, new Supermarket(id, lat, lon)));
+			name = ss.str().substr(0, ss.str().size() - 1);
+			name = name.substr(name.rfind(';') + 1);
+
+
+			supermarkets.insert(make_pair(id, new Supermarket(id, lat, lon, name)));
 			supermarkets[id]->setRef(graph);
 		}
 	}
@@ -467,13 +477,21 @@ bool DeliveryNetwork::loadSupermarkets(std::string filename)
 
 
 void DeliveryNetwork::showGraph(vector<long long> sups, vector<long long> homes)
-{ int it = 0;
-
-	for(auto i : sups){
-		it++;
+{
+	for(auto i : sups)
+	{
 		gv->setVertexSize(i, 200);
 		gv->setVertexColor(i, GREEN);
-		gv->setVertexLabel(i,std::to_string(it));
+
+		for (auto j : this->supermarkets)
+		{
+			cout << "ID: "<< j.second->getRef().first << endl << "i: " << i << "\n\n";
+			if(j.second->getRef().first == i)
+			{
+				gv->setVertexLabel(i, j.second->getName());
+			}
+		}
+
 		gv->setVertexIcon(i,"res/cartIcon.png");
 	}
 
