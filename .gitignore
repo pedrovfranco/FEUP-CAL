@@ -162,11 +162,3 @@ input/source/*
 CMakeLists\.txt
 
 \.vscode/
-
-connection\.cpp
-
-connection\.h
-
-graphviewer\.cpp
-
-graphviewer\.h
