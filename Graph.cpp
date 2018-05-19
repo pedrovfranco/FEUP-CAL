@@ -120,6 +120,16 @@ bool Vertex::operator<(Vertex & vertex) const {
 }
 
 
+Edge Vertex::getEdge(string roadName){
+    Edge e(0,0,0,"");
+	for(auto e: adj){
+		if(e.getRoadName() == roadName)
+			return e;
+	}
+	return e;
+}
+
+
 /****************** 1c) removeEdge ********************/
 
 /*
@@ -504,13 +514,18 @@ set<pair<long long, double>, classcomp> Graph::searchByRoadName(string roadName)
 {
 	set<pair<long long, double>, classcomp> ret;
 
+
+
 	for (auto i : vertexSet)
 	{
 		for (auto j : i.second->adj)
 		{
-			ret.insert(make_pair(j.edgeId, StringSearch::getPercentageEditDistance(j.roadName, roadName)));
+			ret.insert(make_pair(j.edgeId, StringSearch::getPercentage(j.roadName, roadName)));
+            if( StringSearch::getPercentage(j.roadName, roadName)==0) break;
 		}
 	}
+
+
 
 	return ret;
 }
@@ -526,5 +541,12 @@ Edge Graph::findEdge(long long edgeId)
 		}
 	}
 
-	return Edge(0, 0, 0);
+	return Edge(0, 0, 0, "");
 }
+
+
+unordered_map<long long, Vertex *> Graph::getVertexSet(){
+    return this->vertexSet;
+};
+
+

@@ -53,7 +53,8 @@ public:
 	int getQueueIndex(){return queueIndex;}
 	void setQueueIndex(int i){queueIndex=i;}
 	vector<Edge> getAdj() const;
-};
+	Edge getEdge(string roadName);
+	};
 
 
 
@@ -90,6 +91,7 @@ class Graph
 	bool dfsIsDAG(Vertex *v) const;
 
 public:
+	unordered_map<long long, Vertex *> getVertexSet();
 	int getNumVertex() const;
 	bool addVertex(const long long &id, const GPS &in);
 	bool removeVertex(const long long &id);

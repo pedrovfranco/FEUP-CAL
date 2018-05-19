@@ -113,9 +113,11 @@ int StringSearch::editDistance(string p, string t){
 	return d[n];
 }
 
-double StringSearch::getPercentageEditDistance(string p, string t)
+double StringSearch::getPercentage(string p, string t)
 {
 	int size = max(p.length(), t.length());
+
+	//if(kmp(p,t)) return 0;
 
 	return (editDistance(p, t)/(double)size);
 }

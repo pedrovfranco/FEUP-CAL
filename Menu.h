@@ -32,7 +32,7 @@ public:
 	void placeOrder();
 	void ListItems();
 	void loadViewer(string a, string b, string c, 	vector<long long> ids);
-	void searchRoadByName();
+    Edge * searchRoadByName();
 
 	void pressAnyKey();
 
@@ -42,6 +42,8 @@ public:
 	void printCentered(std::string input);
 	void showDeliveries();
 	void loadGraph();
-};
+    void searchCrossRoads();
+    void showRoad();
+    };
 
 #endif

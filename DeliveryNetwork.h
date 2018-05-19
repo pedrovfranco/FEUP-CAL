@@ -66,6 +66,10 @@ public:
 	void setBFileName(string b){this->bfilename = b;}
 	void setCFileName(string c){this->cfilename = c;}
 	void deleteGV();
+    void markRoadFound(string name);
+    vector<long long> getClientsIDs();
+    vector<long long> getSupermarketsIDs();
+
 };
 
 
