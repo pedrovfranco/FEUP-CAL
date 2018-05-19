@@ -490,6 +490,8 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 }
 
 
+
+
 void Menu::loadGraph(){
 
 	vector<long long> ids;
@@ -610,6 +612,9 @@ void Menu::ListItems(){
 
 void Menu::searchRoadByName()
 {
+    vector<long long> ids;
+    vector<long long> homes;
+
 	ui_utilities::SetWindow(width, height);
 	ui_utilities::ClearScreen();
 	printBanner();
@@ -617,13 +622,30 @@ void Menu::searchRoadByName()
 	cout << "Enter a road name: ";
 
 	getline(cin, tempstr);
+    auto temp = network.getGraph().searchByRoadName(tempstr);
 
-	auto temp = network.getGraph().searchByRoadName(tempstr);
+
+
+    for(auto i : network.getSupermarkets()){
+        ids.push_back(	i.second->getRef().first);
+    }
+
+    for(auto i : network.getClients()){
+        homes.push_back(	i.second->getRef().first);
+    }
+
+    network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 
 	int j = 0;
 	for (auto i : temp)
 	{
 		cout << network.getGraph().findEdge(i.first).getRoadName() << ", " << i.second << "\n";
+        network.getGV()->setEdgeLabel(network.getGraph().findEdge(i.first).getEdgeId(), network.getGraph().findEdge(i.first).getRoadName());
+
+
+        if(i.second < 0.7) {
+            network.markRoadFound(network.getGraph().findEdge(i.first).getRoadName());
+		}
 
 		if (j == 10)
 			break;
@@ -631,4 +653,14 @@ void Menu::searchRoadByName()
 		j++;
 	}
 
+
+
+    network.showGraph(ids,homes);
+    cout << "\nPress any key to continue!\n";
+    getline(cin, tempstr);
+
+    network.getGV()->closeWindow();
+
 }
+
+

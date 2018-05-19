@@ -346,12 +346,15 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			if (bl)
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
-				// gv->setEdgeLabel(i, nroad);
+				gv->setEdgeThickness(i,4);
+				//gv->setEdgeLabel(i, nroad);
 			}
 			else
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
-				// gv->setEdgeLabel(i, nroad);
+                gv->setEdgeThickness(i,4);
+
+                //gv->setEdgeLabel(i, nroad);
 			}
 
 			lastPos = inFile.tellg();
@@ -741,4 +744,17 @@ return ids;}
 	cout << "Delivery done!\n";
 	popDelivery();
 	return ids;
+}
+
+
+void DeliveryNetwork::markRoadFound(string name){
+    for(auto v:graph.getVertexSet()){
+        for(auto e: v.second->getAdj()){
+            if(e.getRoadName() == name) {
+                gv->setEdgeThickness(e.getEdgeId(),6);
+                gv->setEdgeColor(e.getEdgeId(), RED);
+
+            }
+        }
+    }
 }
