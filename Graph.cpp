@@ -3,6 +3,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include "StringSearch.h"
+
 Vertex::Vertex(GPS in): info(in) {}
 
 
@@ -67,6 +69,17 @@ bool Graph::addEdge(const long long &sourcid, const long long &destid, int edgeI
 	return true;
 }
 
+bool Graph::addEdge(const long long &sourcid, const long long &destid, int edgeId, string name) {
+	auto v1 = findVertex(sourcid);
+	auto v2 = findVertex(destid);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+
+	v1->addEdge(edgeId, destid, v1->getInfo().distance(v2->getInfo()), name);
+	return true;
+}
+
+
 
 bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid, int edgeId) {
 	auto v1 = findVertex(sourcid);
@@ -78,6 +91,16 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid, int
 	return true;
 }
 
+bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid, int edgeId, string name) {
+	auto v1 = findVertex(sourcid);
+	auto v2 = findVertex(destid);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+	v1->addEdge(edgeId, destid, v1->getInfo().distance(v2->getInfo()), name);
+	v2->addEdge(edgeId, sourcid, v1->getInfo().distance(v2->getInfo()), name);
+	return true;
+}
+
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
@@ -86,6 +109,10 @@ bool Graph::addDoubleEdge(const long long &sourcid, const long long &destid, int
 
 void Vertex::addEdge(int edgeId, long long id, double w) {
 	adj.push_back(Edge(edgeId, id, w));
+}
+
+void Vertex::addEdge(int edgeId, long long id, double w, string name) {
+	adj.push_back(Edge(edgeId, id, w, name));
 }
 
 bool Vertex::operator<(Vertex & vertex) const {
@@ -469,4 +496,35 @@ void Graph::floydWarshall()
 
 	// dist.insert(make_pair(make_pair(1,2), 1.0));
 
+}
+
+
+
+set<pair<long long, double>, classcomp> Graph::searchByRoadName(string roadName)
+{
+	set<pair<long long, double>, classcomp> ret;
+
+	for (auto i : vertexSet)
+	{
+		for (auto j : i.second->adj)
+		{
+			ret.insert(make_pair(j.edgeId, StringSearch::getPercentageEditDistance(j.roadName, roadName)));
+		}
+	}
+
+	return ret;
+}
+
+Edge Graph::findEdge(long long edgeId)
+{
+	for (auto i : vertexSet)
+	{
+		for (auto j : i.second->getAdj())
+		{
+			if (j.getEdgeId() == edgeId)
+				return j;
+		}
+	}
+
+	return Edge(0, 0, 0);
 }

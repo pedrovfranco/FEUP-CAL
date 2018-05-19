@@ -27,8 +27,8 @@ class DeliveryNetwork {
 	std::vector<Delivery *> deliveries;
 	std::vector<Item *> items;
 	string afilename;
-		string bfilename;
-			string cfilename;
+	string bfilename;
+	string cfilename;
 
 public:
 
@@ -44,7 +44,7 @@ public:
 	void printSupermarkets() const;
 
 	Client * clientExists(int id);
-		Item * itemExists(int id);
+	Item * itemExists(int id);
 	void addDelivery(Delivery * d);
 	void placeOrder(int clientID, Data date);
 	void printItems();

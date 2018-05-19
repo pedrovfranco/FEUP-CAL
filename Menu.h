@@ -7,6 +7,7 @@
 #include "DeliveryNetwork.h"
 #include "ui_utilities.h"
 #include "utilities.h"
+#include "StringSearch.h"
 
 
 class Menu {
@@ -31,6 +32,7 @@ public:
 	void placeOrder();
 	void ListItems();
 	void loadViewer(string a, string b, string c, 	vector<long long> ids);
+	void searchRoadByName();
 
 	void pressAnyKey();
 

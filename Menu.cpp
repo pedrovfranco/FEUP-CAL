@@ -1,11 +1,11 @@
-
-
 #include "Menu.h"
 
 #include <iostream>
 #include <fstream>
 #include <ctime>
 #include <chrono>
+
+#include "StringSearch.h"
 
 
 using namespace std;
@@ -231,7 +231,8 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			cout << "4- Place Order \n";
 			cout << "5- Show deliveries in queue \n";
 			cout << "6- Make delivery \n";
-			cout << "7- Show graph poits \n";
+			cout << "7- Show graph points \n";
+			cout << "8- Search road by name\n";
 			cout << "0- Quit \n\n";
 
 
@@ -293,8 +294,15 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 				else if (input == "7")
 				{
-
 					loadGraph();
+					pressAnyKey();
+
+					break;
+				}
+
+				else if (input == "8")
+				{
+					searchRoadByName();
 					pressAnyKey();
 
 					break;
@@ -508,96 +516,119 @@ void Menu::loadGraph(){
 }
 
 
-	void Menu::placeOrder(){
-		int day = 1;
-			int d, m, y;
+void Menu::placeOrder(){
+	int day = 1;
+		int d, m, y;
 
-		string clientID;
-		string itemID;
+	string clientID;
+	string itemID;
 
-		ListClients();
-		while(true){
-			cout << "\nEnter the client's id: ";
-			getline(cin, clientID);
-			utilities::trimString(clientID);
+	ListClients();
+	while(true){
+		cout << "\nEnter the client's id: ";
+		getline(cin, clientID);
+		utilities::trimString(clientID);
 
-			if (clientID == "")
-			{
-				cout << "Invalid Input! \n";
-				continue;
-			}
-
-			if (utilities::isNumeric(clientID))
-			{
-				if(network.clientExists(stoi(clientID))) break;
-				else {
-					cout << "Client not found! \n";
-					continue;
-				}
-			}
-
+		if (clientID == "")
+		{
+			cout << "Invalid Input! \n";
+			continue;
 		}
 
-		ListItems();
-
-		vector<int> ids;
-
-		while (itemID!="\n")
+		if (utilities::isNumeric(clientID))
 		{
-
-			cout << "\nChoose an Item (Press Enter to finish): ";
-
-			getline(cin, itemID);
-			utilities::trimString(itemID);
-
-			if (itemID == "")
-			{
-				if (ids.size() == 0)
-				{
-					cout << "Must have at least one item!\n\n";
-					continue;
-				}
-				else
-				{
-					break;
-				}
+			if(network.clientExists(stoi(clientID))) break;
+			else {
+				cout << "Client not found! \n";
+				continue;
 			}
+		}
 
-			if (utilities::isNumeric(itemID))
+	}
+
+	ListItems();
+
+	vector<int> ids;
+
+	while (itemID!="\n")
+	{
+
+		cout << "\nChoose an Item (Press Enter to finish): ";
+
+		getline(cin, itemID);
+		utilities::trimString(itemID);
+
+		if (itemID == "")
+		{
+			if (ids.size() == 0)
 			{
-				if (network.itemExists(stoi(itemID)))
-				ids.push_back(stoi(itemID));
-				else{
-					cout << "Item doesn't exist!\n\n";
-					continue;
-				}
+				cout << "Must have at least one item!\n\n";
+				continue;
 			}
 			else
 			{
-				cout << "Id must be a number!\n";
-				continue;
+				break;
 			}
-
 		}
 
-		cout << "\nEnter date (ex.: 1 2 2019): ";
-
-
-		cin >> d >> m >> y;
-		network.clientExists(stoi(clientID))->addItems(ids);
-		network.placeOrder(stoi(clientID), Data(d, m, y));
+		if (utilities::isNumeric(itemID))
+		{
+			if (network.itemExists(stoi(itemID)))
+			ids.push_back(stoi(itemID));
+			else{
+				cout << "Item doesn't exist!\n\n";
+				continue;
+			}
+		}
+		else
+		{
+			cout << "Id must be a number!\n";
+			continue;
+		}
 
 	}
 
+	cout << "\nEnter date (ex.: 1 2 2019): ";
 
-	void Menu::ListItems(){
-		ui_utilities::SetWindow(width, height);
-		ui_utilities::ClearScreen();
-		printBanner();
 
-		// string tempstr;
+	cin >> d >> m >> y;
+	network.clientExists(stoi(clientID))->addItems(ids);
+	network.placeOrder(stoi(clientID), Data(d, m, y));
+}
 
-		cout << "Items' ids:\n\n";
 
-		network.printItems();
+void Menu::ListItems(){
+	ui_utilities::SetWindow(width, height);
+	ui_utilities::ClearScreen();
+	printBanner();
+
+	cout << "Items' ids:\n\n";
+
+	network.printItems();
+}
+
+
+void Menu::searchRoadByName()
+{
+	ui_utilities::SetWindow(width, height);
+	ui_utilities::ClearScreen();
+	printBanner();
+
+	cout << "Enter a road name: ";
+
+	getline(cin, tempstr);
+
+	auto temp = network.getGraph().searchByRoadName(tempstr);
+
+	int j = 0;
+	for (auto i : temp)
+	{
+		cout << network.getGraph().findEdge(i.first).getRoadName() << ", " << i.second << "\n";
+
+		if (j == 10)
+			break;
+
+		j++;
 	}
+
+}
