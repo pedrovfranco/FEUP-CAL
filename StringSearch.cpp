@@ -66,6 +66,22 @@ vector<int> StringSearch::prefixFunction(string p){ //q = pos, k = cnd
 }
 
 
+bool cmpi(char ch1, char ch2) // Compares two characters without case sensitivity.
+{
+	if (ch1 >= 'A' && ch1 <= 'Z')
+	{
+		ch1 += 'a' - 'A';
+	}
+
+	if (ch2 >= 'A' && ch2 <= 'Z')
+	{
+		ch2 += 'a' - 'A';
+	}
+
+	return (ch1 == ch2);
+}
+
+
 int StringSearch::editDistance(string p, string t){
 	int n = t.length();
 	vector<int> d(n + 1);
@@ -82,7 +98,8 @@ int StringSearch::editDistance(string p, string t){
 
 		for (int j = 1; j <= n; j++)
 		{
-			if (p[i - 1] == t[j - 1]) neww = old;
+			if (cmpi(p[i - 1], t[j - 1]))
+				neww = old;
 			else
 			{
 				neww = min(old, d[j]);
