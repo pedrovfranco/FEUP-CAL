@@ -748,9 +748,14 @@ return ids;}
 
 
 void DeliveryNetwork::markRoadFound(string name){
+    bool added = false;
+
     for(auto v:graph.getVertexSet()){
         for(auto e: v.second->getAdj()){
             if(e.getRoadName() == name) {
+                if(!added){
+                    gv->setEdgeLabel(e.getEdgeId(), e.getRoadName());
+                }
                 gv->setEdgeThickness(e.getEdgeId(),6);
                 gv->setEdgeColor(e.getEdgeId(), RED);
 
