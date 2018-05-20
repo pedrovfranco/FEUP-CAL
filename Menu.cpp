@@ -760,6 +760,7 @@ void Menu::searchCrossRoads()
 	}
 	else
 	{
+	    cout << "There is a  " << chosen->getName() << " in that crossway.\n";
 		network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 		network.markRoadFound(road1);
 		network.markRoadFound(road2);
