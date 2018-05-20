@@ -132,6 +132,18 @@ Edge Vertex::getEdge(string roadName){
 }
 
 
+Edge Vertex::getEdgekmp(string roadName){
+    Edge e(-1,0,0,"");
+
+	for(auto i: adj){
+		if(StringSearch::kmp(i.getRoadName(), roadName))
+			return i;
+	}
+	
+	return e;
+}
+
+
 /****************** 1c) removeEdge ********************/
 
 /*

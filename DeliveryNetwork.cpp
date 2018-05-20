@@ -504,7 +504,7 @@ void DeliveryNetwork::showGraph(vector<long long> sups, vector<long long> homes)
 
 		for (auto j : this->supermarkets)
 		{
-			cout << "ID: "<< j.second->getRef().first << endl << "i: " << i << "\n\n";
+			// cout << "ID: "<< j.second->getRef().first << endl << "i: " << i << "\n\n";
 			if(j.second->getRef().first == i)
 			{
 				gv->setVertexLabel(i, j.second->getName());
@@ -556,10 +556,8 @@ void DeliveryNetwork::showPath(const long long &startid, const long long &endid)
 
 void DeliveryNetwork::showPath(vector<long long> v)
 {
-
-
 	if (v.size() < 2)
-	return;
+		return;
 
 	long long startid = v[0], endid = v[0];
 
@@ -839,18 +837,18 @@ Supermarket* DeliveryNetwork::findCrossroad(string a, string b)
 
 	for (auto i : supermarkets)
 	{
-		if (i.second->getRef().second->getEdge(a).getId() != -1)
+		if (i.second->getRef().second->getEdgekmp(a).getEdgeId() != -1)
 			founda = true;
 
-		if (i.second->getRef().second->getEdge(b).getId() != -1)
+		if (i.second->getRef().second->getEdgekmp(b).getEdgeId() != -1)
 			foundb = true;
 
 		for (auto j : graph.getVertexSet())
 		{
-			if (i.second->getRef().second->getEdge(a).getId() != -1)
+			if (i.second->getRef().second->getEdgekmp(a).getEdgeId() != -1)
 				founda = true;
 
-			if (i.second->getRef().second->getEdge(b).getId() != -1)
+			if (i.second->getRef().second->getEdgekmp(b).getEdgeId() != -1)
 				foundb = true;
 		}
 

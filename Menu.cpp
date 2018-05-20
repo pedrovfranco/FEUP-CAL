@@ -660,55 +660,108 @@ void Menu::searchCrossRoads()
 	ui_utilities::ClearScreen();
 	printBanner();
 
-	string road1, road2;
+	string road1, road2, tempstr1, tempstr2;
+	Supermarket* chosen;
+	set<pair<long long, double>, classcomp> temp1, temp2;
+	vector<string> names;
 
-	cout << "Enter the first road's name: ";
-	getline(cin, road1);
-
-	cout << "\nEnter the second road's name: ";
-	getline(cin, road2);
-
-	cout << *network.findCrossroad(road1, road2);
-
-}
-
-
-
-Edge * Menu::searchRoadByName(){
-	ui_utilities::SetWindow(width, height);
-	ui_utilities::ClearScreen();
-	printBanner();
-
-	vector<Edge > edges;
-
-	cout << "Enter a road name: ";
+	cout << "\nDo you want exact search? (Y/N) ";
 
 	getline(cin, tempstr);
-	auto temp = network.getGraph().searchByRoadName(tempstr);
+	utilities::trimString(tempstr);
 
-	int j = 0;
-	for (auto i : temp)
+	if (tempstr == "Y")
 	{
-		cout << j+1 << " - "<< network.getGraph().findEdge(i.first).getRoadName() << " | " << fixed << setprecision(3) << (1-i.second) * 100 << "%\n";
-		edges.push_back(network.getGraph().findEdge(i.first));
+		cout << "Enter the first road's name: ";
+		getline(cin, road1);
+		utilities::trimString(road1);
 
-		if (j ==5)
-			break;
+		cout << "\nEnter the second road's name: ";
+		getline(cin, road2);
+		utilities::trimString(road2);
+	}
+	else
+	{
+		cout << "Enter the first road's name: ";
+		getline(cin, road1);
+		utilities::trimString(road1);
 
-		j++;
+		temp1 = network.getGraph().searchByRoadName(road1);
+
+		int j = 0;
+		for (auto i : temp1)
+		{
+			cout << j+1 << " - "<< network.getGraph().findEdge(i.first).getRoadName() << " | " << fixed << setprecision(3) << (1-i.second) * 100 << "%\n";
+
+			names.push_back(network.getGraph().findEdge(i.first).getRoadName());
+
+			if (j ==5)
+				break;
+
+			j++;
+		}
+
+		road1 = "-1";
+		cout <<"\nWhich road do you which to search?:\n";
+		while(stoi(road1) < 1 || stoi(road1) > j+1)
+		{
+			cout << "Insert a valid option:\n";
+			getline(cin, road1);
+			utilities::trimString(road1);
+		}
+
+		road1 = names[stoi(road1)-1];
+		names.resize(0);
+
+
+		cout << "\nEnter the second road's name: ";
+		getline(cin, road2);
+		utilities::trimString(road2);
+
+		temp1 = network.getGraph().searchByRoadName(road2);
+
+		j = 0;
+		for (auto i : temp1)
+		{
+			cout << j+1 << " - "<< network.getGraph().findEdge(i.first).getRoadName() << " | " << fixed << setprecision(3) << (1-i.second) * 100 << "%\n";
+
+			names.push_back(network.getGraph().findEdge(i.first).getRoadName());
+
+			if (j ==5)
+				break;
+
+			j++;
+		}
+
+		road2 = "-1";
+		cout <<"\nWhich road do you which to search?:\n";
+		while(stoi(road2) < 1 || stoi(road2) > j+1)
+		{
+			cout << "Insert a valid option:\n";
+			getline(cin, road2);
+			utilities::trimString(road2);
+		}
+
+		road2 = names[stoi(road2)-1];
+		names.resize(0);
+
 	}
 
-	int op=-1;
-	cout <<"\nWhich road do you which to search?:\n";
-	while(op<1 || op>j+1) {
-		cout << "Insert a valid option:\n";
-		cin >> op;
+	chosen = network.findCrossroad(road1, road2);
 
+	if (chosen == NULL)
+		cout << "Supermarket not found!\n";
+	else
+	{
+		network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+		network.markRoadFound(road1);
+		network.markRoadFound(road2);
+	    network.showGraph(network.getSupermarketsIDs(), network.getClientsIDs());
+    
 	}
 
-	cin.ignore(1000,'\n');
-	return &edges.at(op-1);
+	cout << "\nPress any key to continue!\n";
+    getline(cin, tempstr);
+
+    network.getGV()->closeWindow();
 }
-
-
-

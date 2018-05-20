@@ -54,7 +54,8 @@ public:
 	void setQueueIndex(int i){queueIndex=i;}
 	vector<Edge> getAdj() const;
 	Edge getEdge(string roadName);
-	};
+	Edge getEdgekmp(string roadName);
+};
 
 
 
