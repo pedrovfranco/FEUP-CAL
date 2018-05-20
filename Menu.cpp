@@ -747,6 +747,10 @@ void Menu::searchCrossRoads()
 
 	}
 
+    temp1 = network.getGraph().searchByRoadName(road1);
+	road1 = network.getGraph().findEdge((*temp1.begin()).first).getRoadName();
+    temp1 = network.getGraph().searchByRoadName(road2);
+    road2 = network.getGraph().findEdge((*temp1.begin()).first).getRoadName();
 	chosen = network.findCrossroad(road1, road2);
 
 	if (chosen == NULL)

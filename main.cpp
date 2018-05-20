@@ -43,11 +43,10 @@ int main()
 		return 1;
 	}
 
-	cout << StringSearch::kmp("torres", "Rua Hernani Torres");
 
-	// Menu menu;
+	Menu menu;
 
-	// menu.Begin();
+	menu.Begin();
 
     return 0;
 }
