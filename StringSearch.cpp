@@ -2,7 +2,37 @@
 
 using namespace std;
 
+bool cmpi(char ch1, char ch2) // Compares two characters without case sensitivity.
+{
+	if (ch1 >= 'A' && ch1 <= 'Z')
+	{
+		ch1 += 'a' - 'A';
+	}
+
+	if (ch2 >= 'A' && ch2 <= 'Z')
+	{
+		ch2 += 'a' - 'A';
+	}
+
+	return (ch1 == ch2);
+}
+
+void convertToLower(string& a)
+{
+	for (int i = 0; i < a.size(); ++i)
+	{
+		if (a[i] >= 'A' && a[i] <= 'Z')
+			a[i] += 'a' - 'A';
+	}
+}
+
 bool StringSearch::kmp(string pattern, string text){ // i = j, j = k
+
+	if (text.length() < pattern.length())
+		return false;
+
+	convertToLower(pattern);
+	convertToLower(text);
 
 	vector<int> pi = prefixFunction(pattern);
 	int i = 0; //Position in text
@@ -37,13 +67,13 @@ bool StringSearch::kmp(string pattern, string text){ // i = j, j = k
 
 vector<int> StringSearch::prefixFunction(string p){ //q = pos, k = cnd
 	vector<int> pi;
-	pi.resize(p.length());
+	pi.resize(p.length() + 1);
 	pi[0] = -1;
 
 	int k = 0;
 	int q;
 
-	for (q = 1; q < p.length(); q++, k++)
+	for (q = 1; q < p.length(); q++)
 	{
 		if (p[q] == p[k])
 		{
@@ -58,6 +88,8 @@ vector<int> StringSearch::prefixFunction(string p){ //q = pos, k = cnd
 
 		while (k >= 0 && p[q] != p[k])
 			k = pi[k];
+
+		k++;
 	}
 
 	pi[q] = k;
@@ -66,23 +98,11 @@ vector<int> StringSearch::prefixFunction(string p){ //q = pos, k = cnd
 }
 
 
-bool cmpi(char ch1, char ch2) // Compares two characters without case sensitivity.
-{
-	if (ch1 >= 'A' && ch1 <= 'Z')
-	{
-		ch1 += 'a' - 'A';
-	}
-
-	if (ch2 >= 'A' && ch2 <= 'Z')
-	{
-		ch2 += 'a' - 'A';
-	}
-
-	return (ch1 == ch2);
-}
-
-
 int StringSearch::editDistance(string p, string t){
+	
+	convertToLower(p);
+	convertToLower(t);
+
 	int n = t.length();
 	vector<int> d(n + 1);
 	int old, neww;
@@ -98,7 +118,7 @@ int StringSearch::editDistance(string p, string t){
 
 		for (int j = 1; j <= n; j++)
 		{
-			if (cmpi(p[i - 1], t[j - 1]))
+			if (p[i - 1] == t[j - 1])
 				neww = old;
 			else
 			{

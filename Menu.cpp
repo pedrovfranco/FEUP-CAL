@@ -310,7 +310,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 				else if (input == "9")
 				{
 					searchCrossRoads();
-					pressAnyKey();
 
 					break;
 				}
@@ -632,23 +631,24 @@ void Menu::showRoad()
 		j++;
 	}
 
-	int op=-1;
+	tempstr = "-1";
 	cout <<"\nWhich road do you which to search?:\n";
-	while(op<1 || op>j+1) {
+	while(stoi(tempstr) < 1 || stoi(tempstr) > j+1)
+	{
 		cout << "Insert a valid option:\n";
-		cin >> op;
-
+		getline(cin, tempstr);
+		utilities::trimString(tempstr);
 	}
 
-	cin.ignore(1000,'\n');
+	tempstr = names[stoi(tempstr)-1];
+	names.resize(0);
+
 	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
-	network.markRoadFound(names.at(op-1));
-	//return &edges.at(op-1);
+	network.markRoadFound(tempstr);
 
     network.showGraph(network.getSupermarketsIDs(),network.getClientsIDs());
-    cout << "\nPress any key to continue!\n";
-    cin.ignore(1000,'\n');
-    getline(cin, tempstr);
+
+    pressAnyKey();
 
     network.getGV()->closeWindow();
 
@@ -670,7 +670,7 @@ void Menu::searchCrossRoads()
 	getline(cin, tempstr);
 	utilities::trimString(tempstr);
 
-	if (tempstr == "Y")
+	if (tempstr == "Y" || tempstr == "y")
 	{
 		cout << "Enter the first road's name: ";
 		getline(cin, road1);
@@ -750,18 +750,21 @@ void Menu::searchCrossRoads()
 	chosen = network.findCrossroad(road1, road2);
 
 	if (chosen == NULL)
+	{
 		cout << "Supermarket not found!\n";
+		pressAnyKey();
+	}
 	else
 	{
 		network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 		network.markRoadFound(road1);
 		network.markRoadFound(road2);
 	    network.showGraph(network.getSupermarketsIDs(), network.getClientsIDs());
-    
+    	
+    	pressAnyKey();
+
+	    network.getGV()->closeWindow();
 	}
 
-	cout << "\nPress any key to continue!\n";
-    getline(cin, tempstr);
-
-    network.getGV()->closeWindow();
+	
 }
