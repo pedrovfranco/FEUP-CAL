@@ -2,6 +2,7 @@
 #define __UTILITIES_INCLUDED__
 
 #include <string>
+#include <vector>
 
 namespace utilities {
 

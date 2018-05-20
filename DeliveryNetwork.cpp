@@ -196,191 +196,198 @@ bool DeliveryNetwork::loadGraph(string aname, string bname, string cname)
 
 bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 {
-	gv = new GraphViewer(900, 900, false);
-
-	vector<string> roadNames;
-
-	gv->defineEdgeCurved(false);
-	gv->defineVertexSize(1);
-
-	gv->createWindow(900, 900);
-
-	gv->defineEdgeColor("blue");
-	gv->defineVertexColor("yellow");
-
-	ifstream inFile;
-
-	inFile.open(aname);
-
-	if (!inFile) {
-		cerr << "Unable to open file datafile.txt";
-		return false;
-	}
-
-	string   line;
-
-	long long id = 0;
-	double X = 0;
-	double Y = 0;
-
-	double Xadd;
-	double Yadd;
-	long long i = 0;
-
-	string dummy;
-	dummy.push_back(1); // The given program does not accept space nor empty string for albel so I had to be creative...
-
-	while(getline(inFile, line))
+	if (gv != NULL)
+		gv->createWindow(900, 900);
+	else
 	{
-		stringstream linestream(line);
-		string         data;
+		gv = new GraphViewer(900, 900, false);
 
-		linestream >> id;
+		vector<string> roadNames;
 
-		getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-		linestream >> X;
-		getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-		linestream >> Y;
+		gv->defineEdgeCurved(false);
+		gv->defineVertexSize(1);
 
-		if (i == 0) 		//Sets the first point as the origin of the map
-		{					//
-			Xadd = -X;		//
-			Yadd = -Y;		//
-		}					//
-		//
-		X += Xadd;			//
-		Y += Yadd;			//
+		gv->createWindow(900, 900);
 
-		X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
-		Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
+		gv->defineEdgeColor("blue");
+		gv->defineVertexColor("yellow");
 
-		swap(X, Y);			//Rotates 90ª counter-clockwise
-		Y *= -1;
+		ifstream inFile;
 
-		// cout << X << ", " << Y << "\n";
+		inFile.open(aname);
 
-		gv->addNode(id, X, Y);
-
-		gv->setVertexLabel(id, dummy);
-
-		i++;
-	}
-
-	inFile.close();
-
-
-	//Ler o ficheiro arestas.txt
-	inFile.open(cname);
-
-	if (!inFile) {
-		cerr << "Unable to open file datafile.txt";
-		exit(1);   // call system to stop
-	}
-
-	ifstream b(bname);
-
-	streampos lastPos;
-	int begin, end;
-	bool bl;
-	long long idAresta = 0, idNoOrigem = 0, idNoDestino = 0, id1, id2;
-	string buffer;
-	string nroad, lastRoad;
-	i = 0;
-	int firstStreet, lastStreet;
-
-
-
-	while (getline(b, buffer))
-	{
-		begin = 0;
-		end = buffer.find(";", begin+1);
-		id1 = stoll(buffer.substr(begin, end - begin));
-
-		begin = end+1;
-		end = buffer.find(";", begin);
-
-		if (buffer.substr(begin, end - begin) == "")
-		{
-			nroad = lastRoad;
-		}
-		else
-		{
-			nroad = buffer.substr(begin, end - begin);
-			lastRoad = nroad;
-		}
-
-		begin = end+1;
-		end = buffer.find(";", begin);
-
-		buffer = buffer.substr(begin, end - begin);
-
-		if (buffer.back() == '\r')
-			buffer.erase(buffer.end()-1);
-
-		if (buffer == "True")
-			bl = true;
-		else if (buffer == "False")
-			bl = false;
-		else
-		{
-			cout << "Bool parser error!\n";
+		if (!inFile) {
+			cerr << "Unable to open file datafile.txt";
 			return false;
 		}
 
+		string   line;
+
+		long long id = 0;
+		double X = 0;
+		double Y = 0;
+
+		double Xadd;
+		double Yadd;
+		long long i = 0;
+
+		string dummy;
+		dummy.push_back(1); // The given program does not accept space nor empty string for albel so I had to be creative...
 
 		while(getline(inFile, line))
 		{
-			begin = 0;
-			end = line.find(";", begin+1);
-
-			id2 = stoll(line.substr(begin, end - begin));
-
-			if (id2 != id1)
-			{
-				inFile.seekg(lastPos);
-				break;
-			}
-
 			stringstream linestream(line);
-			string data;
+			string         data;
 
-			linestream >> idAresta;
+			linestream >> id;
 
 			getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-			linestream >> idNoOrigem;
+			linestream >> X;
 			getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-			linestream >> idNoDestino;
+			linestream >> Y;
 
-			if (bl)
-			{
-				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
-				gv->setEdgeThickness(i,4);
-				if(!utilities::findInVector(roadNames,nroad)) {
-					gv->setEdgeLabel(i, nroad);
-					roadNames.push_back(nroad);
-				}
-			}
-			else
-			{
-				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
-                gv->setEdgeThickness(i,4);
+			if (i == 0) 		//Sets the first point as the origin of the map
+			{					//
+				Xadd = -X;		//
+				Yadd = -Y;		//
+			}					//
+			//
+			X += Xadd;			//
+			Y += Yadd;			//
 
-				if(!utilities::findInVector(roadNames,nroad)) {
-					gv->setEdgeLabel(i, nroad);
-					roadNames.push_back(nroad);
-				};
+			X = X*1350000;		//Since the give program only accepts integer coordinates some shady techniques are applied.
+			Y = Y*1000000;		//X is multiplied more than Y because the proportions were a bit off.
 
-			}
+			swap(X, Y);			//Rotates 90ª counter-clockwise
+			Y *= -1;
 
-			lastPos = inFile.tellg();
+			// cout << X << ", " << Y << "\n";
+
+			gv->addNode(id, X, Y);
+
+			gv->setVertexLabel(id, dummy);
 
 			i++;
 		}
+
+		inFile.close();
+
+
+		//Ler o ficheiro arestas.txt
+		inFile.open(cname);
+
+		if (!inFile) {
+			cerr << "Unable to open file datafile.txt";
+			exit(1);   // call system to stop
+		}
+
+		ifstream b(bname);
+
+		streampos lastPos;
+		int begin, end;
+		bool bl;
+		long long idAresta = 0, idNoOrigem = 0, idNoDestino = 0, id1, id2;
+		string buffer;
+		string nroad, lastRoad;
+		i = 0;
+		int firstStreet, lastStreet;
+
+
+
+		while (getline(b, buffer))
+		{
+			begin = 0;
+			end = buffer.find(";", begin+1);
+			id1 = stoll(buffer.substr(begin, end - begin));
+
+			begin = end+1;
+			end = buffer.find(";", begin);
+
+			if (buffer.substr(begin, end - begin) == "")
+			{
+				nroad = lastRoad;
+			}
+			else
+			{
+				nroad = buffer.substr(begin, end - begin);
+				lastRoad = nroad;
+			}
+
+			begin = end+1;
+			end = buffer.find(";", begin);
+
+			buffer = buffer.substr(begin, end - begin);
+
+			if (buffer.back() == '\r')
+				buffer.erase(buffer.end()-1);
+
+			if (buffer == "True")
+				bl = true;
+			else if (buffer == "False")
+				bl = false;
+			else
+			{
+				cout << "Bool parser error!\n";
+				return false;
+			}
+
+
+			while(getline(inFile, line))
+			{
+				begin = 0;
+				end = line.find(";", begin+1);
+
+				id2 = stoll(line.substr(begin, end - begin));
+
+				if (id2 != id1)
+				{
+					inFile.seekg(lastPos);
+					break;
+				}
+
+				stringstream linestream(line);
+				string data;
+
+				linestream >> idAresta;
+
+				getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+				linestream >> idNoOrigem;
+				getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+				linestream >> idNoDestino;
+
+				if (bl)
+				{
+					gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
+					gv->setEdgeThickness(i,4);
+					if(!utilities::findInVector(roadNames,nroad)) {
+						gv->setEdgeLabel(i, nroad);
+						roadNames.push_back(nroad);
+					}
+				}
+				else
+				{
+					gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
+	                gv->setEdgeThickness(i,4);
+
+					if(!utilities::findInVector(roadNames,nroad)) {
+						gv->setEdgeLabel(i, nroad);
+						roadNames.push_back(nroad);
+					};
+
+				}
+
+				lastPos = inFile.tellg();
+
+				i++;
+			}
+		}
+
+		inFile.close();
+
+		gv->rearrange();
 	}
 
-	inFile.close();
-
-	gv->rearrange();
+	return true;	
 }
 
 bool DeliveryNetwork::loadClients(std::string filename)

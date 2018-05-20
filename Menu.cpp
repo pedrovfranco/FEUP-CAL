@@ -296,7 +296,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 				else if (input == "7")
 				{
 					loadGraph();
-					pressAnyKey();
 
 					break;
 				}
@@ -304,7 +303,6 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 				else if (input == "8")
 				{
 					showRoad();
-					pressAnyKey();
 
 					break;
 				}
@@ -319,8 +317,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 
 				else if (input == "0")
 				{
-					ui_utilities::ClearScreen();
-					return;
+					raise(SIGINT);
 				}
 
 				else
@@ -503,7 +500,6 @@ void Menu::loadViewer(string a, string b, string c, 	vector<long long> ids){
 
 void Menu::loadGraph(){
 
-
 	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 	network.showGraph(network.getSupermarketsIDs(),network.getClientsIDs());
 
@@ -622,7 +618,7 @@ void Menu::showRoad()
     auto temp = network.getGraph().searchByRoadName(tempstr);
 
 	//if(temp.size()!=1)cout << "A perfect match wasn't found! Here are the closest matches:\n";
-	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+	
 
 	int j = 0;
 	for (auto i : temp)
@@ -645,6 +641,7 @@ void Menu::showRoad()
 	}
 
 	cin.ignore(1000,'\n');
+	network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
 	network.markRoadFound(names.at(op-1));
 	//return &edges.at(op-1);
 
@@ -671,7 +668,7 @@ void Menu::searchCrossRoads()
 	cout << "\nEnter the second road's name: ";
 	getline(cin, road2);
 
-	network.findCrossroad(road1, road2);
+	cout << *network.findCrossroad(road1, road2);
 
 }
 

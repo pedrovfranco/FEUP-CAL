@@ -1,39 +1,46 @@
 #include <iostream>
+#include <csignal>
 
 #include "DeliveryNetwork.h"
 #include "Client.h"
 #include "Menu.h"
 
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/types.h>
+
 using namespace std;
+
+
+void sigint_handler(int signal)
+{
+	ui_utilities::ClearScreen();
+	system("pkill java --signal SIGTERM");
+
+	usleep(1000*500);
+
+	exit(1);
+}
+
 
 int main()
 {
 	cout.precision(10);
 
-	// DeliveryNetwork network;
-	// network.loadGraph("input/a.txt", "input/b.txt", "input/c.txt");
-	// network.loadViewer("input/a.txt", "input/b.txt", "input/c.txt");
+	struct sigaction sigintaction;
 
-	// network.loadClients("input/clients.txt");
-	// network.loadSupermarkets("input/supermarkets.txt");
+	sigintaction.sa_handler = sigint_handler;
+	sigemptyset(&sigintaction.sa_mask);
+	sigintaction.sa_flags = 0;
 
-	// vector<long long> path;
-
-	// GPS start(41.168315, -8.601543); //Pingo Doce
-	// GPS foo = network.getGraph().getClosestGPS(start).second->getInfo();
-
-	// cout << foo << "\n";
-
-	// GPS shop(41.166630, -8.601420); //Pet Shop Port
-
-	// GPS end(41.168538, -8.597500); //Casa do tomas
-	// GPS bar = network.getGraph().getClosestGPS(end).second->getInfo();
-
-	// path.push_back(network.getGraph().getClosestGPS(start).first);
-	// // path.push_back(network.getGraph().getClosestGPS(shop).first);
-	// path.push_back(network.getGraph().getClosestGPS(end).first);
-
-	// network.showPath(path);
+	if (sigaction(SIGINT, &sigintaction, NULL) < 0)
+	{
+		fprintf(stderr,"Unable to install SIGINT handler\n");
+		return 1;
+	}
 
 
 	Menu menu;
