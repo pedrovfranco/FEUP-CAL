@@ -27,6 +27,7 @@ public:
 	int getId() const;
 	GPS getGPS() const;
 	std::pair<long long, Vertex*> getRef() const;
+	string getName() const;
 
 };
 

@@ -352,12 +352,15 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			if (bl)
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
-				// gv->setEdgeLabel(i, nroad);
+				gv->setEdgeThickness(i,4);
+				//gv->setEdgeLabel(i, nroad);
 			}
 			else
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
-				// gv->setEdgeLabel(i, nroad);
+                gv->setEdgeThickness(i,4);
+
+                //gv->setEdgeLabel(i, nroad);
 			}
 
 			lastPos = inFile.tellg();
@@ -485,7 +488,7 @@ void DeliveryNetwork::showGraph(vector<long long> sups, vector<long long> homes)
 
 		for (auto j : this->supermarkets)
 		{
-			//cout << "ID: "<< j.second->getRef().first << endl << "i: " << i << "\n\n";
+			cout << "ID: "<< j.second->getRef().first << endl << "i: " << i << "\n\n";
 			if(j.second->getRef().first == i)
 			{
 				gv->setVertexLabel(i, j.second->getName());
@@ -759,4 +762,38 @@ return ids;}
 	cout << "Delivery done!\n";
 	popDelivery();
 	return ids;
+}
+
+
+void DeliveryNetwork::markRoadFound(string name){
+    bool added = false;
+
+    for(auto v:graph.getVertexSet()){
+        for(auto e: v.second->getAdj()){
+            if(e.getRoadName() == name) {
+                if(!added){
+                    gv->setEdgeLabel(e.getEdgeId(), e.getRoadName());
+                }
+                gv->setEdgeThickness(e.getEdgeId(),6);
+                gv->setEdgeColor(e.getEdgeId(), RED);
+
+            }
+        }
+    }
+}
+
+vector<long long> DeliveryNetwork::getClientsIDs(){
+	vector<long long> homes;
+	for(auto i : getClients()){
+		homes.push_back(	i.second->getRef().first);
+	}
+return homes;
+}
+
+vector<long long> DeliveryNetwork::getSupermarketsIDs(){
+	vector<long long> sup;
+	for(auto i : getSupermarkets()){
+		sup.push_back(	i.second->getRef().first);
+	}
+return sup;
 }

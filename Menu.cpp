@@ -656,6 +656,14 @@ void Menu::showRoad()
 
 }
 
+void Menu::searchCrossRoads()
+{
+	ui_utilities::SetWindow(width, height);
+	ui_utilities::ClearScreen();
+	printBanner();
+}
+
+
 
 Edge * Menu::searchRoadByName(){
 	ui_utilities::SetWindow(width, height);
