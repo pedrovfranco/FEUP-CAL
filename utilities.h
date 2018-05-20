@@ -3,9 +3,9 @@
 
 #include <string>
 
-namespace utilities{
+namespace utilities {
 
-	template <class T>
+	template<class T>
 
 
 	/**
@@ -14,7 +14,7 @@ namespace utilities{
 	 * @param      a     First value
 	 * @param      b     Second value
 	 */
-	void swap(T& a, T& b);
+	void swap(T &a, T &b);
 
 	/**
 	 * @brief      Removes spaces from both the beginning and the end of the string.
@@ -22,7 +22,7 @@ namespace utilities{
 	 * @param      input  The string
 	 */
 	void trimString(std::string &input);
-	
+
 	/**
 	 * @brief      Function that gets the number digits of a base 10 number.
 	 *
@@ -31,7 +31,7 @@ namespace utilities{
 	 * @return     The numbers of digits of input
 	 */
 	int intSize(int input);
-	
+
 	/**
 	 * @brief      Determines if a string is a number.
 	 *
@@ -44,8 +44,9 @@ namespace utilities{
 
 	template<class T>
 	void printContainer(const T &input);
-	
-};
 
+	bool findInVector(std::vector<std::string> &v, std::string s);
+
+}
 
 #endif

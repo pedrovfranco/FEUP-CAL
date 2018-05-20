@@ -1,6 +1,7 @@
 #include "utilities.h"
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -59,4 +60,11 @@ void utilities::printContainer(const T &input)
 {
 	for (auto i : input)
 		cout << i << "\n";
+}
+
+bool utilities::findInVector(std::vector<std::string> & v, std::string s){
+	for(int i = 0; i<v.size();i++){
+		if(v.at(i) == s) return true;
+	}
+	return false;
 }

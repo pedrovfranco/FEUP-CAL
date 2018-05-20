@@ -198,6 +198,8 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 {
 	gv = new GraphViewer(900, 900, false);
 
+	vector<string> roadNames;
+
 	gv->defineEdgeCurved(false);
 	gv->defineVertexSize(1);
 
@@ -353,14 +355,21 @@ bool DeliveryNetwork::loadViewer(string aname, string bname, string cname)
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::UNDIRECTED);
 				gv->setEdgeThickness(i,4);
-				//gv->setEdgeLabel(i, nroad);
+				if(!utilities::findInVector(roadNames,nroad)) {
+					gv->setEdgeLabel(i, nroad);
+					roadNames.push_back(nroad);
+				}
 			}
 			else
 			{
 				gv->addEdge(i, idNoOrigem, idNoDestino, EdgeType::DIRECTED);
                 gv->setEdgeThickness(i,4);
 
-                //gv->setEdgeLabel(i, nroad);
+				if(!utilities::findInVector(roadNames,nroad)) {
+					gv->setEdgeLabel(i, nroad);
+					roadNames.push_back(nroad);
+				};
+
 			}
 
 			lastPos = inFile.tellg();
@@ -773,6 +782,7 @@ void DeliveryNetwork::markRoadFound(string name){
             if(e.getRoadName() == name) {
                 if(!added){
                     gv->setEdgeLabel(e.getEdgeId(), e.getRoadName());
+                    added = true;
                 }
                 gv->setEdgeThickness(e.getEdgeId(),6);
                 gv->setEdgeColor(e.getEdgeId(), RED);
@@ -780,6 +790,22 @@ void DeliveryNetwork::markRoadFound(string name){
             }
         }
     }
+}
+
+void DeliveryNetwork::setRoadLabels(string name){
+	bool added = false;
+
+	for(auto v:graph.getVertexSet()){
+		for(auto e: v.second->getAdj()){
+			if(e.getRoadName() == name) {
+				if(!added){
+					gv->setEdgeLabel(e.getEdgeId(), e.getRoadName());
+					added = true;
+				}
+
+			}
+		}
+	}
 }
 
 vector<long long> DeliveryNetwork::getClientsIDs(){
@@ -830,3 +856,5 @@ Supermarket* DeliveryNetwork::findCrossroad(string a, string b)
 
 	return NULL;
 }
+
+

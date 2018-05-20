@@ -117,7 +117,6 @@ double StringSearch::getPercentage(string p, string t)
 {
 	int size = max(p.length(), t.length());
 
-	//if(kmp(p,t)) return 0;
 
 	return (editDistance(p, t)/(double)size);
 }
