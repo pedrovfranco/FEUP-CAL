@@ -121,11 +121,13 @@ bool Vertex::operator<(Vertex & vertex) const {
 
 
 Edge Vertex::getEdge(string roadName){
-    Edge e(0,0,0,"");
-	for(auto e: adj){
-		if(e.getRoadName() == roadName)
-			return e;
+    Edge e(-1,0,0,"");
+
+	for(auto i: adj){
+		if(i.getRoadName() == roadName)
+			return i;
 	}
+	
 	return e;
 }
 

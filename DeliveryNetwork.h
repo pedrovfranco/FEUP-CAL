@@ -70,6 +70,8 @@ public:
     vector<long long> getClientsIDs();
     vector<long long> getSupermarketsIDs();
 
+    Supermarket* findCrossroad(string a, string b);
+
 };
 
 

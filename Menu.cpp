@@ -233,6 +233,7 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 			cout << "6- Make delivery \n";
 			cout << "7- Show graph points \n";
 			cout << "8- Search road by name\n";
+			cout << "9- Search supermarket by crossroad\n";
 			cout << "0- Quit \n\n";
 
 
@@ -385,10 +386,10 @@ Menu::Menu(unsigned int width, unsigned int height) : width(width), height(heigh
 		{
 			cout << "\nChoose a supermarket id: ";
 
-		getline(cin, tempstr);
-		start_s=clock();
-		//auto start = std::chrono::high_resolution_clock::now();
-		utilities::trimString(tempstr);
+			getline(cin, tempstr);
+			start_s=clock();
+			//auto start = std::chrono::high_resolution_clock::now();
+			utilities::trimString(tempstr);
 
 			if (utilities::isNumeric(tempstr) && tempstr != "")
 			{
@@ -661,6 +662,17 @@ void Menu::searchCrossRoads()
 	ui_utilities::SetWindow(width, height);
 	ui_utilities::ClearScreen();
 	printBanner();
+
+	string road1, road2;
+
+	cout << "Enter the first road's name: ";
+	getline(cin, road1);
+
+	cout << "\nEnter the second road's name: ";
+	getline(cin, road2);
+
+	network.findCrossroad(road1, road2);
+
 }
 
 

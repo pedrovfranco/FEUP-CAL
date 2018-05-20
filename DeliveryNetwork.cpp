@@ -797,3 +797,36 @@ vector<long long> DeliveryNetwork::getSupermarketsIDs(){
 	}
 return sup;
 }
+
+
+Supermarket* DeliveryNetwork::findCrossroad(string a, string b)
+{
+	bool founda = false;
+	bool foundb = false;
+
+	for (auto i : supermarkets)
+	{
+		if (i.second->getRef().second->getEdge(a).getId() != -1)
+			founda = true;
+
+		if (i.second->getRef().second->getEdge(b).getId() != -1)
+			foundb = true;
+
+		for (auto j : graph.getVertexSet())
+		{
+			if (i.second->getRef().second->getEdge(a).getId() != -1)
+				founda = true;
+
+			if (i.second->getRef().second->getEdge(b).getId() != -1)
+				foundb = true;
+		}
+
+		if (founda && foundb)
+			return i.second;
+
+		founda = false;
+		foundb = false;
+	}
+
+	return NULL;
+}
