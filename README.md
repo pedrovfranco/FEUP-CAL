@@ -1,6 +1,5 @@
 # Conceção e Análise de Algorítmos / Algorithms Analysis and Conception 2017-2018
 Project developed in the course unit.
-<br/><b>Final Grade: TO BE DETERMINED</b>
 
 ### Project Infos
 * **Date:** 2nd Year, 2nd Semester, 2017/2018
